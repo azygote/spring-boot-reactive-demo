@@ -1,0 +1,60 @@
+management:
+  endpoints:
+    web:
+      base-path: /api/actuator
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+
+spring:
+  http:
+    encoding:
+      force: true
+  datasource:
+    url: jdbc:mysql://${mysql-host}:3306/db_sbrd?useSSL=false&serverTimeZone=UTC&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: gty
+    password: 123456
+  cache:
+    type: redis
+    redis:
+      time-to-live: 2d
+      key-prefix: 'spring-boot-jwt-demo:cache:'
+  redis:
+    host: ${redis-host}
+    password: 123456
+    timeout: 100ms
+  rabbitmq:
+    host: ${rabbitmq-host}
+  kafka:
+    bootstrap-servers: ${kafka-host}:9092
+    consumer:
+      group-id: demo-group
+      auto-offset-reset: earliest
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+    producer:
+      value-serializer: org.apache.kafka.common.serialization.ByteArraySerializer
+    template:
+      default-topic: demo-topic
+  session:
+    store-type: redis
+  gson:
+    serialize-nulls: true
+
+mybatis:
+  type-aliases-package: org.gty.demo.model.po
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    aggressive-lazy-loading: false
+
+mapper:
+  not-empty: true
+  style: camelhump
+  enable-method-annotation: true
+  check-example-entity-class: true
+  safe-delete: true
+  safe-update: true
+  wrap-keyword: '`{0}`'

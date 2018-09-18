@@ -1,0 +1,11 @@
+service-host: localhost
+
+mysql-host: ${service-host}
+redis-host: ${service-host}
+rabbitmq-host: ${service-host}
+kafka-host: ${service-host}
+
+logging:
+  level:
+    org.gty.demo: debug
+    org.gty.demo.mapper: trace
