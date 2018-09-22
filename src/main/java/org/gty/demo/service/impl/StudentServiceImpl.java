@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
@@ -36,7 +37,7 @@ public class StudentServiceImpl implements StudentService {
         this.studentMapper = Objects.requireNonNull(studentMapper, "studentMapper must not be null");
     }
 
-    @Transactional(readOnly = true, rollbackFor = Throwable.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Cacheable(cacheNames = "students", keyGenerator = "keyGenerator")
     @Nullable
     @Override
@@ -55,7 +56,7 @@ public class StudentServiceImpl implements StudentService {
         return resultList.get(0);
     }
 
-    @Transactional(readOnly = true, rollbackFor = Throwable.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Cacheable(cacheNames = "students", keyGenerator = "keyGenerator")
     @Nullable
     @Override
@@ -76,7 +77,7 @@ public class StudentServiceImpl implements StudentService {
         return resultList.get(0);
     }
 
-    @Transactional(readOnly = true, rollbackFor = Throwable.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Cacheable(cacheNames = "students", keyGenerator = "keyGenerator")
     @Nonnull
     @Override
@@ -121,7 +122,7 @@ public class StudentServiceImpl implements StudentService {
         return ((Page<StudentVo>) studentPage).toPageInfo();
     }
 
-    @Transactional(rollbackFor = Throwable.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = Throwable.class)
     @CacheEvict(cacheNames = "students", keyGenerator = "keyGenerator", allEntries = true)
     @Override
     public void save(@Nonnull Student student) {

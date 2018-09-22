@@ -23,7 +23,7 @@ public class PageHelperConfig {
         var pageInterceptor = new PageInterceptor();
 
         var properties = new Properties();
-        properties.setProperty("helperDialect", "mysql");
+        properties.setProperty("helperDialect", "postgresql");
         properties.setProperty("offsetAsPageNum", "true");
         properties.setProperty("rowBoundsWithCount", "true");
         properties.setProperty("pageSizeZero", "true");

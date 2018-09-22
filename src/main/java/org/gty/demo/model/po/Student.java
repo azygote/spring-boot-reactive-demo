@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.ibatis.type.JdbcType;
+import org.gty.demo.util.PostgresOidTypeHandler;
 import tk.mybatis.mapper.annotation.ColumnType;
 import tk.mybatis.mapper.annotation.KeySql;
 
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Table(name = "t_student")
+@Table(name = "t_student", schema = "public")
 public class Student implements Serializable {
 
     private static final long serialVersionUID = 2707444643224940512L;
@@ -31,16 +32,16 @@ public class Student implements Serializable {
     @ColumnType(column = "student_age", jdbcType = JdbcType.INTEGER)
     private Integer age;
 
-    @ColumnType(column = "student_balance", jdbcType = JdbcType.DECIMAL)
+    @ColumnType(column = "student_balance", jdbcType = JdbcType.NUMERIC)
     private BigDecimal balance;
 
-    @ColumnType(column = "student_other_information", jdbcType = JdbcType.CLOB)
+    @ColumnType(column = "student_other_information", jdbcType = JdbcType.VARCHAR)
     private String otherInformation;
 
-    @ColumnType(column = "student_photo", jdbcType = JdbcType.BLOB)
+    @ColumnType(column = "student_photo", typeHandler = PostgresOidTypeHandler.class)
     private byte[] photo;
 
-    @ColumnType(column = "delete_flag", jdbcType = JdbcType.TINYINT)
+    @ColumnType(column = "delete_flag", jdbcType = JdbcType.SMALLINT)
     private Integer deleteFlag;
 
     @ColumnType(column = "created_date", jdbcType = JdbcType.BIGINT)

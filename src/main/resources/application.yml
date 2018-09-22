@@ -13,15 +13,15 @@ spring:
     encoding:
       force: true
   datasource:
-    url: jdbc:mysql://${mysql-host}:3306/db_sbrd?useSSL=false&serverTimeZone=UTC&allowPublicKeyRetrieval=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:postgresql://${postgresql-host}:5432/db_sbrd
+    driver-class-name: org.postgresql.Driver
     username: gty
     password: 123456
   cache:
     type: redis
     redis:
       time-to-live: 2d
-      key-prefix: 'spring-boot-jwt-demo:cache:'
+#     key-prefix: 'spring-boot-reactive-demo:cache:'
   redis:
     host: ${redis-host}
     password: 123456
@@ -57,4 +57,4 @@ mapper:
   check-example-entity-class: true
   safe-delete: true
   safe-update: true
-  wrap-keyword: '`{0}`'
+  wrap-keyword: '"{0}"'

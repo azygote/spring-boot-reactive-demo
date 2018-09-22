@@ -7,6 +7,7 @@ import org.gty.demo.security.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
@@ -27,7 +28,7 @@ public class SystemUserServiceImpl implements SystemUserService {
     }
 
     @Cacheable(cacheNames = "systemUsers", keyGenerator = "keyGenerator")
-    @Transactional(readOnly = true, rollbackFor = Throwable.class)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Override
     @Nullable
     public SystemUser findUserByUsername(@Nonnull String username) {
