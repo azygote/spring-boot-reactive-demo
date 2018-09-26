@@ -111,10 +111,10 @@ public class StudentForm implements Serializable {
         Objects.requireNonNull(studentForm, "studentForm must not be null");
 
         var student = new Student();
-        student.setName(studentForm.getName());
+        student.setName(studentForm.getName().strip());
         student.setAge(studentForm.getAge());
-        student.setGender(studentForm.getGender());
-        student.setBalance(new BigDecimal(studentForm.getBalance()));
+        student.setGender(studentForm.getGender().strip());
+        student.setBalance(new BigDecimal(studentForm.getBalance().strip()));
         student.setDeleteFlag(DeleteFlag.NOT_DELETED.ordinal());
         student.setOtherInformation("Not Applicable");
 
