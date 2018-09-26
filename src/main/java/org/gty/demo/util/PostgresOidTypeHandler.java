@@ -56,7 +56,7 @@ public class PostgresOidTypeHandler extends BaseTypeHandler<byte[]> {
         var lobj = conn.unwrap(PGConnection.class).getLargeObjectAPI();
 
         try (var obj = lobj.open(oid, LargeObjectManager.WRITE)) {
-            byte[] buffer = new byte[obj.size()];
+            var buffer = new byte[obj.size()];
             obj.read(buffer, 0, obj.size());
             return buffer;
         }

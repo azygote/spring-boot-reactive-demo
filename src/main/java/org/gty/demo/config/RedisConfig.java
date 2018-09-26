@@ -23,7 +23,7 @@ public class RedisConfig {
 
         Objects.requireNonNull(resourceLoader, "resourceLoader must not be null");
 
-        var genericToStringSerializer = new GenericToStringSerializer<Object>(Object.class);
+        var genericToStringSerializer = new GenericToStringSerializer<>(Object.class);
         var jdkSerializer = new JdkSerializationRedisSerializer(Objects.requireNonNull(resourceLoader.getClassLoader()));
 
         var serializationContext = RedisSerializationContext

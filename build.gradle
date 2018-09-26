@@ -10,8 +10,8 @@ group = 'org.gty'
 version = '1.0.0.RELEASE'
 description = 'Spring Boot Reactive Demo'
 
-sourceCompatibility = 10
-targetCompatibility = 10
+sourceCompatibility = 11
+targetCompatibility = 11
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 javadoc.options.encoding = 'UTF-8'
 
