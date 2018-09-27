@@ -1,6 +1,5 @@
 package org.gty.demo.model.form;
 
-import com.google.common.io.ByteStreams;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -11,10 +10,10 @@ import org.springframework.core.io.Resource;
 
 import javax.annotation.Nonnull;
 import javax.validation.constraints.*;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.UncheckedIOException;
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -119,8 +118,23 @@ public class StudentForm implements Serializable {
         student.setOtherInformation("Not Applicable");
 
         Resource resource = new ClassPathResource("images/logo.png");
-        try (var input = resource.getInputStream()) {
-            student.setPhoto(ByteStreams.toByteArray(input));
+
+        try (var input = Channels.newChannel(resource.getInputStream());
+             var byteArrayOutputStream = new ByteArrayOutputStream();
+             var bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream, 8);
+             var output = Channels.newChannel(bufferedOutputStream)) {
+            var buffer = ByteBuffer.allocate(16);
+            while (input.read(buffer) != -1) {
+                buffer.flip();
+                while (buffer.hasRemaining()) {
+                    output.write(buffer);
+                }
+                buffer.clear();
+            }
+            bufferedOutputStream.flush();
+            var bytes = byteArrayOutputStream.toByteArray();
+
+            student.setPhoto(bytes);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
