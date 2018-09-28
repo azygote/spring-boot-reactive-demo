@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 @EnableAsync
 public class AsyncConfig {
 
-    private static final int processNumber;
+    private static final int processorsCount;
     private static final Supplier<Integer> poolSize;
 
     private static int getPoolSize() {
@@ -20,7 +20,7 @@ public class AsyncConfig {
     }
 
     static {
-        processNumber = Runtime.getRuntime().availableProcessors();
+        processorsCount = Runtime.getRuntime().availableProcessors();
         poolSize = Suppliers.memoize(() -> 600);
     }
 
@@ -30,7 +30,7 @@ public class AsyncConfig {
         executor.setCorePoolSize(getPoolSize());
         executor.setMaxPoolSize(1000);
         executor.setQueueCapacity(100);
-        executor.setThreadNamePrefix("asyncExecutor-");
+        executor.setThreadNamePrefix("sbrd-default-async-executor-");
         executor.initialize();
         return executor;
     }

@@ -77,9 +77,9 @@ public class StudentHandler {
                 .subscribeOn(SystemConstants.defaultReactorScheduler())
                 .defaultIfEmpty("");
 
+        demoService.demo();
 
-        var resultMono = demoService.demo()
-                .then(studentService.findByCondition(pageNumMono, pageSizeMono, orderByMono))
+        var resultMono = studentService.findByCondition(pageNumMono, pageSizeMono, orderByMono)
                 .flatMap(result -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).syncBody(result));
 
         return ExceptionHandler.renderErrorResponse(resultMono);

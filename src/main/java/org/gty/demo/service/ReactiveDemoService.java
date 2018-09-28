@@ -16,7 +16,7 @@ import java.util.Objects;
 public class ReactiveDemoService {
 
     private static final Logger log = LoggerFactory.getLogger(ReactiveDemoService.class);
-    private static final String message = "Hello, World";
+    private static final String MESSAGE = "Hello, World";
 
     private AsyncAmqpTemplate asyncAmqpTemplate;
     private KafkaTemplate<Object, Object> kafkaTemplate;
@@ -29,21 +29,29 @@ public class ReactiveDemoService {
         this.kafkaTemplate = (KafkaTemplate<Object, Object>) Objects.requireNonNull(kafkaTemplate, "kafkaTemplate must not be null");
     }
 
-    public Mono<Void> demo() {
-        var mono1 = Mono.<Void>fromRunnable(this::sendMessageToRabbit).subscribeOn(SystemConstants.defaultReactorScheduler());
-        var mono2 = Mono.<Void>fromRunnable(this::sendMessageToKafka).subscribeOn(SystemConstants.defaultReactorScheduler());
-
-        return mono1.then(mono2);
+    public void demo() {
+        Mono.zip(sendMessageToRabbit(), sendMessageToKafka())
+                .subscribe();
     }
 
-    private void sendMessageToRabbit() {
-        asyncAmqpTemplate.convertSendAndReceive("demo-queue", message);
-
-        log.debug("[AMQP] --- message sent to rabbit");
+    private Mono<Integer> sendMessageToRabbit() {
+        return Mono
+                .<Integer>fromRunnable(() -> {
+                    asyncAmqpTemplate.convertSendAndReceive("demo-queue", MESSAGE);
+                    log.debug("[AMQP] --- MESSAGE sent to rabbit");
+                })
+                .subscribeOn(SystemConstants.defaultReactorScheduler())
+                .defaultIfEmpty(0);
     }
 
-    private void sendMessageToKafka() {
-        kafkaTemplate.send("demo-topic", SerializationUtils.serialize(message))
-                .addCallback(result -> log.debug("[Kafka] --- message sent to kafka"), failure -> log.warn("sending message to kafka failed"));
+    private Mono<Integer> sendMessageToKafka() {
+        return Mono
+                .<Integer>fromRunnable(() -> {
+                    kafkaTemplate.send("demo-topic", SerializationUtils.serialize(MESSAGE))
+                            .addCallback(result -> log.debug("[Kafka] --- MESSAGE sent to kafka"),
+                                    failure -> log.warn("sending MESSAGE to kafka failed"));
+                })
+                .subscribeOn(SystemConstants.defaultReactorScheduler())
+                .defaultIfEmpty(0);
     }
 }
