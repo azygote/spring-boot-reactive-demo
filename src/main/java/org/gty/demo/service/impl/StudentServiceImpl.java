@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -39,9 +39,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Cacheable(cacheNames = "students", keyGenerator = "keyGenerator")
-    @Nullable
+    @Nonnull
     @Override
-    public Student findById(long id) {
+    public Optional<Student> findById(long id) {
         var example = Example.builder(Student.class).build();
         example.createCriteria()
                 .andEqualTo("id", id)
@@ -50,17 +50,17 @@ public class StudentServiceImpl implements StudentService {
         var resultList = studentMapper.selectByExample(example);
 
         if (resultList == null || resultList.size() == 0) {
-            return null;
+            return Optional.empty();
         }
 
-        return resultList.get(0);
+        return Optional.ofNullable(resultList.get(0));
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Cacheable(cacheNames = "students", keyGenerator = "keyGenerator")
-    @Nullable
+    @Nonnull
     @Override
-    public Student findByName(@Nonnull String name) {
+    public Optional<Student> findByName(@Nonnull String name) {
         Objects.requireNonNull(name, "name must not be null");
 
         var example = Example.builder(Student.class).build();
@@ -71,10 +71,10 @@ public class StudentServiceImpl implements StudentService {
         var resultList = studentMapper.selectByExample(example);
 
         if (resultList == null || resultList.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
 
-        return resultList.get(0);
+        return Optional.ofNullable(resultList.get(0));
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)

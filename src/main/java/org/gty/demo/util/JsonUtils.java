@@ -7,6 +7,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.Optional;
 
 public final class JsonUtils {
 
@@ -26,19 +27,19 @@ public final class JsonUtils {
     }
 
     @Nullable
-    public static <T> T fromJson(@Nonnull String json, @Nonnull Class<T> clazz) {
+    public static <T> Optional<T> fromJson(@Nonnull String json, @Nonnull Class<T> clazz) {
         Objects.requireNonNull(clazz, "obj must not be null");
         Objects.requireNonNull(clazz, "clazz must not be null");
 
-        return gson().fromJson(StringEscapeUtils.unescapeJson(json), clazz);
+        return Optional.ofNullable(gson().fromJson(StringEscapeUtils.unescapeJson(json), clazz));
     }
 
-    @Nullable
-    public static <T> T fromJson(@Nonnull String json, @Nonnull TypeToken<T> typeToken) {
+    @Nonnull
+    public static <T> Optional<T> fromJson(@Nonnull String json, @Nonnull TypeToken<T> typeToken) {
         Objects.requireNonNull(json, "obj must not be null");
         Objects.requireNonNull(typeToken, "clazz must not be null");
 
-        return gson().fromJson(StringEscapeUtils.unescapeJson(json), typeToken.getType());
+        return Optional.ofNullable(gson().fromJson(StringEscapeUtils.unescapeJson(json), typeToken.getType()));
     }
 
     private JsonUtils() {

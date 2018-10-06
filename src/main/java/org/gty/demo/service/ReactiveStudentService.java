@@ -30,6 +30,7 @@ public class ReactiveStudentService {
         return Objects.requireNonNull(id, "id must not be null")
                 .flatMap(value ->
                         Mono.fromCallable(() -> studentService.findById(value))
+                                .flatMap(Mono::justOrEmpty)
                                 .subscribeOn(SystemConstants.defaultReactorScheduler()));
     }
 
