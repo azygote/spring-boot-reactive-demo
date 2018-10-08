@@ -1,6 +1,5 @@
 package org.gty.demo.handler;
 
-import org.apache.commons.lang3.StringUtils;
 import org.gty.demo.constant.SystemConstants;
 import org.gty.demo.model.form.StudentForm;
 import org.gty.demo.model.vo.ResponseVo;
@@ -19,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 @Component
 public class StudentHandler {
@@ -61,15 +61,14 @@ public class StudentHandler {
         var pageNumMono = Mono
                 .justOrEmpty(request.queryParam("pageNum"))
                 .subscribeOn(SystemConstants.defaultReactorScheduler())
-                .filter(StringUtils::isNotBlank)
+                .filter(Predicate.not(String::isBlank))
                 .map(Integer::valueOf)
                 .defaultIfEmpty(0);
 
         var pageSizeMono = Mono
                 .justOrEmpty(request.queryParam("pageSize"))
                 .subscribeOn(SystemConstants.defaultReactorScheduler())
-                .filter(StringUtils::isNotBlank)
-                .map(Integer::valueOf)
+                .filter(Predicate.not(String::isBlank))
                 .map(Integer::valueOf)
                 .defaultIfEmpty(0);
 
@@ -78,9 +77,9 @@ public class StudentHandler {
                 .subscribeOn(SystemConstants.defaultReactorScheduler())
                 .defaultIfEmpty("");
 
+        demoService.demo();
 
-        var resultMono = demoService.demo()
-                .then(studentService.findByCondition(pageNumMono, pageSizeMono, orderByMono))
+        var resultMono = studentService.findByCondition(pageNumMono, pageSizeMono, orderByMono)
                 .flatMap(result -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).syncBody(result));
 
         return ExceptionHandler.renderErrorResponse(resultMono);

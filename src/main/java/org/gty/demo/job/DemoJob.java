@@ -25,6 +25,6 @@ public class DemoJob extends QuartzJobBean {
     protected void executeInternal(@Nonnull JobExecutionContext context) {
         Objects.requireNonNull(context, "context must not be null");
 
-        log.debug("[Quartz] {} --- {}", Thread.currentThread().getName(), info);
+        log.debug("[Quartz] --- {}", info);
     }
 }

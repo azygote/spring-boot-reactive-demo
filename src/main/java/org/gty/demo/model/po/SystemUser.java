@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Table(name = "t_sys_user")
+@Table(name = "t_sys_user", schema = "public")
 public class SystemUser implements Serializable {
 
     private static final long serialVersionUID = -884040706963724292L;
@@ -22,10 +22,10 @@ public class SystemUser implements Serializable {
     @ColumnType(column = "password", jdbcType = JdbcType.VARCHAR)
     private String password;
 
-    @ColumnType(column = "roles", jdbcType = JdbcType.CLOB)
+    @ColumnType(column = "roles", jdbcType = JdbcType.VARCHAR)
     private String roles;
 
-    @ColumnType(column = "delete_flag", jdbcType = JdbcType.TINYINT)
+    @ColumnType(column = "delete_flag", jdbcType = JdbcType.SMALLINT)
     private Integer deleteFlag;
 
     @ColumnType(column = "created_date", jdbcType = JdbcType.BIGINT)

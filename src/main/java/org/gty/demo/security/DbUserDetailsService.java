@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Nonnull;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -45,7 +46,8 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
                     return new DbUserDetails(
                             user.getUsername(),
                             user.getPassword(),
-                            Objects.requireNonNull(roleList).stream()
+                            roleList.stream()
+                                    .flatMap(Collection::stream)
                                     .map(role -> new SimpleGrantedAuthority("ROLE_" + StringUtils.upperCase(role)))
                                     .collect(Collectors.toList()));
                 });

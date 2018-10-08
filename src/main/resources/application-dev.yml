@@ -1,6 +1,6 @@
 service-host: localhost
 
-mysql-host: ${service-host}
+postgresql-host: ${service-host}
 redis-host: ${service-host}
 rabbitmq-host: ${service-host}
 kafka-host: ${service-host}

@@ -30,6 +30,7 @@ public class ReactiveStudentService {
         return Objects.requireNonNull(id, "id must not be null")
                 .flatMap(value ->
                         Mono.fromCallable(() -> studentService.findById(value))
+                                .flatMap(Mono::justOrEmpty)
                                 .subscribeOn(SystemConstants.defaultReactorScheduler()));
     }
 
@@ -45,12 +46,19 @@ public class ReactiveStudentService {
     public Mono<PageInfo<StudentVo>> findByCondition(@Nonnull Mono<Integer> pageNumMono,
                                                      @Nonnull Mono<Integer> pageSizeMono,
                                                      @Nonnull Mono<String> orderByMono) {
-        return Objects.requireNonNull(pageNumMono, "pageNumMono must not be null")
-                .flatMap(pageNum ->
-                        Objects.requireNonNull(pageSizeMono, "pageSizeMono must not be null")
-                                .flatMap(pageSize ->
-                                        Objects.requireNonNull(orderByMono, "orderByMono must not be null").flatMap(orderBy ->
-                                                Mono.fromCallable(() -> studentService.findByCondition(pageNum, pageSize, orderBy))
-                                                        .subscribeOn(SystemConstants.defaultReactorScheduler()))));
+        return Mono
+                .zip(Objects.requireNonNull(pageNumMono, "pageNumMono must not be null"),
+                        Objects.requireNonNull(pageSizeMono, "pageSizeMono must not be null"),
+                        Objects.requireNonNull(orderByMono, "orderByMono must not be null"))
+                .flatMap(tuple3 -> {
+                    var pageNum = tuple3.getT1();
+                    var pageSize = tuple3.getT2();
+                    var orderBy = tuple3.getT3();
+
+                    return Mono
+                            .fromCallable(() -> studentService.findByCondition(pageNum, pageSize, orderBy))
+                            .subscribeOn(SystemConstants.defaultReactorScheduler());
+                })
+                .subscribeOn(SystemConstants.defaultReactorScheduler());
     }
 }

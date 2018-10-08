@@ -33,7 +33,7 @@ public class SecurityConfig {
                     .pathMatchers("/api/actuator**").hasRole("ACTUATOR")
                 .anyExchange().authenticated().and()
                 .httpBasic().and()
-                .exceptionHandling().authenticationEntryPoint((exchange, e) -> {
+                .exceptionHandling().authenticationEntryPoint((var exchange, var e) -> {
                     var response = exchange.getResponse();
                     response.setStatusCode(HttpStatus.OK);
                     response.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
