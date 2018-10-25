@@ -11,7 +11,9 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -121,6 +123,8 @@ public class StudentForm implements Serializable {
             }
             bufferedOutputStream.flush();
             var bytes = byteArrayOutputStream.toByteArray();
+
+            var base64String = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
 
             student.setPhoto(bytes);
         } catch (IOException ex) {
