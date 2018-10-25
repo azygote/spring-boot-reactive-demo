@@ -1,8 +1,5 @@
 package org.gty.demo.model.vo;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.gty.demo.constant.SystemConstants;
 import org.gty.demo.model.po.Student;
 
@@ -11,6 +8,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public class StudentVo implements Serializable {
 
@@ -83,45 +81,32 @@ public class StudentVo implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
         if (!(o instanceof StudentVo)) return false;
-
         StudentVo studentVo = (StudentVo) o;
-
-        return new EqualsBuilder()
-                .append(name, studentVo.name)
-                .append(gender, studentVo.gender)
-                .append(age, studentVo.age)
-                .append(balance, studentVo.balance)
-                .append(otherInformation, studentVo.otherInformation)
-                .append(createdDate, studentVo.createdDate)
-                .append(modifiedDate, studentVo.modifiedDate)
-                .isEquals();
+        return Objects.equals(getName(), studentVo.getName()) &&
+                Objects.equals(getGender(), studentVo.getGender()) &&
+                Objects.equals(getAge(), studentVo.getAge()) &&
+                Objects.equals(getBalance(), studentVo.getBalance()) &&
+                Objects.equals(getOtherInformation(), studentVo.getOtherInformation()) &&
+                Objects.equals(getCreatedDate(), studentVo.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), studentVo.getModifiedDate());
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(name)
-                .append(gender)
-                .append(age)
-                .append(balance)
-                .append(otherInformation)
-                .append(createdDate)
-                .append(modifiedDate)
-                .toHashCode();
+        return Objects.hash(getName(), getGender(), getAge(), getBalance(), getOtherInformation(), getCreatedDate(), getModifiedDate());
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("name", name)
-                .append("gender", gender)
-                .append("age", age)
-                .append("balance", balance)
-                .append("otherInformation", otherInformation)
-                .append("createdDate", createdDate)
-                .append("modifiedDate", modifiedDate)
+        return new StringJoiner(", ", StudentVo.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("gender='" + gender + "'")
+                .add("age=" + age)
+                .add("balance='" + balance + "'")
+                .add("otherInformation='" + otherInformation + "'")
+                .add("createdDate='" + createdDate + "'")
+                .add("modifiedDate='" + modifiedDate + "'")
                 .toString();
     }
 

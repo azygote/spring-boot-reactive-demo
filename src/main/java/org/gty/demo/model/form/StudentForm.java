@@ -1,8 +1,5 @@
 package org.gty.demo.model.form;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.gty.demo.constant.DeleteFlag;
 import org.gty.demo.model.po.Student;
 import org.springframework.core.io.ClassPathResource;
@@ -16,6 +13,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public class StudentForm implements Serializable {
 
@@ -72,36 +70,26 @@ public class StudentForm implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
         if (!(o instanceof StudentForm)) return false;
-
         StudentForm that = (StudentForm) o;
-
-        return new EqualsBuilder()
-                .append(name, that.name)
-                .append(age, that.age)
-                .append(gender, that.gender)
-                .append(balance, that.balance)
-                .isEquals();
+        return Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getAge(), that.getAge()) &&
+                Objects.equals(getGender(), that.getGender()) &&
+                Objects.equals(getBalance(), that.getBalance());
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(name)
-                .append(age)
-                .append(gender)
-                .append(balance)
-                .toHashCode();
+        return Objects.hash(getName(), getAge(), getGender(), getBalance());
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("name", name)
-                .append("age", age)
-                .append("gender", gender)
-                .append("balance", balance)
+        return new StringJoiner(", ", StudentForm.class.getSimpleName() + "[", "]")
+                .add("name='" + name + "'")
+                .add("age=" + age)
+                .add("gender='" + gender + "'")
+                .add("balance='" + balance + "'")
                 .toString();
     }
 
