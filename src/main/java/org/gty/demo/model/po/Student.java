@@ -1,8 +1,5 @@
 package org.gty.demo.model.po;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.ibatis.type.JdbcType;
 import org.gty.demo.util.PostgresOidTypeHandler;
 import tk.mybatis.mapper.annotation.ColumnType;
@@ -12,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.StringJoiner;
 
 @Table(name = "t_student", schema = "public")
 public class Student implements Serializable {
@@ -133,54 +133,40 @@ public class Student implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
         if (!(o instanceof Student)) return false;
-
         Student student = (Student) o;
-
-        return new EqualsBuilder()
-                .append(id, student.id)
-                .append(name, student.name)
-                .append(gender, student.gender)
-                .append(age, student.age)
-                .append(balance, student.balance)
-                .append(otherInformation, student.otherInformation)
-                .append(photo, student.photo)
-                .append(deleteFlag, student.deleteFlag)
-                .append(createdDate, student.createdDate)
-                .append(modifiedDate, student.modifiedDate)
-                .isEquals();
+        return Objects.equals(getId(), student.getId()) &&
+                Objects.equals(getName(), student.getName()) &&
+                Objects.equals(getGender(), student.getGender()) &&
+                Objects.equals(getAge(), student.getAge()) &&
+                Objects.equals(getBalance(), student.getBalance()) &&
+                Objects.equals(getOtherInformation(), student.getOtherInformation()) &&
+                Arrays.equals(getPhoto(), student.getPhoto()) &&
+                Objects.equals(getDeleteFlag(), student.getDeleteFlag()) &&
+                Objects.equals(getCreatedDate(), student.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), student.getModifiedDate());
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(id)
-                .append(name)
-                .append(gender)
-                .append(age)
-                .append(balance)
-                .append(otherInformation)
-                .append(photo)
-                .append(deleteFlag)
-                .append(createdDate)
-                .append(modifiedDate)
-                .toHashCode();
+        int result = Objects.hash(getId(), getName(), getGender(), getAge(), getBalance(), getOtherInformation(), getDeleteFlag(), getCreatedDate(), getModifiedDate());
+        result = 31 * result + Arrays.hashCode(getPhoto());
+        return result;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("id", id)
-                .append("name", name)
-                .append("gender", gender)
-                .append("age", age)
-                .append("balance", balance)
-                .append("otherInformation", otherInformation)
-                .append("photo", photo)
-                .append("deleteFlag", deleteFlag)
-                .append("createdDate", createdDate)
-                .append("modifiedDate", modifiedDate)
+        return new StringJoiner(", ", Student.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .add("gender='" + gender + "'")
+                .add("age=" + age)
+                .add("balance=" + balance)
+                .add("otherInformation='" + otherInformation + "'")
+                .add("photo=" + Arrays.toString(photo))
+                .add("deleteFlag=" + deleteFlag)
+                .add("createdDate=" + createdDate)
+                .add("modifiedDate=" + modifiedDate)
                 .toString();
     }
 }

@@ -1,14 +1,13 @@
 package org.gty.demo.model.po;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.ibatis.type.JdbcType;
 import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.StringJoiner;
 
 @Table(name = "t_sys_user", schema = "public")
 public class SystemUser implements Serializable {
@@ -85,42 +84,30 @@ public class SystemUser implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
         if (!(o instanceof SystemUser)) return false;
-
         SystemUser that = (SystemUser) o;
-
-        return new EqualsBuilder()
-                .append(username, that.username)
-                .append(password, that.password)
-                .append(roles, that.roles)
-                .append(deleteFlag, that.deleteFlag)
-                .append(createdDate, that.createdDate)
-                .append(modifiedDate, that.modifiedDate)
-                .isEquals();
+        return Objects.equals(getUsername(), that.getUsername()) &&
+                Objects.equals(getPassword(), that.getPassword()) &&
+                Objects.equals(getRoles(), that.getRoles()) &&
+                Objects.equals(getDeleteFlag(), that.getDeleteFlag()) &&
+                Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), that.getModifiedDate());
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(username)
-                .append(password)
-                .append(roles)
-                .append(deleteFlag)
-                .append(createdDate)
-                .append(modifiedDate)
-                .toHashCode();
+        return Objects.hash(getUsername(), getPassword(), getRoles(), getDeleteFlag(), getCreatedDate(), getModifiedDate());
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("username", username)
-                .append("password", password)
-                .append("roles", roles)
-                .append("deleteFlag", deleteFlag)
-                .append("createdDate", createdDate)
-                .append("modifiedDate", modifiedDate)
+        return new StringJoiner(", ", SystemUser.class.getSimpleName() + "[", "]")
+                .add("username='" + username + "'")
+                .add("password='" + password + "'")
+                .add("roles='" + roles + "'")
+                .add("deleteFlag=" + deleteFlag)
+                .add("createdDate=" + createdDate)
+                .add("modifiedDate=" + modifiedDate)
                 .toString();
     }
 }

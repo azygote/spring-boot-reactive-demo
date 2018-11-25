@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import org.apache.commons.text.StringEscapeUtils;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ public final class JsonUtils {
         return gson().toJson(obj);
     }
 
-    @Nullable
+    @Nonnull
     public static <T> Optional<T> fromJson(@Nonnull String json, @Nonnull Class<T> clazz) {
         Objects.requireNonNull(clazz, "obj must not be null");
         Objects.requireNonNull(clazz, "clazz must not be null");

@@ -28,7 +28,7 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
 
     @Autowired
     private void injectBeans(SystemUserService systemUserService) {
-        this.systemUserService = Objects.requireNonNull(systemUserService, "systemUserService must not be null");;
+        this.systemUserService = Objects.requireNonNull(systemUserService, "systemUserService must not be null");
     }
 
     @Override

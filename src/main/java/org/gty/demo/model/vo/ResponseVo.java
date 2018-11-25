@@ -1,13 +1,10 @@
 package org.gty.demo.model.vo;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public class ResponseVo<T> implements Serializable {
 
@@ -44,33 +41,24 @@ public class ResponseVo<T> implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
         if (!(o instanceof ResponseVo)) return false;
-
         ResponseVo<?> that = (ResponseVo<?>) o;
-
-        return new EqualsBuilder()
-                .append(status, that.status)
-                .append(code, that.code)
-                .append(data, that.data)
-                .isEquals();
+        return getStatus() == that.getStatus() &&
+                getCode() == that.getCode() &&
+                Objects.equals(getData(), that.getData());
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
-                .append(status)
-                .append(code)
-                .append(data)
-                .toHashCode();
+        return Objects.hash(getStatus(), getCode(), getData());
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("status", status)
-                .append("code", code)
-                .append("data", data)
+        return new StringJoiner(", ", ResponseVo.class.getSimpleName() + "[", "]")
+                .add("status=" + status)
+                .add("code=" + code)
+                .add("data=" + data)
                 .toString();
     }
 

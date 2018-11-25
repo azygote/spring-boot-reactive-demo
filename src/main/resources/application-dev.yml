@@ -7,5 +7,11 @@ kafka-host: ${service-host}
 
 logging:
   level:
-    org.gty.demo: debug
+#   web: debug
+#   sql: debug
+#   org.gty.demo: debug
     org.gty.demo.mapper: trace
+
+spring:
+  http:
+    log-request-details: true
