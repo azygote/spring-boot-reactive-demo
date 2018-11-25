@@ -1,0 +1,26 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+GET http://localhost:8080/api/student?orderBy=createdDate asc&pageNum=1&pageSize=10
+Accept: application/json
+Authorization: Basic Z3R5OjEyMzQ1Ng==
+
+###
+
+POST http://localhost:8080/api/student
+Accept: application/json
+Content-Type: application/json; utf-8
+Authorization: Basic Z3R5OjEyMzQ1Ng==
+
+{
+  "name": "Taylor Swift 😒😒😒😒",
+  "age": 28,
+  "gender": "Female",
+  "balance": "123.23"
+}
+
+###
