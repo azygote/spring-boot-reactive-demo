@@ -124,7 +124,7 @@ public class StudentForm implements Serializable {
             bufferedOutputStream.flush();
             var bytes = byteArrayOutputStream.toByteArray();
 
-            var base64String = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
+            // var base64String = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
 
             student.setPhoto(bytes);
         } catch (IOException ex) {
