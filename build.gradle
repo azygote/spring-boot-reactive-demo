@@ -57,7 +57,7 @@ dependencies {
 //  runtime 'org.springframework.boot:spring-boot-devtools'
     compile 'org.springframework.retry:spring-retry:1.2.2.RELEASE'
     compile 'org.springframework.session:spring-session-data-redis:2.1.1.RELEASE'
-    compile 'org.springframework.kafka:spring-kafka:2.2.0.RELEASE'
+    compile 'org.springframework.kafka:spring-kafka:2.2.1.RELEASE'
 //  compile 'org.springframework.security:spring-security-ldap:4.2.4.RELEASE'
 
     compile 'org.flywaydb:flyway-core:5.2.1'
@@ -114,7 +114,7 @@ task mbg {
                 classname: 'org.mybatis.generator.ant.GeneratorAntTask',
                 classpath: configurations.mbg.asPath)
 
-        def resourcesDir = sourceSets.main.resources.srcDirs.stream().collect(Collectors.toList()).get(0)
+        def resourcesDir = sourceSets.main.resources.srcDirs.stream().collect(Collectors.toUnmodifiableList()).get(0)
         
         ant.mbg(overwrite: true,
                 configfile: "$resourcesDir${FileSystems.default.separator}generator${FileSystems.default.separator}generatorConfig.xml",

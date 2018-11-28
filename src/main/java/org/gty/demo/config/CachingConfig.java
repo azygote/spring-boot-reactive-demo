@@ -34,7 +34,7 @@ public class CachingConfig {
 
                         return sb.toString();
                     })
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toUnmodifiableList());
 
             var joiner = new StringJoiner(", ", "(", ")");
             paramList.forEach(joiner::add);
