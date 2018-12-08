@@ -49,7 +49,7 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
                             roleList.stream()
                                     .flatMap(Collection::stream)
                                     .map(role -> new SimpleGrantedAuthority("ROLE_" + StringUtils.upperCase(role)))
-                                    .collect(Collectors.toList()));
+                                    .collect(Collectors.toUnmodifiableSet()));
                 });
     }
 }

@@ -28,7 +28,7 @@ public class StartupRunner {
                 execute(connection -> connection
                         .serverCommands()
                         .flushDb())
-                .subscribe(value -> log.info("Redis database has been successfully initialized."));
+                .subscribe(value -> log.info("Successfully flushed redis."));
     }
 
     @EventListener

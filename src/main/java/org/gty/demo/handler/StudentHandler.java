@@ -10,6 +10,7 @@ import org.gty.demo.util.ValidationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -39,68 +40,66 @@ public class StudentHandler {
     public Mono<ServerResponse> get(@Nonnull ServerRequest request) {
         Objects.requireNonNull(request, "request must not be null");
 
-        var idMono = Mono
-                .just(request.pathVariable("id"))
-                .subscribeOn(SystemConstants.defaultReactorScheduler())
-                .map(Long::valueOf);
-
-        var resultMono = studentService
-                .findById(idMono)
-                .switchIfEmpty(idMono.flatMap(id -> Mono.error(new IllegalArgumentException(String.format("Student with id: [%s] could not be found.", id)))))
+        var result = Mono.just(request.pathVariable("id"))
+                .map(Long::valueOf)
+                .flatMap(studentService::findById)
                 .map(StudentVo::build)
-                .map(ResponseVo::success)
-                .flatMap(result -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).syncBody(result));
+                .<ResponseVo<?>>map(ResponseVo::success);
 
-        return ExceptionHandler.renderErrorResponse(resultMono);
+        return renderServerResponse(result);
     }
 
     @Nonnull
     public Mono<ServerResponse> getByParameters(ServerRequest request) {
         Objects.requireNonNull(request, "request must not be null");
 
-        var pageNumMono = Mono
-                .justOrEmpty(request.queryParam("pageNum"))
-                .subscribeOn(SystemConstants.defaultReactorScheduler())
+        var pageNumMono = Mono.justOrEmpty(request.queryParam("pageNum"))
                 .filter(Predicate.not(String::isBlank))
                 .map(Integer::valueOf)
                 .defaultIfEmpty(0);
 
-        var pageSizeMono = Mono
-                .justOrEmpty(request.queryParam("pageSize"))
-                .subscribeOn(SystemConstants.defaultReactorScheduler())
+        var pageSizeMono = Mono.justOrEmpty(request.queryParam("pageSize"))
                 .filter(Predicate.not(String::isBlank))
                 .map(Integer::valueOf)
                 .defaultIfEmpty(0);
 
-        var orderByMono = Mono
-                .justOrEmpty(request.queryParam("orderBy"))
-                .subscribeOn(SystemConstants.defaultReactorScheduler())
+        var orderByMono = Mono.justOrEmpty(request.queryParam("orderBy"))
                 .defaultIfEmpty("");
 
         demoService.demo();
 
-        var resultMono = studentService.findByCondition(pageNumMono, pageSizeMono, orderByMono)
-                .flatMap(result -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).syncBody(result));
+        var result = Mono.zip(pageNumMono, pageSizeMono, orderByMono)
+                .flatMap(tuple3 -> studentService.findByCondition(tuple3.getT1(), tuple3.getT2(), tuple3.getT3()))
+                .<ResponseVo<?>>map(ResponseVo::success);
 
-        return ExceptionHandler.renderErrorResponse(resultMono);
+        return renderServerResponse(result);
     }
 
     @Nonnull
     public Mono<ServerResponse> post(ServerRequest request) {
         Objects.requireNonNull(request, "request must not be null");
 
-        var studentMono = request.bodyToMono(StudentForm.class)
+        var result = request.bodyToMono(StudentForm.class)
                 .publishOn(SystemConstants.defaultReactorScheduler())
                 .switchIfEmpty(Mono.error(new IllegalArgumentException("Request body cannot be null")))
                 .map(studentForm -> {
                     ValidationUtils.validate(studentForm);
                     return StudentForm.build(studentForm);
-                });
+                })
+                .flatMap(studentService::save)
+                .<ResponseVo<?>>thenReturn(ResponseVo.success());
 
-        var resultMono = studentService
-                .save(studentMono)
-                .then(ServerResponse.ok().contentType(MediaType.APPLICATION_JSON_UTF8).syncBody(ResponseVo.success()));
+        return renderServerResponse(result);
+    }
 
-        return ExceptionHandler.renderErrorResponse(resultMono);
+    private static Mono<ServerResponse> renderServerResponse(@Nonnull Mono<ResponseVo<?>> mono) {
+        var temp = Objects.requireNonNull(mono, "mono must not be null")
+                .onErrorResume(ExceptionHandler::renderErrorResponse);
+
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .body(temp, new ParameterizedTypeReference<ResponseVo<?>>() {
+                })
+                .subscribeOn(SystemConstants.defaultReactorScheduler());
     }
 }
