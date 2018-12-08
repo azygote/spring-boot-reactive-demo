@@ -26,39 +26,29 @@ public class ReactiveStudentService {
     }
 
     @Nonnull
-    public Mono<Student> findById(@Nonnull Mono<Long> id) {
-        return Objects.requireNonNull(id, "id must not be null")
-                .flatMap(value ->
-                        Mono.fromCallable(() -> studentService.findById(value))
-                                .flatMap(Mono::justOrEmpty)
-                                .subscribeOn(SystemConstants.defaultReactorScheduler()));
+    public Mono<Student> findById(long id) {
+        return Mono.fromCallable(() -> studentService.findById(id))
+                .flatMap(Mono::justOrEmpty)
+                .switchIfEmpty(Mono.error(new IllegalArgumentException(String.format("Student with id: [%s] could not be found.", id))))
+                .subscribeOn(SystemConstants.defaultReactorScheduler());
     }
 
     @Nonnull
-    public Mono<Void> save(@Nonnull Mono<Student> student) {
-        return Objects.requireNonNull(student, "id must not be null")
-                .flatMap(value ->
-                        Mono.<Void>fromRunnable(() -> studentService.save(value))
-                                .subscribeOn(SystemConstants.defaultReactorScheduler()));
+    public Mono<Void> save(@Nonnull Student student) {
+        Objects.requireNonNull(student, "id must not be null");
+
+        return Mono.fromRunnable(() -> studentService.save(student))
+                .cast(Void.class)
+                .subscribeOn(SystemConstants.defaultReactorScheduler());
     }
 
     @Nonnull
-    public Mono<PageInfo<StudentVo>> findByCondition(@Nonnull Mono<Integer> pageNumMono,
-                                                     @Nonnull Mono<Integer> pageSizeMono,
-                                                     @Nonnull Mono<String> orderByMono) {
-        return Mono
-                .zip(Objects.requireNonNull(pageNumMono, "pageNumMono must not be null"),
-                        Objects.requireNonNull(pageSizeMono, "pageSizeMono must not be null"),
-                        Objects.requireNonNull(orderByMono, "orderByMono must not be null"))
-                .flatMap(tuple3 -> {
-                    var pageNum = tuple3.getT1();
-                    var pageSize = tuple3.getT2();
-                    var orderBy = tuple3.getT3();
+    public Mono<PageInfo<StudentVo>> findByCondition(int pageNum,
+                                                     int pageSize,
+                                                     @Nonnull String orderBy) {
+        Objects.requireNonNull(orderBy, "orderBy must not be null");
 
-                    return Mono
-                            .fromCallable(() -> studentService.findByCondition(pageNum, pageSize, orderBy))
-                            .subscribeOn(SystemConstants.defaultReactorScheduler());
-                })
+        return Mono.fromCallable(() -> studentService.findByCondition(pageNum, pageSize, orderBy))
                 .subscribeOn(SystemConstants.defaultReactorScheduler());
     }
 }
