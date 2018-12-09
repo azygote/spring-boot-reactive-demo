@@ -6,7 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
-import org.gty.demo.constant.DeleteFlag;
+import org.gty.demo.constant.DeleteMark;
 import org.gty.demo.mapper.StudentMapper;
 import org.gty.demo.model.po.Student;
 import org.gty.demo.model.vo.StudentVo;
@@ -45,7 +45,7 @@ public class StudentServiceImpl implements StudentService {
         var example = Example.builder(Student.class).build();
         example.createCriteria()
                 .andEqualTo("id", id)
-                .andEqualTo("deleteFlag", DeleteFlag.NOT_DELETED.ordinal());
+                .andEqualTo("deleteMark", DeleteMark.NOT_DELETED.ordinal());
 
         var resultList = studentMapper.selectByExample(example);
 
@@ -66,7 +66,7 @@ public class StudentServiceImpl implements StudentService {
         var example = Example.builder(Student.class).build();
         example.createCriteria()
                 .andEqualTo("name", name)
-                .andEqualTo("deleteFlag", DeleteFlag.NOT_DELETED.ordinal());
+                .andEqualTo("deleteMark", DeleteMark.NOT_DELETED.ordinal());
 
         var resultList = studentMapper.selectByExample(example);
 
@@ -108,7 +108,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
         example.createCriteria()
-                .andEqualTo("deleteFlag", DeleteFlag.NOT_DELETED.ordinal());
+                .andEqualTo("deleteMark", DeleteMark.NOT_DELETED.ordinal());
 
         Page studentPage = PageHelper
                 .startPage(pageNum, pageSize)

@@ -24,8 +24,8 @@ public class SystemUser implements Serializable {
     @ColumnType(column = "roles", jdbcType = JdbcType.VARCHAR)
     private String roles;
 
-    @ColumnType(column = "delete_flag", jdbcType = JdbcType.SMALLINT)
-    private Integer deleteFlag;
+    @ColumnType(column = "delete_mark", jdbcType = JdbcType.SMALLINT)
+    private Integer deleteMark;
 
     @ColumnType(column = "created_date", jdbcType = JdbcType.BIGINT)
     private Long createdDate;
@@ -57,12 +57,12 @@ public class SystemUser implements Serializable {
         this.roles = roles;
     }
 
-    public Integer getDeleteFlag() {
-        return deleteFlag;
+    public Integer getDeleteMark() {
+        return deleteMark;
     }
 
-    public void setDeleteFlag(Integer deleteFlag) {
-        this.deleteFlag = deleteFlag;
+    public void setDeleteMark(Integer deleteMark) {
+        this.deleteMark = deleteMark;
     }
 
     public Long getCreatedDate() {
@@ -89,14 +89,14 @@ public class SystemUser implements Serializable {
         return Objects.equals(getUsername(), that.getUsername()) &&
                 Objects.equals(getPassword(), that.getPassword()) &&
                 Objects.equals(getRoles(), that.getRoles()) &&
-                Objects.equals(getDeleteFlag(), that.getDeleteFlag()) &&
+                Objects.equals(getDeleteMark(), that.getDeleteMark()) &&
                 Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
                 Objects.equals(getModifiedDate(), that.getModifiedDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), getPassword(), getRoles(), getDeleteFlag(), getCreatedDate(), getModifiedDate());
+        return Objects.hash(getUsername(), getPassword(), getRoles(), getDeleteMark(), getCreatedDate(), getModifiedDate());
     }
 
     @Override
@@ -105,7 +105,7 @@ public class SystemUser implements Serializable {
                 .add("username='" + username + "'")
                 .add("password='" + password + "'")
                 .add("roles='" + roles + "'")
-                .add("deleteFlag=" + deleteFlag)
+                .add("deleteMark=" + deleteMark)
                 .add("createdDate=" + createdDate)
                 .add("modifiedDate=" + modifiedDate)
                 .toString();

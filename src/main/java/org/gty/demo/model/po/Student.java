@@ -41,8 +41,8 @@ public class Student implements Serializable {
     @ColumnType(column = "student_photo", typeHandler = PostgresOidTypeHandler.class)
     private byte[] photo;
 
-    @ColumnType(column = "delete_flag", jdbcType = JdbcType.SMALLINT)
-    private Integer deleteFlag;
+    @ColumnType(column = "delete_mark", jdbcType = JdbcType.SMALLINT)
+    private Integer deleteMark;
 
     @ColumnType(column = "created_date", jdbcType = JdbcType.BIGINT)
     private Long createdDate;
@@ -106,12 +106,12 @@ public class Student implements Serializable {
         this.photo = photo;
     }
 
-    public Integer getDeleteFlag() {
-        return deleteFlag;
+    public Integer getDeleteMark() {
+        return deleteMark;
     }
 
-    public void setDeleteFlag(Integer deleteFlag) {
-        this.deleteFlag = deleteFlag;
+    public void setDeleteMark(Integer deleteMark) {
+        this.deleteMark = deleteMark;
     }
 
     public Long getCreatedDate() {
@@ -142,14 +142,14 @@ public class Student implements Serializable {
                 Objects.equals(getBalance(), student.getBalance()) &&
                 Objects.equals(getOtherInformation(), student.getOtherInformation()) &&
                 Arrays.equals(getPhoto(), student.getPhoto()) &&
-                Objects.equals(getDeleteFlag(), student.getDeleteFlag()) &&
+                Objects.equals(getDeleteMark(), student.getDeleteMark()) &&
                 Objects.equals(getCreatedDate(), student.getCreatedDate()) &&
                 Objects.equals(getModifiedDate(), student.getModifiedDate());
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(getId(), getName(), getGender(), getAge(), getBalance(), getOtherInformation(), getDeleteFlag(), getCreatedDate(), getModifiedDate());
+        int result = Objects.hash(getId(), getName(), getGender(), getAge(), getBalance(), getOtherInformation(), getDeleteMark(), getCreatedDate(), getModifiedDate());
         result = 31 * result + Arrays.hashCode(getPhoto());
         return result;
     }
@@ -164,7 +164,7 @@ public class Student implements Serializable {
                 .add("balance=" + balance)
                 .add("otherInformation='" + otherInformation + "'")
                 .add("photo=" + Arrays.toString(photo))
-                .add("deleteFlag=" + deleteFlag)
+                .add("deleteMark=" + deleteMark)
                 .add("createdDate=" + createdDate)
                 .add("modifiedDate=" + modifiedDate)
                 .toString();

@@ -1,6 +1,6 @@
 package org.gty.demo.model.form;
 
-import org.gty.demo.constant.DeleteFlag;
+import org.gty.demo.constant.DeleteMark;
 import org.gty.demo.model.po.Student;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -11,9 +11,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.Base64;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -104,7 +102,7 @@ public class StudentForm implements Serializable {
         student.setAge(studentForm.getAge());
         student.setGender(studentForm.getGender().strip());
         student.setBalance(new BigDecimal(studentForm.getBalance().strip()));
-        student.setDeleteFlag(DeleteFlag.NOT_DELETED.ordinal());
+        student.setDeleteMark(DeleteMark.NOT_DELETED.ordinal());
         student.setOtherInformation("Not Applicable");
 
         Resource resource = new ClassPathResource("images/logo.png");

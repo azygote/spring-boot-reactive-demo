@@ -1,6 +1,6 @@
 package org.gty.demo.security.impl;
 
-import org.gty.demo.constant.DeleteFlag;
+import org.gty.demo.constant.DeleteMark;
 import org.gty.demo.mapper.SystemUserMapper;
 import org.gty.demo.model.po.SystemUser;
 import org.gty.demo.security.SystemUserService;
@@ -37,7 +37,7 @@ public class SystemUserServiceImpl implements SystemUserService {
         var example = Example.builder(SystemUser.class).build();
         example.createCriteria()
                 .andEqualTo("username", username)
-                .andEqualTo("deleteFlag", DeleteFlag.NOT_DELETED.ordinal());
+                .andEqualTo("deleteMark", DeleteMark.NOT_DELETED.ordinal());
 
         var resultList = systemUserMapper.selectByExample(example);
 

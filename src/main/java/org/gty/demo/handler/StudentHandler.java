@@ -82,10 +82,8 @@ public class StudentHandler {
         var result = request.bodyToMono(StudentForm.class)
                 .publishOn(SystemConstants.defaultReactorScheduler())
                 .switchIfEmpty(Mono.error(new IllegalArgumentException("Request body cannot be null")))
-                .map(studentForm -> {
-                    ValidationUtils.validate(studentForm);
-                    return StudentForm.build(studentForm);
-                })
+                .doOnSuccess(ValidationUtils::validate)
+                .map(StudentForm::build)
                 .flatMap(studentService::save)
                 .<ResponseVo<?>>thenReturn(ResponseVo.success());
 
