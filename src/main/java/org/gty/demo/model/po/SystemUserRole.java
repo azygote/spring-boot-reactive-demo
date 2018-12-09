@@ -9,17 +9,18 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-@Table(name = "t_sys_user", schema = "public")
-public class SystemUser implements Serializable {
+@Table(name = "t_sys_user_role", schema = "public")
+public class SystemUserRole implements Serializable {
 
-    private static final long serialVersionUID = -884040706963724292L;
+    private static final long serialVersionUID = 7471280241224013302L;
 
     @Id
     @ColumnType(column = "username", jdbcType = JdbcType.VARCHAR)
     private String username;
 
-    @ColumnType(column = "password", jdbcType = JdbcType.VARCHAR)
-    private String password;
+    @Id
+    @ColumnType(column = "role", jdbcType = JdbcType.VARCHAR)
+    private String role;
 
     @ColumnType(column = "delete_mark", jdbcType = JdbcType.SMALLINT)
     private Integer deleteMark;
@@ -38,12 +39,12 @@ public class SystemUser implements Serializable {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getRole() {
+        return role;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Integer getDeleteMark() {
@@ -73,10 +74,10 @@ public class SystemUser implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SystemUser)) return false;
-        SystemUser that = (SystemUser) o;
+        if (!(o instanceof SystemUserRole)) return false;
+        SystemUserRole that = (SystemUserRole) o;
         return Objects.equals(getUsername(), that.getUsername()) &&
-                Objects.equals(getPassword(), that.getPassword()) &&
+                Objects.equals(getRole(), that.getRole()) &&
                 Objects.equals(getDeleteMark(), that.getDeleteMark()) &&
                 Objects.equals(getCreatedDate(), that.getCreatedDate()) &&
                 Objects.equals(getModifiedDate(), that.getModifiedDate());
@@ -84,14 +85,14 @@ public class SystemUser implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsername(), getPassword(), getDeleteMark(), getCreatedDate(), getModifiedDate());
+        return Objects.hash(getUsername(), getRole(), getDeleteMark(), getCreatedDate(), getModifiedDate());
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", SystemUser.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", SystemUserRole.class.getSimpleName() + "[", "]")
                 .add("username='" + username + "'")
-                .add("password='" + password + "'")
+                .add("role='" + role + "'")
                 .add("deleteMark=" + deleteMark)
                 .add("createdDate=" + createdDate)
                 .add("modifiedDate=" + modifiedDate)

@@ -1,13 +1,17 @@
 package org.gty.demo.security;
 
 import org.gty.demo.model.po.SystemUser;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.gty.demo.model.po.SystemUserRole;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
 
 public interface SystemUserService {
 
-    @Nullable
-    SystemUser findUserByUsername(@Nonnull String username) throws UsernameNotFoundException;
+    @Nonnull
+    Optional<SystemUser> findUserByUsername(@Nonnull String username);
+
+    @Nonnull
+    Optional<List<SystemUserRole>> findRolesByUsername(@Nonnull String username);
 }

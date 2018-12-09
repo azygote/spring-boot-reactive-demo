@@ -15,7 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Nonnull;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 @EnableWebFluxSecurity
 @EnableReactiveMethodSecurity(proxyTargetClass = true)
@@ -29,8 +31,8 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeExchange()
                     .matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .pathMatchers("/api/student**").hasRole("USER")
-                    .pathMatchers("/api/actuator**").hasRole("ACTUATOR")
+                    .pathMatchers(generateRestfulAntPathMatchers("/api/student")).hasRole("USER")
+                    .pathMatchers(generateRestfulAntPathMatchers("/api/actuator")).hasRole("ACTUATOR")
                 .anyExchange().authenticated().and()
                 .httpBasic().and()
                 .exceptionHandling().authenticationEntryPoint((var exchange, var e) -> {
@@ -45,6 +47,13 @@ public class SecurityConfig {
                     return response.writeWith(Mono.just(buffer));
                 }).and()
                 .build();
+    }
+
+    @Nonnull
+    private static String[] generateRestfulAntPathMatchers(@Nonnull String url) {
+        Objects.requireNonNull(url, "url must not be null");
+
+        return new String[] {url + "*", url + "/*/**"};
     }
 
     @Bean
