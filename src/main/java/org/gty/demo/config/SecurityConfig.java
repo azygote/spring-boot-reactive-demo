@@ -53,7 +53,7 @@ public class SecurityConfig {
     private static String[] generateRestfulAntPathMatchers(@Nonnull String url) {
         Objects.requireNonNull(url, "url must not be null");
 
-        return new String[] {url + "*", url + "/*/**"};
+        return new String[] {url, url + "/**"};
     }
 
     @Bean
