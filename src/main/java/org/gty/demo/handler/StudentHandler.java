@@ -74,37 +74,7 @@ public class StudentHandler {
         demoService.demo();
 
         var result = Mono.zip(pageMono, sizeMono, sortMono)
-                .map(tuple3 -> {
-                    var page = tuple3.getT1();
-                    var size = tuple3.getT2();
-                    var sort = tuple3.getT3();
-
-                    var tempIterable = Splitter.onPattern(",")
-                            .trimResults()
-                            .omitEmptyStrings()
-                            .split(sort);
-
-                    var tempArray = StreamSupport.stream(tempIterable.spliterator(), true)
-                            .toArray(String[]::new);
-
-                    if (tempArray.length == 2) {
-                        var property = tempArray[0];
-                        var order = tempArray[1];
-
-                        Sort.Order orderObject = null;
-                        if (StringUtils.equals(order, "asc")) {
-                            orderObject = Sort.Order.asc(property);
-                        } else if (StringUtils.equals(order, "desc")) {
-                            orderObject = Sort.Order.desc(property);
-                        }
-
-                        if (orderObject != null) {
-                            return PageRequest.of(page, size, Sort.by(orderObject));
-                        }
-                    }
-
-                    throw new IllegalArgumentException("Unable to resolve SQL sort parameters: " + sort);
-                })
+                .map(tuple3 -> constructPageRequest(tuple3.getT1(), tuple3.getT2(), tuple3.getT3()))
                 .flatMap(studentService::findByCondition)
                 .<ResponseVo<?>>map(ResponseVo::success);
 
@@ -124,6 +94,38 @@ public class StudentHandler {
                 .<ResponseVo<?>>thenReturn(ResponseVo.success());
 
         return renderServerResponse(result);
+    }
+
+    private static PageRequest constructPageRequest(int page, int size, @Nonnull String sort) {
+        Objects.requireNonNull(sort, "sort must not be null");
+
+        var tempIterable = Splitter.onPattern(",")
+                .trimResults()
+                .omitEmptyStrings()
+                .split(sort);
+
+        var tempArray = StreamSupport.stream(tempIterable.spliterator(), true)
+                .toArray(String[]::new);
+
+        if (tempArray.length != 2) {
+            throw new IllegalArgumentException("Unable to resolve SQL sort parameters: " + sort);
+        }
+
+        var property = tempArray[0];
+        var order = tempArray[1];
+
+        Sort.Order orderObject = null;
+        if (StringUtils.equals(order, "asc")) {
+            orderObject = Sort.Order.asc(property);
+        } else if (StringUtils.equals(order, "desc")) {
+            orderObject = Sort.Order.desc(property);
+        }
+
+        if (orderObject == null) {
+            throw new IllegalArgumentException("Unable to resolve SQL sort parameters: " + sort);
+        }
+
+        return PageRequest.of(page, size, Sort.by(orderObject));
     }
 
     private static Mono<ServerResponse> renderServerResponse(@Nonnull Mono<ResponseVo<?>> mono) {
