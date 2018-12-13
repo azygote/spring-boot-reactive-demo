@@ -17,8 +17,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nonnull;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -37,18 +40,22 @@ public class StudentServiceImpl implements StudentService {
     @Cacheable(cacheNames = "students", keyGenerator = "keyGenerator")
     @Nonnull
     @Override
-    public Optional<Student> findById(long id) {
-        return studentRepository.findByIdAndDeleteMark(id, DeleteMark.NOT_DELETED);
+    public Optional<StudentVo> findById(long id) {
+        return studentRepository.findByIdAndDeleteMark(id, DeleteMark.NOT_DELETED)
+                .map(StudentVo::build);
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Cacheable(cacheNames = "students", keyGenerator = "keyGenerator")
     @Nonnull
     @Override
-    public Iterable<Student> findByName(@Nonnull String name) {
+    public Collection<StudentVo> findByName(@Nonnull String name) {
         Objects.requireNonNull(name, "name must not be null");
 
-        return studentRepository.findByName(name);
+        return studentRepository.findByNameAndDeleteMark(name, DeleteMark.NOT_DELETED)
+                .stream()
+                .map(StudentVo::build)
+                .collect(Collectors.toList());
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)

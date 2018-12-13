@@ -6,15 +6,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.annotation.Nonnull;
+import java.util.Collection;
 import java.util.Optional;
 
 public interface StudentService {
 
     @Nonnull
-    Optional<Student> findById(long id);
+    Optional<StudentVo> findById(long id);
 
     @Nonnull
-    Iterable<Student> findByName(@Nonnull String name);
+    Collection<StudentVo> findByName(@Nonnull String name);
 
     @Nonnull
     Page<StudentVo> findByPage(@Nonnull Pageable pageable);

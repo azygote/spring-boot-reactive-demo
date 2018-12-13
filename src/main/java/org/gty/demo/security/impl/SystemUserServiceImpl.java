@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nonnull;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class SystemUserServiceImpl implements SystemUserService {
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Nonnull
     @Override
-    public Iterable<SystemUserRole> findRolesByUsername(@Nonnull String username) {
+    public Collection<SystemUserRole> findRolesByUsername(@Nonnull String username) {
         Objects.requireNonNull(username, "username must not be null");
 
         return systemUserRoleRepository.findByIdUsernameAndDeleteMark(username, DeleteMark.NOT_DELETED);

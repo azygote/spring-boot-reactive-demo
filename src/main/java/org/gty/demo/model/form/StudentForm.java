@@ -2,6 +2,7 @@ package org.gty.demo.model.form;
 
 import org.gty.demo.constant.DeleteMark;
 import org.gty.demo.model.entity.Student;
+import org.gty.demo.util.NioUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
@@ -108,24 +109,11 @@ public class StudentForm implements Serializable {
 
         Resource resource = new ClassPathResource("images/logo.png");
 
-        try (var input = Channels.newChannel(resource.getInputStream());
-             var byteArrayOutputStream = new ByteArrayOutputStream();
-             var bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream, 8);
-             var output = Channels.newChannel(bufferedOutputStream)) {
-            var buffer = ByteBuffer.allocate(16);
-            while (input.read(buffer) != -1) {
-                buffer.flip();
-                while (buffer.hasRemaining()) {
-                    output.write(buffer);
-                }
-                buffer.clear();
-            }
-            bufferedOutputStream.flush();
-            var bytes = byteArrayOutputStream.toByteArray();
+        try (var in = resource.getInputStream()) {
+            var bytes = NioUtils.toByteArray(in);
+            var blob = new SerialBlob(bytes);
 
-            // var base64String = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
-
-            student.setPhoto(new SerialBlob(bytes));
+            student.setPhoto(blob);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         } catch (SQLException ex) {

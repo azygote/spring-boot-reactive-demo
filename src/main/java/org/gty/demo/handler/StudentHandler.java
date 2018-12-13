@@ -48,7 +48,6 @@ public class StudentHandler {
         var result = Mono.just(request.pathVariable("id"))
                 .map(Long::valueOf)
                 .flatMap(studentService::findById)
-                .map(StudentVo::build)
                 .<ResponseVo<?>>map(ResponseVo::success);
 
         return renderServerResponse(result);

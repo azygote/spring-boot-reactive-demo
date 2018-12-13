@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import javax.annotation.Nonnull;
+import java.util.Collection;
 import java.util.Optional;
 
 public interface StudentRepository
@@ -17,7 +18,7 @@ public interface StudentRepository
     Optional<Student> findByIdAndDeleteMark(long id, @Nonnull DeleteMark deleteMark);
 
     @Nonnull
-    Iterable<Student> findByName(@Nonnull String name);
+    Collection<Student> findByNameAndDeleteMark(@Nonnull String name, @Nonnull DeleteMark deleteMark);
 
     @Nonnull
     Page<Student> findByDeleteMark(@Nonnull DeleteMark deleteMark, @Nonnull Pageable pageable);

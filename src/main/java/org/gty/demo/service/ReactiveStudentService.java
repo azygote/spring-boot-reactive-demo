@@ -27,7 +27,7 @@ public class ReactiveStudentService {
     }
 
     @Nonnull
-    public Mono<Student> findById(long id) {
+    public Mono<StudentVo> findById(long id) {
         return Mono.fromCallable(() -> studentService.findById(id))
                 .flatMap(Mono::justOrEmpty)
                 .switchIfEmpty(Mono.error(new IllegalArgumentException(String.format("Student with id: [%s] could not be found.", id))))
