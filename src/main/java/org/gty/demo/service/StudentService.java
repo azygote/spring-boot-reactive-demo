@@ -1,8 +1,9 @@
 package org.gty.demo.service;
 
-import com.github.pagehelper.PageInfo;
-import org.gty.demo.model.po.Student;
+import org.gty.demo.model.entity.Student;
 import org.gty.demo.model.vo.StudentVo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -13,10 +14,10 @@ public interface StudentService {
     Optional<Student> findById(long id);
 
     @Nonnull
-    Optional<Student> findByName(@Nonnull String name);
+    Iterable<Student> findByName(@Nonnull String name);
 
     @Nonnull
-    PageInfo<StudentVo> findByCondition(int pageNum, int pageSize, @Nonnull String orderBy);
+    Page<StudentVo> findByPage(@Nonnull Pageable pageable);
 
     void save(@Nonnull Student student);
 }

@@ -17,6 +17,9 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: gty
     password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: none
   cache:
     type: redis
     redis:
@@ -26,6 +29,10 @@ spring:
     host: ${redis-host}
     password: 123456
     timeout: 100ms
+  data:
+    redis:
+      repositories:
+        enabled: false
   rabbitmq:
     host: ${rabbitmq-host}
   kafka:
@@ -42,19 +49,3 @@ spring:
     store-type: redis
   gson:
     serialize-nulls: true
-
-mybatis:
-  type-aliases-package: org.gty.demo.model.po
-  mapper-locations: classpath:mapper/*.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
-    aggressive-lazy-loading: false
-
-mapper:
-  not-empty: true
-  style: camelhump
-  enable-method-annotation: true
-  check-example-entity-class: true
-  safe-delete: true
-  safe-update: true
-  wrap-keyword: '"{0}"'

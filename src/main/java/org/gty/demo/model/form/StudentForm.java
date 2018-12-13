@@ -1,17 +1,18 @@
 package org.gty.demo.model.form;
 
 import org.gty.demo.constant.DeleteMark;
-import org.gty.demo.model.po.Student;
+import org.gty.demo.model.entity.Student;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import javax.annotation.Nonnull;
+import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.constraints.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
-import java.time.Instant;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -102,7 +103,7 @@ public class StudentForm implements Serializable {
         student.setAge(studentForm.getAge());
         student.setGender(studentForm.getGender().strip());
         student.setBalance(new BigDecimal(studentForm.getBalance().strip()));
-        student.setDeleteMark(DeleteMark.NOT_DELETED.ordinal());
+        student.setDeleteMark(DeleteMark.NOT_DELETED);
         student.setOtherInformation("Not Applicable");
 
         Resource resource = new ClassPathResource("images/logo.png");
@@ -124,14 +125,12 @@ public class StudentForm implements Serializable {
 
             // var base64String = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
 
-            student.setPhoto(bytes);
+            student.setPhoto(new SerialBlob(bytes));
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
-
-        var milliseconds = Instant.now().toEpochMilli();
-        student.setCreatedDate(milliseconds);
-        student.setModifiedDate(milliseconds);
 
         return student;
     }

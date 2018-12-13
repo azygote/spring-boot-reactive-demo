@@ -2,8 +2,8 @@ package org.gty.demo.security;
 
 import org.apache.commons.lang3.StringUtils;
 import org.gty.demo.constant.SystemConstants;
-import org.gty.demo.model.po.SystemUser;
-import org.gty.demo.model.po.SystemUserRole;
+import org.gty.demo.model.entity.SystemUser;
+import org.gty.demo.model.entity.SystemUserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
     private SystemUserService systemUserService;
 
     @Autowired
-    private void injectBeans(SystemUserService systemUserService) {
+    public DbUserDetailsService(@Nonnull SystemUserService systemUserService) {
         this.systemUserService = Objects.requireNonNull(systemUserService, "systemUserService must not be null");
     }
 
@@ -39,7 +39,7 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
 
         var userMono = findUserByUsername(username);
         var rolesMono = findRolesByUsername(username)
-                .map(SystemUserRole::getRole)
+                .map(systemUserRole -> systemUserRole.getId().getRole())
                 .map(DbUserDetailsService::convertAuthorities)
                 .collect(Collectors.toUnmodifiableSet())
                 .defaultIfEmpty(Set.of());

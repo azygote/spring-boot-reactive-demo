@@ -1,7 +1,7 @@
 package org.gty.demo.model.vo;
 
 import org.gty.demo.constant.SystemConstants;
-import org.gty.demo.model.po.Student;
+import org.gty.demo.model.entity.Student;
 
 import javax.annotation.Nonnull;
 import java.io.Serializable;

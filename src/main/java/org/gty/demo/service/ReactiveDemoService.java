@@ -10,6 +10,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 @Service
@@ -18,13 +19,13 @@ public class ReactiveDemoService {
     private static final Logger log = LoggerFactory.getLogger(ReactiveDemoService.class);
     private static final String MESSAGE = "Hello, World";
 
-    private AsyncAmqpTemplate asyncAmqpTemplate;
-    private KafkaTemplate<Object, Object> kafkaTemplate;
+    private final AsyncAmqpTemplate asyncAmqpTemplate;
+    private final KafkaTemplate<Object, Object> kafkaTemplate;
 
     @Autowired
     @SuppressWarnings("unchecked")
-    private void injectBeans(AsyncAmqpTemplate asyncAmqpTemplate,
-                             KafkaTemplate kafkaTemplate) {
+    public ReactiveDemoService(@Nonnull AsyncAmqpTemplate asyncAmqpTemplate,
+                                @Nonnull KafkaTemplate kafkaTemplate) {
         this.asyncAmqpTemplate = Objects.requireNonNull(asyncAmqpTemplate, "asyncAmqpTemplate must not be null");
         this.kafkaTemplate = (KafkaTemplate<Object, Object>) Objects.requireNonNull(kafkaTemplate, "kafkaTemplate must not be null");
     }

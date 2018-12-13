@@ -10,8 +10,9 @@ logging:
     web: debug
     sql: debug
     org.gty.demo: debug
-    org.gty.demo.mapper: trace
 
 spring:
   http:
     log-request-details: true
+  jpa:
+    show-sql: true

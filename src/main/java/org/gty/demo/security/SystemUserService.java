@@ -1,10 +1,9 @@
 package org.gty.demo.security;
 
-import org.gty.demo.model.po.SystemUser;
-import org.gty.demo.model.po.SystemUserRole;
+import org.gty.demo.model.entity.SystemUser;
+import org.gty.demo.model.entity.SystemUserRole;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.Optional;
 
 public interface SystemUserService {
@@ -13,5 +12,5 @@ public interface SystemUserService {
     Optional<SystemUser> findUserByUsername(@Nonnull String username);
 
     @Nonnull
-    Optional<List<SystemUserRole>> findRolesByUsername(@Nonnull String username);
+    Iterable<SystemUserRole> findRolesByUsername(@Nonnull String username);
 }
