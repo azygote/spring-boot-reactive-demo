@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -52,7 +51,7 @@ public class StudentServiceImpl implements StudentService {
     public Collection<StudentVo> findByName(@Nonnull String name) {
         Objects.requireNonNull(name, "name must not be null");
 
-        return studentRepository.findByNameAndDeleteMark(name, DeleteMark.NOT_DELETED)
+        return studentRepository.findByNameContainingAndDeleteMark(name, DeleteMark.NOT_DELETED)
                 .stream()
                 .map(StudentVo::build)
                 .collect(Collectors.toList());

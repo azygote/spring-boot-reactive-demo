@@ -18,7 +18,7 @@ public interface StudentRepository
     Optional<Student> findByIdAndDeleteMark(long id, @Nonnull DeleteMark deleteMark);
 
     @Nonnull
-    Collection<Student> findByNameAndDeleteMark(@Nonnull String name, @Nonnull DeleteMark deleteMark);
+    Collection<Student> findByNameContainingAndDeleteMark(@Nonnull String name, @Nonnull DeleteMark deleteMark);
 
     @Nonnull
     Page<Student> findByDeleteMark(@Nonnull DeleteMark deleteMark, @Nonnull Pageable pageable);
