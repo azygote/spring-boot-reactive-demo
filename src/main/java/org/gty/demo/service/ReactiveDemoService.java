@@ -49,7 +49,7 @@ public class ReactiveDemoService {
         return Mono.just(0)
                 .map(String::valueOf)
                 .flatMap(val -> opsForValue.setIfAbsent(GLOBAL_COUNTER, val))
-                .filter(val -> val)
+                .filter(Boolean::valueOf)
                 .map(val -> 0L)
                 .switchIfEmpty(opsForValue.increment(GLOBAL_COUNTER))
                 .doOnSuccess(val -> log.debug("[Redis] global counter = {}", val));
