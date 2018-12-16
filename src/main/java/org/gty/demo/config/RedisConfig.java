@@ -5,10 +5,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 @Configuration
@@ -16,8 +18,8 @@ public class RedisConfig {
 
     @Bean
     public ReactiveRedisTemplate<Object, Object> reactiveRedisTemplate(
-            ReactiveRedisConnectionFactory reactiveRedisConnectionFactory,
-            ResourceLoader resourceLoader) {
+            @Nonnull ReactiveRedisConnectionFactory reactiveRedisConnectionFactory,
+            @Nonnull ResourceLoader resourceLoader) {
         Objects.requireNonNull(reactiveRedisConnectionFactory,
                 "reactiveRedisConnectionFactory must not be null");
 
@@ -36,4 +38,14 @@ public class RedisConfig {
 
         return new ReactiveRedisTemplate<>(reactiveRedisConnectionFactory, serializationContext);
     }
+
+    @Bean
+    public ReactiveStringRedisTemplate reactiveStringRedisTemplate(
+            @Nonnull ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
+        Objects.requireNonNull(reactiveRedisConnectionFactory,
+                "reactiveRedisConnectionFactory must not be null");
+
+        return new ReactiveStringRedisTemplate(reactiveRedisConnectionFactory);
+    }
+
 }

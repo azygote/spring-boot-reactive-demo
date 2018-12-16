@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.gty.demo.constant.SystemConstants;
 import org.gty.demo.model.form.StudentForm;
 import org.gty.demo.model.vo.ResponseVo;
-import org.gty.demo.model.vo.StudentVo;
 import org.gty.demo.service.ReactiveDemoService;
 import org.gty.demo.service.ReactiveStudentService;
 import org.gty.demo.util.ValidationUtils;
@@ -35,8 +34,8 @@ public class StudentHandler {
     private final ReactiveDemoService demoService;
 
     @Autowired
-    public StudentHandler(ReactiveStudentService studentService,
-                          ReactiveDemoService demoService) {
+    public StudentHandler(@Nonnull ReactiveStudentService studentService,
+                          @Nonnull ReactiveDemoService demoService) {
         this.studentService = Objects.requireNonNull(studentService, "studentService must not be null");
         this.demoService = Objects.requireNonNull(demoService, "demoService must not be null");
     }
@@ -70,14 +69,15 @@ public class StudentHandler {
         var sortMono = Mono.justOrEmpty(request.queryParam("sort"))
                 .defaultIfEmpty("");
 
-        demoService.demo();
-
-        var result = Mono.zip(pageMono, sizeMono, sortMono)
+        var responseVoMono = Mono.zip(pageMono, sizeMono, sortMono)
                 .map(tuple3 -> constructPageRequest(tuple3.getT1(), tuple3.getT2(), tuple3.getT3()))
                 .flatMap(studentService::findByCondition)
                 .<ResponseVo<?>>map(ResponseVo::success);
 
-        return renderServerResponse(result);
+        var serverResponseMono = renderServerResponse(responseVoMono);
+
+        return demoService.demo()
+                .then(serverResponseMono);
     }
 
     @Nonnull
