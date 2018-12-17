@@ -29,7 +29,8 @@ public class StartupRunner {
                 execute(connection -> connection
                         .serverCommands()
                         .flushDb())
-                .subscribe(value -> log.info("Successfully flushed redis."));
+                .doOnComplete(() -> log.info("Successfully flushed redis."))
+                .subscribe();
     }
 
     @EventListener
