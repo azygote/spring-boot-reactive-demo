@@ -56,17 +56,23 @@ public class StudentHandler {
     public Mono<ServerResponse> getByParameters(ServerRequest request) {
         Objects.requireNonNull(request, "request must not be null");
 
-        var pageMono = Mono.justOrEmpty(request.queryParam("page"))
+        var pageMono = Mono.just("page")
+                .map(request::queryParam)
+                .flatMap(Mono::justOrEmpty)
                 .filter(Predicate.not(String::isBlank))
                 .map(Integer::valueOf)
                 .defaultIfEmpty(0);
 
-        var sizeMono = Mono.justOrEmpty(request.queryParam("size"))
+        var sizeMono = Mono.just("size")
+                .map(request::queryParam)
+                .flatMap(Mono::justOrEmpty)
                 .filter(Predicate.not(String::isBlank))
                 .map(Integer::valueOf)
                 .defaultIfEmpty(0);
 
-        var sortMono = Mono.justOrEmpty(request.queryParam("sort"))
+        var sortMono = Mono.just("sort")
+                .map(request::queryParam)
+                .flatMap(Mono::justOrEmpty)
                 .defaultIfEmpty("");
 
         var responseVoMono = Mono.zip(pageMono, sizeMono, sortMono)
