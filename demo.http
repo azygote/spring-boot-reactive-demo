@@ -5,7 +5,7 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
-GET http://localhost:8080/api/student?sort=createdDate,desc&page=1&size=5
+GET http://localhost:8080/api/student?sort=createdDate,desc&page=0&size=5
 Accept: application/json
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 
