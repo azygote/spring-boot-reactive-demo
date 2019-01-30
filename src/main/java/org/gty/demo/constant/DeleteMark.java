@@ -1,6 +1,6 @@
 package org.gty.demo.constant;
 
-public enum DeleteFlag {
+public enum DeleteMark {
     DELETED,
     NOT_DELETED
 }

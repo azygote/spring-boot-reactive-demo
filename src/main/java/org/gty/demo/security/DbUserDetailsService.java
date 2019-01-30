@@ -1,22 +1,23 @@
 package org.gty.demo.security;
 
-import com.google.common.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 import org.gty.demo.constant.SystemConstants;
-import org.gty.demo.util.JsonUtils;
+import org.gty.demo.model.entity.SystemUser;
+import org.gty.demo.model.entity.SystemUserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +28,7 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
     private SystemUserService systemUserService;
 
     @Autowired
-    private void injectBeans(SystemUserService systemUserService) {
+    public DbUserDetailsService(@Nonnull SystemUserService systemUserService) {
         this.systemUserService = Objects.requireNonNull(systemUserService, "systemUserService must not be null");
     }
 
@@ -36,20 +37,45 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
     public Mono<UserDetails> findByUsername(@Nonnull String username) {
         Objects.requireNonNull(username, "username must not be null");
 
+        var userMono = findUserByUsername(username);
+        var rolesMono = findRolesByUsername(username)
+                .map(systemUserRole -> systemUserRole.getId().getRole())
+                .map(DbUserDetailsService::convertAuthorities)
+                .collect(Collectors.toUnmodifiableSet())
+                .defaultIfEmpty(Set.of());
+
+        return Mono.zip(userMono, rolesMono)
+                .map(tuple2 -> {
+                    var user = tuple2.getT1();
+                    var roles = tuple2.getT2();
+
+                    return new DbUserDetails(user.getUsername(), user.getPassword(), roles);
+                });
+    }
+
+    @Nonnull
+    private static GrantedAuthority convertAuthorities(@Nonnull String role) {
+        Objects.requireNonNull(role, "role must not be null");
+
+        return new SimpleGrantedAuthority("ROLE_" + StringUtils.upperCase(role));
+    }
+
+    @Nonnull
+    private Mono<SystemUser> findUserByUsername(@Nonnull String username) {
+        Objects.requireNonNull(username, "username must not be null");
+
         return Mono.fromCallable(() -> systemUserService.findUserByUsername(username))
                 .subscribeOn(SystemConstants.defaultReactorScheduler())
-                .filter(user -> user.getRoles() != null)
-                .map(user -> {
-                    var roleList = JsonUtils.fromJson(user.getRoles(), new TypeToken<List<String>>() {
-                    });
+                .flatMap(Mono::justOrEmpty);
+    }
 
-                    return new DbUserDetails(
-                            user.getUsername(),
-                            user.getPassword(),
-                            roleList.stream()
-                                    .flatMap(Collection::stream)
-                                    .map(role -> new SimpleGrantedAuthority("ROLE_" + StringUtils.upperCase(role)))
-                                    .collect(Collectors.toUnmodifiableSet()));
-                });
+    @Nonnull
+    private Flux<SystemUserRole> findRolesByUsername(@Nonnull String username) {
+        Objects.requireNonNull(username, "username must not be null");
+
+        return Mono.fromCallable(() -> systemUserService.findRolesByUsername(username))
+                .subscribeOn(SystemConstants.defaultReactorScheduler())
+                .flatMap(Mono::justOrEmpty)
+                .flatMapMany(Flux::fromIterable);
     }
 }

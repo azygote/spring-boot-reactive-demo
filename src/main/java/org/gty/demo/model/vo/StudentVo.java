@@ -1,12 +1,18 @@
 package org.gty.demo.model.vo;
 
 import org.gty.demo.constant.SystemConstants;
-import org.gty.demo.model.po.Student;
+import org.gty.demo.model.entity.Student;
+import org.gty.demo.util.NioUtils;
 
 import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -21,6 +27,7 @@ public class StudentVo implements Serializable {
     private String otherInformation;
     private String createdDate;
     private String modifiedDate;
+    private String photo;
 
     public String getName() {
         return name;
@@ -78,6 +85,14 @@ public class StudentVo implements Serializable {
         this.modifiedDate = modifiedDate;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,12 +104,13 @@ public class StudentVo implements Serializable {
                 Objects.equals(getBalance(), studentVo.getBalance()) &&
                 Objects.equals(getOtherInformation(), studentVo.getOtherInformation()) &&
                 Objects.equals(getCreatedDate(), studentVo.getCreatedDate()) &&
-                Objects.equals(getModifiedDate(), studentVo.getModifiedDate());
+                Objects.equals(getModifiedDate(), studentVo.getModifiedDate()) &&
+                Objects.equals(getPhoto(), studentVo.getPhoto());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getGender(), getAge(), getBalance(), getOtherInformation(), getCreatedDate(), getModifiedDate());
+        return Objects.hash(getName(), getGender(), getAge(), getBalance(), getOtherInformation(), getCreatedDate(), getModifiedDate(), getPhoto());
     }
 
     @Override
@@ -107,6 +123,7 @@ public class StudentVo implements Serializable {
                 .add("otherInformation='" + otherInformation + "'")
                 .add("createdDate='" + createdDate + "'")
                 .add("modifiedDate='" + modifiedDate + "'")
+                .add("photo='" + photo + "'")
                 .toString();
     }
 
@@ -119,6 +136,18 @@ public class StudentVo implements Serializable {
         studentVo.setGender(student.getGender());
         studentVo.setAge(student.getAge());
         studentVo.setOtherInformation(student.getOtherInformation());
+
+        try (var in = student.getPhoto().getBinaryStream()) {
+            var bytes = NioUtils.toByteArray(in);
+            var base64String = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
+            var photo = "data:image/png;base64," + base64String;
+
+            studentVo.setPhoto(photo);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
 
         if (student.getBalance() != null) {
             studentVo.setBalance(student.getBalance().toString());

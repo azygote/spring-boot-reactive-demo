@@ -8,6 +8,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 @Service
@@ -18,7 +19,7 @@ public class StartupRunner {
     private ReactiveRedisTemplate<Object, Object> reactiveRedisTemplate;
 
     @Autowired
-    private void injectBeans(ReactiveRedisTemplate<Object, Object> reactiveRedisTemplate) {
+    public StartupRunner(@Nonnull ReactiveRedisTemplate<Object, Object> reactiveRedisTemplate) {
         this.reactiveRedisTemplate =
                 Objects.requireNonNull(reactiveRedisTemplate, "redisTemplate must not be null");
     }
@@ -28,7 +29,8 @@ public class StartupRunner {
                 execute(connection -> connection
                         .serverCommands()
                         .flushDb())
-                .subscribe(value -> log.info("Successfully flushed redis."));
+                .doOnComplete(() -> log.info("Successfully flushed redis."))
+                .subscribe();
     }
 
     @EventListener

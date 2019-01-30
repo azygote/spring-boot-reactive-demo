@@ -1,19 +1,19 @@
 package org.gty.demo.model.form;
 
-import org.gty.demo.constant.DeleteFlag;
-import org.gty.demo.model.po.Student;
+import org.gty.demo.constant.DeleteMark;
+import org.gty.demo.model.entity.Student;
+import org.gty.demo.util.NioUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import javax.annotation.Nonnull;
+import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.constraints.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.util.Base64;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -104,36 +104,21 @@ public class StudentForm implements Serializable {
         student.setAge(studentForm.getAge());
         student.setGender(studentForm.getGender().strip());
         student.setBalance(new BigDecimal(studentForm.getBalance().strip()));
-        student.setDeleteFlag(DeleteFlag.NOT_DELETED.ordinal());
+        student.setDeleteMark(DeleteMark.NOT_DELETED);
         student.setOtherInformation("Not Applicable");
 
         Resource resource = new ClassPathResource("images/logo.png");
 
-        try (var input = Channels.newChannel(resource.getInputStream());
-             var byteArrayOutputStream = new ByteArrayOutputStream();
-             var bufferedOutputStream = new BufferedOutputStream(byteArrayOutputStream, 8);
-             var output = Channels.newChannel(bufferedOutputStream)) {
-            var buffer = ByteBuffer.allocate(16);
-            while (input.read(buffer) != -1) {
-                buffer.flip();
-                while (buffer.hasRemaining()) {
-                    output.write(buffer);
-                }
-                buffer.clear();
-            }
-            bufferedOutputStream.flush();
-            var bytes = byteArrayOutputStream.toByteArray();
+        try (var in = resource.getInputStream()) {
+            var bytes = NioUtils.toByteArray(in);
+            var blob = new SerialBlob(bytes);
 
-            // var base64String = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
-
-            student.setPhoto(bytes);
+            student.setPhoto(blob);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
         }
-
-        var milliseconds = Instant.now().toEpochMilli();
-        student.setCreatedDate(milliseconds);
-        student.setModifiedDate(milliseconds);
 
         return student;
     }

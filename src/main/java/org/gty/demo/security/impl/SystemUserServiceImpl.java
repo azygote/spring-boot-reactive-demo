@@ -1,50 +1,55 @@
 package org.gty.demo.security.impl;
 
-import org.gty.demo.constant.DeleteFlag;
-import org.gty.demo.mapper.SystemUserMapper;
-import org.gty.demo.model.po.SystemUser;
+import org.gty.demo.constant.DeleteMark;
+import org.gty.demo.model.entity.SystemUser;
+import org.gty.demo.model.entity.SystemUserRole;
+import org.gty.demo.repository.SystemUserRepository;
+import org.gty.demo.repository.SystemUserRoleRepository;
 import org.gty.demo.security.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class SystemUserServiceImpl implements SystemUserService {
 
-    private SystemUserMapper systemUserMapper;
+    private final SystemUserRepository systemUserRepository;
+    private final SystemUserRoleRepository systemUserRoleRepository;
 
     @Autowired
-    private void injectBeans(SystemUserMapper systemUserMapper) {
-        Objects.requireNonNull(systemUserMapper, "systemUserMapper must not be null");
+    public SystemUserServiceImpl(@Nonnull SystemUserRepository systemUserRepository,
+                                  @Nonnull SystemUserRoleRepository systemUserRoleRepository) {
+        this.systemUserRepository = Objects.requireNonNull(systemUserRepository,
+                "systemUserRepository must not be null");
 
-        this.systemUserMapper = systemUserMapper;
+        this.systemUserRoleRepository = Objects.requireNonNull(systemUserRoleRepository,
+                "systemUserRoleRepository must not be null");
     }
 
     @Cacheable(cacheNames = "systemUsers", keyGenerator = "keyGenerator")
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Override
-    @Nullable
-    public SystemUser findUserByUsername(@Nonnull String username) {
+    @Nonnull
+    public Optional<SystemUser> findUserByUsername(@Nonnull String username) {
         Objects.requireNonNull(username, "username must not be null");
 
-        var example = Example.builder(SystemUser.class).build();
-        example.createCriteria()
-                .andEqualTo("username", username)
-                .andEqualTo("deleteFlag", DeleteFlag.NOT_DELETED.ordinal());
+        return systemUserRepository.findByUsernameAndDeleteMark(username, DeleteMark.NOT_DELETED);
+    }
 
-        var resultList = systemUserMapper.selectByExample(example);
+    @Cacheable(cacheNames = "systemUserRoles", keyGenerator = "keyGenerator")
+    @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
+    @Nonnull
+    @Override
+    public Collection<SystemUserRole> findRolesByUsername(@Nonnull String username) {
+        Objects.requireNonNull(username, "username must not be null");
 
-        if (resultList == null || resultList.isEmpty()) {
-            return null;
-        }
-
-        return resultList.get(0);
+        return systemUserRoleRepository.findByIdUsernameAndDeleteMark(username, DeleteMark.NOT_DELETED);
     }
 }

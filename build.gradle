@@ -1,16 +1,15 @@
 import java.nio.file.FileSystems
-import java.util.stream.Collectors
 
 plugins {
     id 'java'
     id 'idea'
     id 'project-report'
-    id 'org.springframework.boot' version '2.1.1.RELEASE'
+    id 'org.springframework.boot' version '2.1.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.6.RELEASE'
 }
 
 group = 'org.gty'
-version = '1.0.3.RELEASE'
+version = '1.0.4.RELEASE'
 description = 'Spring Boot Reactive Demo'
 
 sourceCompatibility = 11
@@ -24,7 +23,6 @@ repositories {
 
 configurations {
     compile.exclude module: 'spring-boot-starter-logging'
-    mbg
 }
 
 bootRun {
@@ -36,7 +34,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-amqp'
     compile 'org.springframework.boot:spring-boot-starter-aop'
     compile 'org.springframework.boot:spring-boot-starter-cache'
-//  compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
 //  compile 'org.springframework.boot:spring-boot-starter-data-jdbc'
 //  compile 'org.springframework.boot:spring-boot-starter-data-ldap'
 //  compile 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -55,19 +53,19 @@ dependencies {
 //  compile 'org.springframework.boot:spring-boot-starter-websocket'
 
 //  runtime 'org.springframework.boot:spring-boot-devtools'
-    compile 'org.springframework.retry:spring-retry:1.2.2.RELEASE'
-    compile 'org.springframework.session:spring-session-data-redis:2.1.2.RELEASE'
-    compile 'org.springframework.kafka:spring-kafka:2.2.2.RELEASE'
+    compile 'org.springframework.retry:spring-retry:1.2.4.RELEASE'
+    compile 'org.springframework.session:spring-session-data-redis:2.1.3.RELEASE'
+    compile 'org.springframework.kafka:spring-kafka:2.2.3.RELEASE'
 //  compile 'org.springframework.security:spring-security-ldap:4.2.4.RELEASE'
 
-    compile 'org.flywaydb:flyway-core:5.2.3'
+    compile 'org.flywaydb:flyway-core:5.2.4'
     compile 'org.postgresql:postgresql:42.2.5'
     compile 'com.lmax:disruptor:3.4.2'
 //  compile 'io.jsonwebtoken:jjwt:0.9.0'
 //  compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.7'
 //  compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-guava:2.9.7'
-    compile 'com.zaxxer:HikariCP:3.2.0'
+    compile 'com.zaxxer:HikariCP:3.3.0'
     compile 'com.google.guava:guava:27.0.1-jre'
     compile 'com.google.code.gson:gson:2.8.5'
     compile 'com.google.code.findbugs:jsr305:3.0.2'
@@ -90,36 +88,15 @@ dependencies {
 //  compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
 //  compile 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.3.0'
 
-    compile 'org.hibernate.validator:hibernate-validator:6.0.13.Final'
+    compile 'org.hibernate.validator:hibernate-validator:6.0.14.Final'
 //  compile 'javax.validation:validation-api:2.0.1.Final'
     compile 'javax.annotation:javax.annotation-api:1.3.2'
     compile 'javax.xml.bind:jaxb-api:2.3.0'
-
-//  compile 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2'
-    compile 'com.github.pagehelper:pagehelper:5.1.8'
-    compile 'tk.mybatis:mapper-spring-boot-starter:2.1.0'
 
 //  testCompile 'org.springframework.boot:spring-boot-starter-test'
 //  testCompile 'org.springframework.security:spring-security-test'
 //  testCompile 'io.projectreactor:reactor-test'
 //  testCompile 'com.h2database:h2:1.4.196'
-
-    mbg 'org.mybatis.generator:mybatis-generator-core:1.3.7'
-    mbg 'org.postgresql:postgresql:42.2.5'
-}
-
-task mbg {
-    doLast {
-        ant.taskdef(name: 'mbg',
-                classname: 'org.mybatis.generator.ant.GeneratorAntTask',
-                classpath: configurations.mbg.asPath)
-
-        def resourcesDir = sourceSets.main.resources.srcDirs.stream().collect(Collectors.toUnmodifiableList()).get(0)
-        
-        ant.mbg(overwrite: true,
-                configfile: "$resourcesDir${FileSystems.default.separator}generator${FileSystems.default.separator}generatorConfig.xml",
-                verbose: true)
-    }
 }
 
 clean.doLast {

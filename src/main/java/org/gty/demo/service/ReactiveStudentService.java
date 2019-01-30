@@ -1,12 +1,13 @@
 package org.gty.demo.service;
 
-import com.github.pagehelper.PageInfo;
 import org.gty.demo.constant.SystemConstants;
-import org.gty.demo.model.po.Student;
+import org.gty.demo.model.entity.Student;
 import org.gty.demo.model.vo.StudentVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -18,15 +19,15 @@ public class ReactiveStudentService {
 
     private static final Logger log = LoggerFactory.getLogger(ReactiveStudentService.class);
 
-    private StudentService studentService;
+    private final StudentService studentService;
 
     @Autowired
-    private void injectBeans(StudentService studentService) {
+    public ReactiveStudentService(@Nonnull StudentService studentService) {
         this.studentService = Objects.requireNonNull(studentService, "studentService must not be null");
     }
 
     @Nonnull
-    public Mono<Student> findById(long id) {
+    public Mono<StudentVo> findById(long id) {
         return Mono.fromCallable(() -> studentService.findById(id))
                 .flatMap(Mono::justOrEmpty)
                 .switchIfEmpty(Mono.error(new IllegalArgumentException(String.format("Student with id: [%s] could not be found.", id))))
@@ -43,12 +44,10 @@ public class ReactiveStudentService {
     }
 
     @Nonnull
-    public Mono<PageInfo<StudentVo>> findByCondition(int pageNum,
-                                                     int pageSize,
-                                                     @Nonnull String orderBy) {
-        Objects.requireNonNull(orderBy, "orderBy must not be null");
+    public Mono<Page<StudentVo>> findByCondition(@Nonnull Pageable pageable) {
+        Objects.requireNonNull(pageable, "orderBy must not be null");
 
-        return Mono.fromCallable(() -> studentService.findByCondition(pageNum, pageSize, orderBy))
+        return Mono.fromCallable(() -> studentService.findByPage(pageable))
                 .subscribeOn(SystemConstants.defaultReactorScheduler());
     }
 }
