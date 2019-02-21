@@ -3,62 +3,45 @@ version: "3"
 services:
     postgres:
         image: library/postgres:alpine
-
         environment:
             POSTGRES_DB: db_sbrd
             POSTGRES_USER: gty
             POSTGRES_PASSWORD: 123456
             TZ: UTC
             PGTZ: UTC
-        
         networks:
             - appnetwork
-
         ports:
             - "5432:5432"
-
         volumes:
             - ./db/data:/var/lib/postgresql/data
-
     redis:
         image: library/redis:alpine
-
         networks:
             - appnetwork
-
         ports:
             - "6379:6379"
-
         command: redis-server /usr/local/etc/redis/redis.conf
-
         volumes:
             - ./redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
-
     rabbitmq:
         image: library/rabbitmq:alpine
-
         networks:
             - appnetwork
-
         ports:
             - "4369:4369"
             - "5671:5671"
             - "5672:5672"
             - "15672:15672"
             - "25672:25672"
-
     zookeeper:
         image: library/zookeeper:latest
-
         ports:
             - "2181:2181"
-
         networks:
             - appnetwork
-
     kafka:
         image: wurstmeister/kafka:latest
-
         environment:
             KAFKA_BROKER_ID: 17
             KAFKA_CREATE_TOPICS: "demo-topic:2:1"
@@ -66,15 +49,11 @@ services:
             KAFKA_ADVERTISED_PORT: 9092
             KAFKA_PORT: 9092
             KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-
         ports:
             - "9092:9092"
-
         depends_on:
             - "zookeeper"
-
         networks:
             - appnetwork
-
 networks:
     appnetwork:
