@@ -69,7 +69,7 @@ dependencies {
     compile 'com.google.guava:guava:27.1-jre'
     compile 'com.google.code.gson:gson:2.8.5'
     compile 'com.google.code.findbugs:jsr305:3.0.2'
-    compile 'com.ibm.icu:icu4j:63.1'
+    compile 'com.ibm.icu:icu4j:64.1'
 
     compile 'commons-beanutils:commons-beanutils:1.9.3'
     compile 'commons-codec:commons-codec:1.11'
