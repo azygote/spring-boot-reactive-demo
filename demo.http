@@ -30,3 +30,9 @@ Accept: application/json
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 ###
+
+DELETE http://localhost:8080/api/student/1
+Accept: application/json
+Authorization: Basic Z3R5OjEyMzQ1Ng==
+
+###

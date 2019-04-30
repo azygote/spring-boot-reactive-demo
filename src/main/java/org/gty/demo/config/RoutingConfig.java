@@ -19,6 +19,10 @@ public class RoutingConfig {
                                 .and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)),
                         studentHandler::get)
 
+                .andRoute(RequestPredicates.DELETE("/api/student/{id}")
+                                .and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)),
+                        studentHandler::delete)
+
                 .andRoute(RequestPredicates.POST("/api/student")
                                 .and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8))
                                 .and(RequestPredicates.contentType(MediaType.APPLICATION_JSON_UTF8)),

@@ -21,4 +21,6 @@ public interface StudentService {
     Page<StudentVo> findByPage(@Nonnull Pageable pageable);
 
     void save(@Nonnull Student student);
+
+    void delete(long id);
 }

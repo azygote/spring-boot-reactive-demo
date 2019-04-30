@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Nonnull;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Service
@@ -48,6 +49,20 @@ public class ReactiveStudentService {
         Objects.requireNonNull(pageable, "orderBy must not be null");
 
         return Mono.fromCallable(() -> studentService.findByPage(pageable))
+                .subscribeOn(SystemConstants.defaultReactorScheduler());
+    }
+
+    @Nonnull
+    public Mono<Void> delete(long id) {
+        return Mono.fromRunnable(() -> studentService.delete(id))
+                .cast(Void.class)
+                .onErrorMap(throwable -> {
+                    if (throwable instanceof NoSuchElementException) {
+                        return new IllegalArgumentException(String.format("Student with id: [%s] could not be found.", id));
+                    } else {
+                        return throwable;
+                    }
+                })
                 .subscribeOn(SystemConstants.defaultReactorScheduler());
     }
 }

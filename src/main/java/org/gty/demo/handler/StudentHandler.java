@@ -101,6 +101,18 @@ public class StudentHandler {
         return renderServerResponse(result);
     }
 
+    @Nonnull
+    public Mono<ServerResponse> delete(ServerRequest request) {
+        Objects.requireNonNull(request, "request must not be null");
+
+        var result = Mono.just(request.pathVariable("id"))
+                .map(Long::valueOf)
+                .flatMap(studentService::delete)
+                .<ResponseVo<?>>thenReturn(ResponseVo.success());
+
+        return renderServerResponse(result);
+    }
+
     private static PageRequest constructPageRequest(int page, int size, @Nonnull String sort) {
         Objects.requireNonNull(sort, "sort must not be null");
 
