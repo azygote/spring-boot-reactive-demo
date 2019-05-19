@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'org.gty'
-version = '1.0.5.RELEASE'
+version = '1.0.6.RELEASE'
 description = 'Spring Boot Reactive Demo'
 
 sourceCompatibility = 12
