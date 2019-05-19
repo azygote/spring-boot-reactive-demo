@@ -36,3 +36,9 @@ Accept: application/json
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 ###
+
+GET http://localhost:8080/api/files/test.txt
+Accept: application/json
+Authorization: Basic Z3R5OjEyMzQ1Ng==
+
+###
