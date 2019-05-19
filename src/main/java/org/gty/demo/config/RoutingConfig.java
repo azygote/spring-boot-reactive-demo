@@ -36,6 +36,11 @@ public class RoutingConfig {
 
                 .andRoute(RequestPredicates.GET("/api/files/{filename:.+}")
                         .and(RequestPredicates.accept(MediaType.APPLICATION_JSON_UTF8)),
-                        uploadAndDownloadHandler::download);
+                        uploadAndDownloadHandler::download)
+
+                .andRoute(RequestPredicates.POST("/api/files/upload")
+                                .and(RequestPredicates.accept(MediaType.MULTIPART_FORM_DATA))
+                                .and(RequestPredicates.contentType(MediaType.MULTIPART_FORM_DATA)),
+                        uploadAndDownloadHandler::upload);
     }
 }

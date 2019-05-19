@@ -42,3 +42,22 @@ Accept: application/json
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 ###
+
+POST http://localhost:8080/api/files/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Accept: multipart/form-data; boundary=WebAppBoundary
+Authorization: Basic Z3R5OjEyMzQ1Ng==
+
+--WebAppBoundary
+Content-Disposition: form-data; name="uploadFile" filename="test.txt"
+
+< ./demo.http
+--WebAppBoundary--
+
+--WebAppBoundary
+Content-Disposition: form-data; name="foo"
+
+bar
+--WebAppBoundary--
+
+###

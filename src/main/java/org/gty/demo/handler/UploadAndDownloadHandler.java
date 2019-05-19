@@ -10,6 +10,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
@@ -27,7 +28,7 @@ public class UploadAndDownloadHandler {
 
     @Autowired
     public UploadAndDownloadHandler(@Nonnull ReactiveStorageService storageService) {
-        this.storageService = Objects.requireNonNull(storageService, "storageService must not be null");;
+        this.storageService = Objects.requireNonNull(storageService, "storageService must not be null");
     }
 
     @Nonnull
@@ -54,6 +55,20 @@ public class UploadAndDownloadHandler {
         return renderErrorResponse(response);
     }
 
+    @Nonnull
+    public Mono<ServerResponse> upload(@Nonnull ServerRequest request) {
+        Objects.requireNonNull(request, "request must not be null");
+
+        var response = request.body(BodyExtractors.toMultipartData())
+                .publishOn(SystemConstants.defaultReactorScheduler())
+                .doOnSuccess(parts -> log.info("{}", parts))
+                .<ResponseVo<?>>thenReturn(ResponseVo.success())
+                .flatMap(t -> ServerResponse.ok().syncBody(t).subscribeOn(SystemConstants.defaultReactorScheduler()));
+
+        return renderErrorResponse(response);
+    }
+
+    @Nonnull
     private static Mono<ServerResponse> renderErrorResponse(@Nonnull Mono<ServerResponse> response) {
         return Objects.requireNonNull(response, "response must not be null")
                 .onErrorResume(ex -> ServerResponse.ok()
