@@ -49,3 +49,6 @@ spring:
     store-type: redis
   gson:
     serialize-nulls: true
+
+sbrd:
+  storage-content: "These violent delights have violent ends."

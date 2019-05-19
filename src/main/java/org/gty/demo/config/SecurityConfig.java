@@ -33,6 +33,7 @@ public class SecurityConfig {
                     .matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                     .pathMatchers(generateRestfulAntPathMatchers("/api/student")).hasRole("USER")
                     .pathMatchers(generateRestfulAntPathMatchers("/api/actuator")).hasRole("ACTUATOR")
+                    .pathMatchers(generateRestfulAntPathMatchers("/api/files")).hasRole("USER")
                 .anyExchange().authenticated().and()
                 .httpBasic().and()
                 .exceptionHandling().authenticationEntryPoint((var exchange, var e) -> {

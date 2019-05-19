@@ -75,4 +75,15 @@ public class StudentServiceImpl implements StudentService {
 
         studentRepository.saveAndFlush(student);
     }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = Throwable.class)
+    @CacheEvict(cacheNames = "students", keyGenerator = "keyGenerator", allEntries = true)
+    @Override
+    public void delete(long id) {
+        var student = studentRepository.findByIdAndDeleteMark(id, DeleteMark.NOT_DELETED).orElseThrow();
+
+        student.setDeleteMark(DeleteMark.DELETED);
+
+        studentRepository.saveAndFlush(student);
+    }
 }
