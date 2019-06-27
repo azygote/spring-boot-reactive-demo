@@ -7,7 +7,6 @@ import org.gty.demo.repository.StudentRepository;
 import org.gty.demo.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -29,7 +28,6 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
 
-    @Autowired
     public StudentServiceImpl(@Nonnull StudentRepository studentRepository) {
         this.studentRepository = Objects.requireNonNull(studentRepository,
                 "studentRepository must not be null");

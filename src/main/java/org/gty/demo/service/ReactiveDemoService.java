@@ -5,7 +5,6 @@ import org.gty.demo.constant.SystemConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AsyncAmqpTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ public class ReactiveDemoService {
     private final KafkaTemplate<Object, Object> kafkaTemplate;
     private final ReactiveStringRedisTemplate reactiveStringRedisTemplate;
 
-    @Autowired
     @SuppressWarnings("unchecked")
     public ReactiveDemoService(@Nonnull AsyncAmqpTemplate asyncAmqpTemplate,
                                @Nonnull KafkaTemplate kafkaTemplate,

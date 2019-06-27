@@ -5,7 +5,6 @@ import org.gty.demo.model.vo.ResponseVo;
 import org.gty.demo.service.ReactiveStorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -26,7 +25,6 @@ public class UploadAndDownloadHandler {
 
     private final ReactiveStorageService storageService;
 
-    @Autowired
     public UploadAndDownloadHandler(@Nonnull ReactiveStorageService storageService) {
         this.storageService = Objects.requireNonNull(storageService, "storageService must not be null");
     }

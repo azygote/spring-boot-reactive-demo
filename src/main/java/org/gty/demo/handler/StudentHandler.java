@@ -10,7 +10,6 @@ import org.gty.demo.service.ReactiveStudentService;
 import org.gty.demo.util.ValidationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -33,7 +32,6 @@ public class StudentHandler {
     private final ReactiveStudentService studentService;
     private final ReactiveDemoService demoService;
 
-    @Autowired
     public StudentHandler(@Nonnull ReactiveStudentService studentService,
                           @Nonnull ReactiveDemoService demoService) {
         this.studentService = Objects.requireNonNull(studentService, "studentService must not be null");

@@ -6,7 +6,6 @@ import org.gty.demo.model.entity.SystemUser;
 import org.gty.demo.model.entity.SystemUserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -27,7 +26,6 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
 
     private SystemUserService systemUserService;
 
-    @Autowired
     public DbUserDetailsService(@Nonnull SystemUserService systemUserService) {
         this.systemUserService = Objects.requireNonNull(systemUserService, "systemUserService must not be null");
     }
