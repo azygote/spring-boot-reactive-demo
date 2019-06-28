@@ -16,7 +16,7 @@ public final class UploadFormData implements Serializable {
     private FilePart uploadFile;
 
     @NotBlank
-    private String foo;
+    private String fileAdditionalInfo;
 
     public FilePart getUploadFile() {
         return uploadFile;
@@ -26,12 +26,12 @@ public final class UploadFormData implements Serializable {
         this.uploadFile = uploadFile;
     }
 
-    public String getFoo() {
-        return foo;
+    public String getFileAdditionalInfo() {
+        return fileAdditionalInfo;
     }
 
-    public void setFoo(String foo) {
-        this.foo = foo;
+    public void setFileAdditionalInfo(String fileAdditionalInfo) {
+        this.fileAdditionalInfo = fileAdditionalInfo;
     }
 
     @Override
@@ -40,19 +40,19 @@ public final class UploadFormData implements Serializable {
         if (!(o instanceof UploadFormData)) return false;
         UploadFormData that = (UploadFormData) o;
         return Objects.equals(getUploadFile(), that.getUploadFile()) &&
-            Objects.equals(getFoo(), that.getFoo());
+            Objects.equals(getFileAdditionalInfo(), that.getFileAdditionalInfo());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUploadFile(), getFoo());
+        return Objects.hash(getUploadFile(), getFileAdditionalInfo());
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
             .add("uploadFile", uploadFile)
-            .add("foo", foo)
+            .add("fileAdditionalInfo", fileAdditionalInfo)
             .toString();
     }
 }
