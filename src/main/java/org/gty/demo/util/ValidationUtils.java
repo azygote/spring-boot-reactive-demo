@@ -7,18 +7,16 @@ import java.util.Objects;
 
 public final class ValidationUtils {
 
-    private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-    public static <T> void validate(@Nonnull T bean) {
-        Objects.requireNonNull(bean, "bean must not be null");
-
-        var violations = validator.validate(bean);
+    public static <T> void validate(@Nonnull final T bean) {
+        final var violations = validator.validate(Objects.requireNonNull(bean, "bean must not be null"));
 
         if (!violations.isEmpty()) {
-            var errorMessageBuilder = new StringBuilder("[");
+            final var errorMessageBuilder = new StringBuilder("[");
             violations.forEach(violation -> {
-                var field = violation.getPropertyPath().toString();
-                var message = violation.getMessage();
+                final var field = violation.getPropertyPath().toString();
+                final var message = violation.getMessage();
 
                 errorMessageBuilder.append(field).append(" ").append(message).append("; ");
             });
