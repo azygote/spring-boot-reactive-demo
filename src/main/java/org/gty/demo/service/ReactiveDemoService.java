@@ -1,7 +1,6 @@
 package org.gty.demo.service;
 
 import org.apache.commons.lang3.SerializationUtils;
-import org.gty.demo.constant.SystemConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AsyncAmqpTemplate;
@@ -9,6 +8,7 @@ import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -23,11 +23,13 @@ public class ReactiveDemoService {
     private final AsyncAmqpTemplate asyncAmqpTemplate;
     private final KafkaTemplate<Object, Object> kafkaTemplate;
     private final ReactiveStringRedisTemplate reactiveStringRedisTemplate;
+    private final Scheduler scheduler;
 
     @SuppressWarnings("unchecked")
-    public ReactiveDemoService(@Nonnull AsyncAmqpTemplate asyncAmqpTemplate,
-                               @Nonnull KafkaTemplate kafkaTemplate,
-                               @Nonnull ReactiveStringRedisTemplate reactiveStringRedisTemplate) {
+    public ReactiveDemoService(@Nonnull final AsyncAmqpTemplate asyncAmqpTemplate,
+                               @Nonnull final KafkaTemplate kafkaTemplate,
+                               @Nonnull final ReactiveStringRedisTemplate reactiveStringRedisTemplate,
+                               @Nonnull final Scheduler scheduler) {
         this.asyncAmqpTemplate = Objects.requireNonNull(asyncAmqpTemplate,
                 "asyncAmqpTemplate must not be null");
 
@@ -35,6 +37,8 @@ public class ReactiveDemoService {
 
         this.reactiveStringRedisTemplate = Objects.requireNonNull(reactiveStringRedisTemplate,
                 "reactiveStringRedisTemplate must not be null");
+
+        this.scheduler = Objects.requireNonNull(scheduler, "scheduler must not be null");
     }
 
     public Mono<Void> demo() {
@@ -57,7 +61,7 @@ public class ReactiveDemoService {
         return Mono
                 .<Void>fromRunnable(() -> asyncAmqpTemplate.convertSendAndReceive("demo-queue", MESSAGE))
                 .doOnSuccess(ignored -> log.debug("[AMQP] --- MESSAGE sent to rabbit"))
-                .subscribeOn(SystemConstants.defaultReactorScheduler());
+                .subscribeOn(scheduler);
     }
 
     private Mono<Void> sendMessageToKafka() {
@@ -65,6 +69,6 @@ public class ReactiveDemoService {
                 .<Void>fromRunnable(() -> kafkaTemplate.send("demo-topic",
                         SerializationUtils.serialize(MESSAGE)).addCallback(result -> log.debug("[Kafka] --- MESSAGE sent to kafka"),
                         failure -> log.warn("sending MESSAGE to kafka failed")))
-                .subscribeOn(SystemConstants.defaultReactorScheduler());
+                .subscribeOn(scheduler);
     }
 }

@@ -1,6 +1,5 @@
 package org.gty.demo.controller;
 
-import org.gty.demo.constant.SystemConstants;
 import org.gty.demo.model.form.UploadFormData;
 import org.gty.demo.model.vo.ResponseVo;
 import org.gty.demo.service.ReactiveStorageService;
@@ -16,20 +15,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import javax.annotation.Nonnull;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 @RestController
-public final class UploadAndDownloadController {
+public class UploadAndDownloadController {
 
     private static final Logger log = LoggerFactory.getLogger(UploadAndDownloadController.class);
 
     private final ReactiveStorageService storageService;
+    private final Scheduler scheduler;
 
-    public UploadAndDownloadController(@Nonnull ReactiveStorageService storageService) {
+    public UploadAndDownloadController(@Nonnull final ReactiveStorageService storageService,
+                                       @Nonnull final Scheduler scheduler) {
         this.storageService = Objects.requireNonNull(storageService, "storageService must not be null");
+        this.scheduler = Objects.requireNonNull(scheduler, "scheduler must not be null");
     }
 
     @GetMapping(value = "/api/files/{filename:.+}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -37,7 +40,7 @@ public final class UploadAndDownloadController {
         final var resourceMono = Mono
             .just(Objects.requireNonNull(filename, "filename must not be null"))
             .flatMap(storageService::loadAsResource)
-            .subscribeOn(SystemConstants.defaultReactorScheduler());
+            .subscribeOn(scheduler);
 
         return ResponseEntity
             .ok()
@@ -54,6 +57,6 @@ public final class UploadAndDownloadController {
             .doOnSuccess(ValidationUtils::validate)
             .doOnSuccess(form -> log.debug("{}", form))
             .thenReturn(ResponseVo.<Void>success())
-            .subscribeOn(SystemConstants.defaultReactorScheduler());
+            .subscribeOn(scheduler);
     }
 }

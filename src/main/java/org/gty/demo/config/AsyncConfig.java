@@ -14,6 +14,7 @@ public class AsyncConfig {
 
     private static final int processorsCount;
     private static final Supplier<Integer> poolSize;
+    private static final int DEFAULT_POOL_SIZE = 600;
 
     private static int getPoolSize() {
         return poolSize.get();
@@ -21,7 +22,7 @@ public class AsyncConfig {
 
     static {
         processorsCount = Runtime.getRuntime().availableProcessors();
-        poolSize = Suppliers.memoize(() -> 600);
+        poolSize = Suppliers.memoize(() -> DEFAULT_POOL_SIZE * 2);
     }
 
     @Bean(destroyMethod = "shutdown")

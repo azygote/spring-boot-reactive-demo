@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 import java.util.Objects;
 
 @RestControllerAdvice("org.gty.demo.controller")
-public final class ExceptionControllerAdvice {
+public class ExceptionControllerAdvice {
 
     private static final Logger log = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 
