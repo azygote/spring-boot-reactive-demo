@@ -1,4 +1,4 @@
-package org.gty.demo.util;
+package org.gty.demo.controller.util;
 
 import javax.annotation.Nonnull;
 import javax.validation.Validation;

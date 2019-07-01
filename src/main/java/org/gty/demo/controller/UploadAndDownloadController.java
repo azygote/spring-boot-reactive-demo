@@ -3,7 +3,7 @@ package org.gty.demo.controller;
 import org.gty.demo.model.form.UploadFormData;
 import org.gty.demo.model.vo.ResponseVo;
 import org.gty.demo.service.ReactiveStorageService;
-import org.gty.demo.util.ValidationUtils;
+import org.gty.demo.controller.util.ValidationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
