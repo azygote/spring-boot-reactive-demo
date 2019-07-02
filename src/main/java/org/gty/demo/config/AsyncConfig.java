@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 @Configuration
@@ -26,10 +27,11 @@ public class AsyncConfig {
     }
 
     @Bean(destroyMethod = "shutdown")
+    @Nonnull
     public ThreadPoolTaskExecutor asyncExecutor() {
-        var executor = new ThreadPoolTaskExecutor();
+        final var executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(getPoolSize());
-        executor.setMaxPoolSize(1000);
+        executor.setMaxPoolSize(1500);
         executor.setQueueCapacity(100);
         executor.setThreadNamePrefix("sbrd-default-async-executor-");
         executor.initialize();
