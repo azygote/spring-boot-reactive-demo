@@ -41,20 +41,20 @@ public class SystemUser extends Base implements Serializable {
         if (!(o instanceof SystemUser)) return false;
         if (!super.equals(o)) return false;
         SystemUser that = (SystemUser) o;
-        return Objects.equals(getUsername(), that.getUsername()) &&
-                Objects.equals(getPassword(), that.getPassword());
+        return Objects.equals(username, that.username) &&
+            Objects.equals(password, that.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getUsername(), getPassword());
+        return Objects.hash(super.hashCode(), username, password);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("username", username)
-                .add("password", password)
-                .toString();
+            .add("username", username)
+            .add("password", password)
+            .toString();
     }
 }

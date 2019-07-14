@@ -1,10 +1,11 @@
 package org.gty.demo.model.vo;
 
+import com.google.common.base.MoreObjects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.StringJoiner;
 
 public class ResponseVo<T> implements Serializable {
 
@@ -43,23 +44,23 @@ public class ResponseVo<T> implements Serializable {
         if (this == o) return true;
         if (!(o instanceof ResponseVo)) return false;
         ResponseVo<?> that = (ResponseVo<?>) o;
-        return getStatus() == that.getStatus() &&
-                getCode() == that.getCode() &&
-                Objects.equals(getData(), that.getData());
+        return status == that.status &&
+            code == that.code &&
+            Objects.equals(data, that.data);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getStatus(), getCode(), getData());
+        return Objects.hash(status, code, data);
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", ResponseVo.class.getSimpleName() + "[", "]")
-                .add("status=" + status)
-                .add("code=" + code)
-                .add("data=" + data)
-                .toString();
+        return MoreObjects.toStringHelper(this)
+            .add("status", status)
+            .add("code", code)
+            .add("data", data)
+            .toString();
     }
 
     @Nonnull

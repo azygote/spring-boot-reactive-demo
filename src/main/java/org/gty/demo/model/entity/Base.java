@@ -1,5 +1,6 @@
 package org.gty.demo.model.entity;
 
+import com.google.common.base.MoreObjects;
 import org.gty.demo.constant.DeleteMark;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,7 +12,6 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.StringJoiner;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -68,24 +68,24 @@ public class Base implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Base)) return false;
         Base base = (Base) o;
-        return getDeleteMark() == base.getDeleteMark() &&
-                Objects.equals(getVersion(), base.getVersion()) &&
-                Objects.equals(getCreatedDate(), base.getCreatedDate()) &&
-                Objects.equals(getModifiedDate(), base.getModifiedDate());
+        return deleteMark == base.deleteMark &&
+            Objects.equals(version, base.version) &&
+            Objects.equals(createdDate, base.createdDate) &&
+            Objects.equals(modifiedDate, base.modifiedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDeleteMark(), getVersion(), getCreatedDate(), getModifiedDate());
+        return Objects.hash(deleteMark, version, createdDate, modifiedDate);
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", Base.class.getSimpleName() + "[", "]")
-                .add("deleteMark=" + deleteMark)
-                .add("version=" + version)
-                .add("createdDate=" + createdDate)
-                .add("modifiedDate=" + modifiedDate)
-                .toString();
+        return MoreObjects.toStringHelper(this)
+            .add("deleteMark", deleteMark)
+            .add("version", version)
+            .add("createdDate", createdDate)
+            .add("modifiedDate", modifiedDate)
+            .toString();
     }
 }

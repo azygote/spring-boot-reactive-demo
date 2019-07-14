@@ -29,12 +29,12 @@ public class SystemUserRole extends Base implements Serializable {
         if (!(o instanceof SystemUserRole)) return false;
         if (!super.equals(o)) return false;
         SystemUserRole that = (SystemUserRole) o;
-        return Objects.equals(getId(), that.getId());
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId());
+        return Objects.hash(super.hashCode(), id);
     }
 
     @Override
@@ -74,13 +74,13 @@ public class SystemUserRole extends Base implements Serializable {
             if (this == o) return true;
             if (!(o instanceof SystemUserRoleId)) return false;
             SystemUserRoleId that = (SystemUserRoleId) o;
-            return Objects.equals(getUsername(), that.getUsername()) &&
-                    Objects.equals(getRole(), that.getRole());
+            return Objects.equals(username, that.username) &&
+                Objects.equals(role, that.role);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(getUsername(), getRole());
+            return Objects.hash(username, role);
         }
 
         @Override

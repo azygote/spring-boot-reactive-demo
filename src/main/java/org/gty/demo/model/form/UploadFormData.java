@@ -39,13 +39,13 @@ public final class UploadFormData implements Serializable {
         if (this == o) return true;
         if (!(o instanceof UploadFormData)) return false;
         UploadFormData that = (UploadFormData) o;
-        return Objects.equals(getUploadFile(), that.getUploadFile()) &&
-            Objects.equals(getFileAdditionalInfo(), that.getFileAdditionalInfo());
+        return Objects.equals(uploadFile, that.uploadFile) &&
+            Objects.equals(fileAdditionalInfo, that.fileAdditionalInfo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUploadFile(), getFileAdditionalInfo());
+        return Objects.hash(uploadFile, fileAdditionalInfo);
     }
 
     @Override
