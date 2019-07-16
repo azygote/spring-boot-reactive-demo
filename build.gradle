@@ -23,6 +23,10 @@ repositories {
 
 configurations {
     implementation.exclude module: 'spring-boot-starter-logging'
+
+    developmentOnly
+    runtimeClasspath { extendsFrom developmentOnly }
+    compileOnly { extendsFrom annotationProcessor }
 }
 
 bootRun {
@@ -54,7 +58,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 //  implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-//  runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+//  developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//  compileOnly 'org.projectlombok:lombok'
+//  annotationProcessor 'org.projectlombok:lombok'
+
     implementation 'org.springframework.retry:spring-retry:1.2.4.RELEASE'
     implementation 'org.springframework.session:spring-session-data-redis:2.1.7.RELEASE'
     implementation 'org.springframework.kafka:spring-kafka:2.2.7.RELEASE'
