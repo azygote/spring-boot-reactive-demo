@@ -69,7 +69,7 @@ public class StudentController {
             .requireNonNull(studentFormMono, "studentFormMono must not be null")
             .publishOn(scheduler)
             .switchIfEmpty(Mono.error(new IllegalArgumentException("Request body cannot be null")))
-            .doOnSuccess(ValidationUtils::validate)
+            .doOnNext(ValidationUtils::validate)
             .map(StudentForm::build)
             .flatMap(studentService::save)
             .<ResponseVo<Void>>thenReturn(ResponseVo.success())

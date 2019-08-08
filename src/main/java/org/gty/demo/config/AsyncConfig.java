@@ -26,7 +26,7 @@ public class AsyncConfig {
         poolSize = Suppliers.memoize(() -> DEFAULT_POOL_SIZE * 2);
     }
 
-    @Bean(destroyMethod = "shutdown")
+    @Bean
     @Nonnull
     public ThreadPoolTaskExecutor asyncExecutor() {
         final var executor = new ThreadPoolTaskExecutor();

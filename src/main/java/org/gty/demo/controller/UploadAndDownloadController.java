@@ -54,8 +54,8 @@ public class UploadAndDownloadController {
         produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Mono<ResponseVo<Void>> upload(@Nonnull final Mono<UploadFormData> formDataMono) {
         return Objects.requireNonNull(formDataMono, "formDataMono must not be null")
-            .doOnSuccess(ValidationUtils::validate)
-            .doOnSuccess(form -> log.debug("{}", form))
+            .doOnNext(ValidationUtils::validate)
+            .doOnNext(form -> log.debug("{}", form))
             .thenReturn(ResponseVo.<Void>success())
             .subscribeOn(scheduler);
     }

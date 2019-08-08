@@ -54,13 +54,13 @@ public class ReactiveDemoService {
                 .filter(Boolean::valueOf)
                 .map(val -> 0L)
                 .switchIfEmpty(opsForValue.increment(GLOBAL_COUNTER))
-                .doOnSuccess(val -> log.debug("[Redis] global counter = {}", val));
+                .doOnNext(val -> log.debug("[Redis] global counter = {}", val));
     }
 
     private Mono<Void> sendMessageToRabbit() {
         return Mono
                 .<Void>fromRunnable(() -> asyncAmqpTemplate.convertSendAndReceive("demo-queue", MESSAGE))
-                .doOnSuccess(ignored -> log.debug("[AMQP] --- MESSAGE sent to rabbit"))
+                .doOnNext(ignored -> log.debug("[AMQP] --- MESSAGE sent to rabbit"))
                 .subscribeOn(scheduler);
     }
 
