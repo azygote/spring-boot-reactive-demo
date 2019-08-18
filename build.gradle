@@ -31,11 +31,12 @@ configurations {
 }
 
 bootRun {
-    systemProperties['spring.profiles.active'] = project.gradle.startParameter.systemPropertiesArgs['spring.profiles.active']
+    def activeProfile = 'spring.profiles.active'
+    systemProperties[activeProfile] = project.gradle.startParameter.systemPropertiesArgs[activeProfile]
 }
 
 dependencies {
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
