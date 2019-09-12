@@ -5,7 +5,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'project-report'
-    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'org.springframework.boot' version '2.1.8.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
@@ -77,7 +77,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.9'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava:2.9.9'
     implementation 'com.zaxxer:HikariCP:3.3.1'
-    implementation 'com.google.guava:guava:28.0-jre'
+    implementation 'com.google.guava:guava:28.1-jre'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
     implementation 'com.ibm.icu:icu4j:64.2'
