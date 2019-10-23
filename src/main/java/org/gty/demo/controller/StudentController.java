@@ -36,7 +36,7 @@ public class StudentController {
     }
 
     @Nonnull
-    @GetMapping(value = "/api/student/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/api/student/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseVo<StudentVo>> get(@PathVariable("id") final long id) {
         return Mono
             .just(id)
@@ -46,7 +46,7 @@ public class StudentController {
     }
 
     @Nonnull
-    @GetMapping(value = "/api/student", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/api/student", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseVo<Page<StudentVo>>> getByParameters(@RequestParam(value = "page", required = false, defaultValue = "0") final int page,
                                                              @RequestParam(value = "size", required = false, defaultValue = "10") final int size,
                                                              @Nonnull @RequestParam(value = "sort", required = false, defaultValue = "") final String sort) {
@@ -62,8 +62,8 @@ public class StudentController {
 
     @Nonnull
     @PostMapping(value = "/api/student",
-        consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-        produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseVo<Void>> post(@Nonnull @RequestBody final Mono<StudentForm> studentFormMono) {
         return Objects
             .requireNonNull(studentFormMono, "studentFormMono must not be null")
@@ -77,7 +77,7 @@ public class StudentController {
     }
 
     @Nonnull
-    @DeleteMapping(value = "/api/student/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = "/api/student/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseVo<Void>> delete(@PathVariable("id") final long id) {
         return Mono
             .just(id)

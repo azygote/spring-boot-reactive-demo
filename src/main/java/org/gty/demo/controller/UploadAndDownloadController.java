@@ -51,7 +51,7 @@ public class UploadAndDownloadController {
 
     @PostMapping(value = "/api/files/upload",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-        produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseVo<Void>> upload(@Nonnull final Mono<UploadFormData> formDataMono) {
         return Objects.requireNonNull(formDataMono, "formDataMono must not be null")
             .doOnNext(ValidationUtils::validate)

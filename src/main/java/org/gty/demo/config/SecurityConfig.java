@@ -40,7 +40,7 @@ public class SecurityConfig {
             .exceptionHandling().authenticationEntryPoint((var exchange, var e) -> {
                 var response = exchange.getResponse();
                 response.setStatusCode(HttpStatus.OK);
-                response.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
+                response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
                 var responseVo = ResponseVo.unauthorized(e.toString());
                 var responseVoJson = gson.toJson(responseVo);

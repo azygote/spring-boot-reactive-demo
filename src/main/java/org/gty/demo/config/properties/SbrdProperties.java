@@ -2,25 +2,26 @@ package org.gty.demo.config.properties;
 
 import com.google.common.base.MoreObjects;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Component
+@ConstructorBinding
 @ConfigurationProperties(prefix = "sbrd")
 public class SbrdProperties implements Serializable {
 
     private static final long serialVersionUID = -1183042085547036856L;
 
-    private String storageContent;
+    private final String storageContent;
+
+    public SbrdProperties(String storageContent) {
+        this.storageContent = storageContent;
+    }
 
     public String getStorageContent() {
         return storageContent;
-    }
-
-    public void setStorageContent(String storageContent) {
-        this.storageContent = storageContent;
     }
 
     @Override
