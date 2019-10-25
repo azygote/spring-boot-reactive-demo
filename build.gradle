@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'org.gty'
-version = '1.0.6.RELEASE'
+version = '1.0.7.RELEASE'
 description = 'Spring Boot Reactive Demo'
 
 java.sourceCompatibility = JavaVersion.VERSION_12
