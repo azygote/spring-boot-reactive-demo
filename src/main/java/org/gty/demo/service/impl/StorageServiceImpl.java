@@ -4,7 +4,6 @@ import org.gty.demo.config.properties.SbrdProperties;
 import org.gty.demo.service.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ public class StorageServiceImpl implements StorageService {
 
     private final SbrdProperties sbrdProperties;
 
-    @Autowired
     public StorageServiceImpl(@Nonnull SbrdProperties sbrdProperties) {
         this.sbrdProperties = Objects.requireNonNull(sbrdProperties, "sbrdProperties must not be null");
     }

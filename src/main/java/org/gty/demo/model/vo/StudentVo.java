@@ -1,5 +1,6 @@
 package org.gty.demo.model.vo;
 
+import com.google.common.base.MoreObjects;
 import org.gty.demo.constant.SystemConstants;
 import org.gty.demo.model.entity.Student;
 import org.gty.demo.util.NioUtils;
@@ -14,7 +15,6 @@ import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.Objects;
-import java.util.StringJoiner;
 
 public class StudentVo implements Serializable {
 
@@ -98,33 +98,33 @@ public class StudentVo implements Serializable {
         if (this == o) return true;
         if (!(o instanceof StudentVo)) return false;
         StudentVo studentVo = (StudentVo) o;
-        return Objects.equals(getName(), studentVo.getName()) &&
-                Objects.equals(getGender(), studentVo.getGender()) &&
-                Objects.equals(getAge(), studentVo.getAge()) &&
-                Objects.equals(getBalance(), studentVo.getBalance()) &&
-                Objects.equals(getOtherInformation(), studentVo.getOtherInformation()) &&
-                Objects.equals(getCreatedDate(), studentVo.getCreatedDate()) &&
-                Objects.equals(getModifiedDate(), studentVo.getModifiedDate()) &&
-                Objects.equals(getPhoto(), studentVo.getPhoto());
+        return Objects.equals(name, studentVo.name) &&
+            Objects.equals(gender, studentVo.gender) &&
+            Objects.equals(age, studentVo.age) &&
+            Objects.equals(balance, studentVo.balance) &&
+            Objects.equals(otherInformation, studentVo.otherInformation) &&
+            Objects.equals(createdDate, studentVo.createdDate) &&
+            Objects.equals(modifiedDate, studentVo.modifiedDate) &&
+            Objects.equals(photo, studentVo.photo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getGender(), getAge(), getBalance(), getOtherInformation(), getCreatedDate(), getModifiedDate(), getPhoto());
+        return Objects.hash(name, gender, age, balance, otherInformation, createdDate, modifiedDate, photo);
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", StudentVo.class.getSimpleName() + "[", "]")
-                .add("name='" + name + "'")
-                .add("gender='" + gender + "'")
-                .add("age=" + age)
-                .add("balance='" + balance + "'")
-                .add("otherInformation='" + otherInformation + "'")
-                .add("createdDate='" + createdDate + "'")
-                .add("modifiedDate='" + modifiedDate + "'")
-                .add("photo='" + photo + "'")
-                .toString();
+        return MoreObjects.toStringHelper(this)
+            .add("name", name)
+            .add("gender", gender)
+            .add("age", age)
+            .add("balance", balance)
+            .add("otherInformation", otherInformation)
+            .add("createdDate", createdDate)
+            .add("modifiedDate", modifiedDate)
+            .add("photo", photo)
+            .toString();
     }
 
     @Nonnull

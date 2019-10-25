@@ -1,9 +1,7 @@
 package org.gty.demo.config;
 
+import com.google.gson.Gson;
 import org.gty.demo.model.vo.ResponseVo;
-import org.gty.demo.util.JsonUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -23,41 +21,45 @@ import java.util.Objects;
 @EnableReactiveMethodSecurity(proxyTargetClass = true)
 public class SecurityConfig {
 
-    private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
-
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        return http
-                .csrf().disable()
-                .authorizeExchange()
-                    .matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .pathMatchers(generateRestfulAntPathMatchers("/api/student")).hasRole("USER")
-                    .pathMatchers(generateRestfulAntPathMatchers("/api/actuator")).hasRole("ACTUATOR")
-                    .pathMatchers(generateRestfulAntPathMatchers("/api/files")).hasRole("USER")
-                .anyExchange().authenticated().and()
-                .httpBasic().and()
-                .exceptionHandling().authenticationEntryPoint((var exchange, var e) -> {
-                    var response = exchange.getResponse();
-                    response.setStatusCode(HttpStatus.OK);
-                    response.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
+    @Nonnull
+    public SecurityWebFilterChain springSecurityFilterChain(@Nonnull final ServerHttpSecurity http,
+                                                            @Nonnull final Gson gson) {
+        Objects.requireNonNull(http, "http must not be null");
+        Objects.requireNonNull(gson, "gson must not be null");
 
-                    var responseVo = ResponseVo.unauthorized(e.toString());
-                    var responseVoJson = JsonUtils.toJson(responseVo);
-                    var bytes = responseVoJson.getBytes(StandardCharsets.UTF_8);
-                    var buffer = response.bufferFactory().wrap(bytes);
-                    return response.writeWith(Mono.just(buffer));
-                }).and()
-                .build();
+        return http
+            .csrf().disable()
+            .authorizeExchange()
+            .matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+            .pathMatchers(generateRestfulAntPathMatchers("/api/student")).hasRole("USER")
+            .pathMatchers(generateRestfulAntPathMatchers("/api/actuator")).hasRole("ACTUATOR")
+            .pathMatchers(generateRestfulAntPathMatchers("/api/files")).hasRole("USER")
+            .anyExchange().authenticated().and()
+            .httpBasic().and()
+            .exceptionHandling().authenticationEntryPoint((var exchange, var e) -> {
+                var response = exchange.getResponse();
+                response.setStatusCode(HttpStatus.OK);
+                response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+
+                var responseVo = ResponseVo.unauthorized(e.toString());
+                var responseVoJson = gson.toJson(responseVo);
+                var bytes = responseVoJson.getBytes(StandardCharsets.UTF_8);
+                var buffer = response.bufferFactory().wrap(bytes);
+                return response.writeWith(Mono.just(buffer));
+            }).and()
+            .build();
     }
 
     @Nonnull
-    private static String[] generateRestfulAntPathMatchers(@Nonnull String url) {
+    private static String[] generateRestfulAntPathMatchers(@Nonnull final String url) {
         Objects.requireNonNull(url, "url must not be null");
 
-        return new String[] {url, url + "/**"};
+        return new String[]{url, url + "/**"};
     }
 
     @Bean
+    @Nonnull
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

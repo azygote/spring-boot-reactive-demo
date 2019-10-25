@@ -1,15 +1,14 @@
 package org.gty.demo.service;
 
-import org.gty.demo.constant.SystemConstants;
 import org.gty.demo.model.entity.Student;
 import org.gty.demo.model.vo.StudentVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import javax.annotation.Nonnull;
 import java.util.NoSuchElementException;
@@ -21,10 +20,12 @@ public class ReactiveStudentService {
     private static final Logger log = LoggerFactory.getLogger(ReactiveStudentService.class);
 
     private final StudentService studentService;
+    private final Scheduler scheduler;
 
-    @Autowired
-    public ReactiveStudentService(@Nonnull StudentService studentService) {
+    public ReactiveStudentService(@Nonnull final StudentService studentService,
+                                  @Nonnull final Scheduler scheduler) {
         this.studentService = Objects.requireNonNull(studentService, "studentService must not be null");
+        this.scheduler = Objects.requireNonNull(scheduler, "scheduler must not be null");
     }
 
     @Nonnull
@@ -32,7 +33,7 @@ public class ReactiveStudentService {
         return Mono.fromCallable(() -> studentService.findById(id))
                 .flatMap(Mono::justOrEmpty)
                 .switchIfEmpty(Mono.error(new IllegalArgumentException(String.format("Student with id: [%s] could not be found.", id))))
-                .subscribeOn(SystemConstants.defaultReactorScheduler());
+                .subscribeOn(scheduler);
     }
 
     @Nonnull
@@ -41,7 +42,7 @@ public class ReactiveStudentService {
 
         return Mono.fromRunnable(() -> studentService.save(student))
                 .cast(Void.class)
-                .subscribeOn(SystemConstants.defaultReactorScheduler());
+                .subscribeOn(scheduler);
     }
 
     @Nonnull
@@ -49,7 +50,7 @@ public class ReactiveStudentService {
         Objects.requireNonNull(pageable, "orderBy must not be null");
 
         return Mono.fromCallable(() -> studentService.findByPage(pageable))
-                .subscribeOn(SystemConstants.defaultReactorScheduler());
+                .subscribeOn(scheduler);
     }
 
     @Nonnull
@@ -63,6 +64,6 @@ public class ReactiveStudentService {
                         return throwable;
                     }
                 })
-                .subscribeOn(SystemConstants.defaultReactorScheduler());
+                .subscribeOn(scheduler);
     }
 }

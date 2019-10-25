@@ -6,7 +6,6 @@ import org.gty.demo.model.entity.SystemUserRole;
 import org.gty.demo.repository.SystemUserRepository;
 import org.gty.demo.repository.SystemUserRoleRepository;
 import org.gty.demo.security.SystemUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -23,7 +22,6 @@ public class SystemUserServiceImpl implements SystemUserService {
     private final SystemUserRepository systemUserRepository;
     private final SystemUserRoleRepository systemUserRoleRepository;
 
-    @Autowired
     public SystemUserServiceImpl(@Nonnull SystemUserRepository systemUserRepository,
                                   @Nonnull SystemUserRoleRepository systemUserRoleRepository) {
         this.systemUserRepository = Objects.requireNonNull(systemUserRepository,

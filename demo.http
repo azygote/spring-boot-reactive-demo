@@ -6,13 +6,13 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
 GET http://localhost:8080/api/student?sort=createdDate,desc&page=0&size=5
-Accept: application/json
+Accept: application/json; utf-8
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 ###
 
 POST http://localhost:8080/api/student
-Accept: application/json
+Accept: application/json; utf-8
 Content-Type: application/json; utf-8
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 
@@ -26,38 +26,33 @@ Authorization: Basic Z3R5OjEyMzQ1Ng==
 ###
 
 GET http://localhost:8080/api/student/100
-Accept: application/json
+Accept: application/json; utf-8
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 ###
 
 DELETE http://localhost:8080/api/student/1
-Accept: application/json
+Accept: application/json; utf-8
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 ###
 
 GET http://localhost:8080/api/files/test.txt
-Accept: application/json
+Accept: application/octet-stream
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 ###
 
-POST http://localhost:8080/api/files/upload
+POST http://localhost:8080/api/files/upload?fileAdditionalInfo=WTF
 Content-Type: multipart/form-data; boundary=WebAppBoundary
-Accept: multipart/form-data; boundary=WebAppBoundary
+Accept: application/json; utf-8
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 --WebAppBoundary
-Content-Disposition: form-data; name="uploadFile" filename="test.txt"
+Content-Disposition: form-data; name="uploadFile"; filename="test.txt"
 
 < ./demo.http
---WebAppBoundary--
 
---WebAppBoundary
-Content-Disposition: form-data; name="foo"
-
-bar
 --WebAppBoundary--
 
 ###

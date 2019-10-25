@@ -105,30 +105,30 @@ public class Student extends Base implements Serializable {
         if (!(o instanceof Student)) return false;
         if (!super.equals(o)) return false;
         Student student = (Student) o;
-        return Objects.equals(getId(), student.getId()) &&
-                Objects.equals(getName(), student.getName()) &&
-                Objects.equals(getGender(), student.getGender()) &&
-                Objects.equals(getAge(), student.getAge()) &&
-                Objects.equals(getBalance(), student.getBalance()) &&
-                Objects.equals(getOtherInformation(), student.getOtherInformation()) &&
-                Objects.equals(getPhoto(), student.getPhoto());
+        return Objects.equals(id, student.id) &&
+            Objects.equals(name, student.name) &&
+            Objects.equals(gender, student.gender) &&
+            Objects.equals(age, student.age) &&
+            Objects.equals(balance, student.balance) &&
+            Objects.equals(otherInformation, student.otherInformation) &&
+            Objects.equals(photo, student.photo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getName(), getGender(), getAge(), getBalance(), getOtherInformation(), getPhoto());
+        return Objects.hash(super.hashCode(), id, name, gender, age, balance, otherInformation, photo);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .add("name", name)
-                .add("gender", gender)
-                .add("age", age)
-                .add("balance", balance)
-                .add("otherInformation", otherInformation)
-                .add("photo", photo)
-                .toString();
+            .add("id", id)
+            .add("name", name)
+            .add("gender", gender)
+            .add("age", age)
+            .add("balance", balance)
+            .add("otherInformation", otherInformation)
+            .add("photo", photo)
+            .toString();
     }
 }

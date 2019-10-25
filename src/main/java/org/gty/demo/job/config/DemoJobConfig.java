@@ -6,12 +6,15 @@ import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Nonnull;
+import java.util.Objects;
 import java.util.TimeZone;
 
 @Configuration
 public class DemoJobConfig {
 
     @Bean
+    @Nonnull
     public JobDetail demoJobDetail() {
         return JobBuilder.newJob(DemoJob.class)
                 .withIdentity("demoJob")
@@ -21,13 +24,16 @@ public class DemoJobConfig {
     }
 
     @Bean
-    public Trigger demoJobTrigger(JobDetail demoJobDetail) {
-        var scheduleBuilder
+    @Nonnull
+    public Trigger demoJobTrigger(@Nonnull final JobDetail demoJobDetail) {
+        Objects.requireNonNull(demoJobDetail, "demoJobDetail must not be null");
+
+        final var scheduleBuilder
                 = SimpleScheduleBuilder.simpleSchedule()
                 .withIntervalInSeconds(15)
                 .repeatForever();
 
-        var cronScheduleBuilder = CronScheduleBuilder
+        final var cronScheduleBuilder = CronScheduleBuilder
                 .dailyAtHourAndMinute(1, 0)
                 .inTimeZone(TimeZone.getTimeZone(SystemConstants.defaultTimeZone))
                 .build();

@@ -7,7 +7,6 @@ import org.gty.demo.repository.StudentRepository;
 import org.gty.demo.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -29,58 +28,54 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
 
-    @Autowired
-    public StudentServiceImpl(@Nonnull StudentRepository studentRepository) {
+    public StudentServiceImpl(@Nonnull final StudentRepository studentRepository) {
         this.studentRepository = Objects.requireNonNull(studentRepository,
-                "studentRepository must not be null");
+            "studentRepository must not be null");
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Cacheable(cacheNames = "students", keyGenerator = "keyGenerator")
     @Nonnull
     @Override
-    public Optional<StudentVo> findById(long id) {
+    public Optional<StudentVo> findById(final long id) {
         return studentRepository.findByIdAndDeleteMark(id, DeleteMark.NOT_DELETED)
-                .map(StudentVo::build);
+            .map(StudentVo::build);
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Cacheable(cacheNames = "students", keyGenerator = "keyGenerator")
     @Nonnull
     @Override
-    public Collection<StudentVo> findByName(@Nonnull String name) {
-        Objects.requireNonNull(name, "name must not be null");
-
-        return studentRepository.findByNameContainingAndDeleteMark(name, DeleteMark.NOT_DELETED)
-                .stream()
-                .map(StudentVo::build)
-                .collect(Collectors.toList());
+    public Collection<StudentVo> findByName(@Nonnull final String name) {
+        return studentRepository
+            .findByNameContainingAndDeleteMark(Objects.requireNonNull(name, "name must not be null"), DeleteMark.NOT_DELETED)
+            .stream()
+            .map(StudentVo::build)
+            .collect(Collectors.toList());
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, readOnly = true, rollbackFor = Throwable.class)
     @Cacheable(cacheNames = "students", keyGenerator = "keyGenerator")
     @Nonnull
     @Override
-    public Page<StudentVo> findByPage(@Nonnull Pageable pageable) {
-        Objects.requireNonNull(pageable, "pageable must not be null");
-
-        return studentRepository.findByDeleteMark(DeleteMark.NOT_DELETED, pageable).map(StudentVo::build);
+    public Page<StudentVo> findByPage(@Nonnull final Pageable pageable) {
+        return studentRepository
+            .findByDeleteMark(DeleteMark.NOT_DELETED, Objects.requireNonNull(pageable, "pageable must not be null"))
+            .map(StudentVo::build);
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = Throwable.class)
     @CacheEvict(cacheNames = "students", keyGenerator = "keyGenerator", allEntries = true)
     @Override
-    public void save(@Nonnull Student student) {
-        Objects.requireNonNull(student, "student must not be null");
-
-        studentRepository.saveAndFlush(student);
+    public void save(@Nonnull final Student student) {
+        studentRepository.saveAndFlush(Objects.requireNonNull(student, "student must not be null"));
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = Throwable.class)
     @CacheEvict(cacheNames = "students", keyGenerator = "keyGenerator", allEntries = true)
     @Override
-    public void delete(long id) {
-        var student = studentRepository.findByIdAndDeleteMark(id, DeleteMark.NOT_DELETED).orElseThrow();
+    public void delete(final long id) {
+        final var student = studentRepository.findByIdAndDeleteMark(id, DeleteMark.NOT_DELETED).orElseThrow();
 
         student.setDeleteMark(DeleteMark.DELETED);
 

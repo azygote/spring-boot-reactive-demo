@@ -1,5 +1,6 @@
 package org.gty.demo.model.form;
 
+import com.google.common.base.MoreObjects;
 import org.gty.demo.constant.DeleteMark;
 import org.gty.demo.model.entity.Student;
 import org.gty.demo.util.NioUtils;
@@ -9,13 +10,12 @@ import org.springframework.core.io.Resource;
 import javax.annotation.Nonnull;
 import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.constraints.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.UncheckedIOException;
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.StringJoiner;
 
 public class StudentForm implements Serializable {
 
@@ -74,25 +74,25 @@ public class StudentForm implements Serializable {
         if (this == o) return true;
         if (!(o instanceof StudentForm)) return false;
         StudentForm that = (StudentForm) o;
-        return Objects.equals(getName(), that.getName()) &&
-                Objects.equals(getAge(), that.getAge()) &&
-                Objects.equals(getGender(), that.getGender()) &&
-                Objects.equals(getBalance(), that.getBalance());
+        return Objects.equals(name, that.name) &&
+            Objects.equals(age, that.age) &&
+            Objects.equals(gender, that.gender) &&
+            Objects.equals(balance, that.balance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getAge(), getGender(), getBalance());
+        return Objects.hash(name, age, gender, balance);
     }
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", StudentForm.class.getSimpleName() + "[", "]")
-                .add("name='" + name + "'")
-                .add("age=" + age)
-                .add("gender='" + gender + "'")
-                .add("balance='" + balance + "'")
-                .toString();
+        return MoreObjects.toStringHelper(this)
+            .add("name", name)
+            .add("age", age)
+            .add("gender", gender)
+            .add("balance", balance)
+            .toString();
     }
 
     @Nonnull

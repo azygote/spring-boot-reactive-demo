@@ -11,3 +11,6 @@
 
 ### Docker ###
 /deployment/db/
+
+### macOS ###
+.DS_Store
