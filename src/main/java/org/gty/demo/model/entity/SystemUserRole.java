@@ -40,8 +40,8 @@ public class SystemUserRole extends Base implements Serializable {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
-                .toString();
+            .add("id", id)
+            .toString();
     }
 
     @Embeddable
@@ -86,9 +86,9 @@ public class SystemUserRole extends Base implements Serializable {
         @Override
         public String toString() {
             return MoreObjects.toStringHelper(this)
-                    .add("username", username)
-                    .add("role", role)
-                    .toString();
+                .add("username", username)
+                .add("role", role)
+                .toString();
         }
     }
 }

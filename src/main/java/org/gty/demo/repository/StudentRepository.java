@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface StudentRepository
-        extends JpaRepository<Student, Long>, JpaSpecificationExecutor<Student> {
+    extends JpaRepository<Student, Long>, JpaSpecificationExecutor<Student> {
 
     @Nonnull
     Optional<Student> findByIdAndDeleteMark(long id, @Nonnull DeleteMark deleteMark);

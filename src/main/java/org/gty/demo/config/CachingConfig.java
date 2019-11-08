@@ -22,19 +22,19 @@ public class CachingConfig {
             keyBuilder.append(method.getName());
 
             var paramList = Arrays.stream(params)
-                    .map(param -> {
-                        var sb = new StringBuilder(" -> " + param.getClass().getName());
-                        var temp = String.valueOf(param);
+                .map(param -> {
+                    var sb = new StringBuilder(" -> " + param.getClass().getName());
+                    var temp = String.valueOf(param);
 
-                        if (param instanceof String) {
-                            sb.insert(0, "'" + temp + "'");
-                        } else {
-                            sb.insert(0, temp);
-                        }
+                    if (param instanceof String) {
+                        sb.insert(0, "'" + temp + "'");
+                    } else {
+                        sb.insert(0, temp);
+                    }
 
-                        return sb.toString();
-                    })
-                    .collect(Collectors.toUnmodifiableList());
+                    return sb.toString();
+                })
+                .collect(Collectors.toUnmodifiableList());
 
             var joiner = new StringJoiner(", ", "(", ")");
             paramList.forEach(joiner::add);

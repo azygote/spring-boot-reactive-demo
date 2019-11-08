@@ -40,18 +40,18 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
 
         var userMono = findUserByUsername(username);
         var rolesMono = findRolesByUsername(username)
-                .map(systemUserRole -> systemUserRole.getId().getRole())
-                .map(DbUserDetailsService::convertAuthorities)
-                .collect(Collectors.toUnmodifiableSet())
-                .defaultIfEmpty(Set.of());
+            .map(systemUserRole -> systemUserRole.getId().getRole())
+            .map(DbUserDetailsService::convertAuthorities)
+            .collect(Collectors.toUnmodifiableSet())
+            .defaultIfEmpty(Set.of());
 
         return Mono.zip(userMono, rolesMono)
-                .map(tuple2 -> {
-                    var user = tuple2.getT1();
-                    var roles = tuple2.getT2();
+            .map(tuple2 -> {
+                var user = tuple2.getT1();
+                var roles = tuple2.getT2();
 
-                    return new DbUserDetails(user.getUsername(), user.getPassword(), roles);
-                });
+                return new DbUserDetails(user.getUsername(), user.getPassword(), roles);
+            });
     }
 
     @Nonnull
@@ -66,8 +66,8 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
         Objects.requireNonNull(username, "username must not be null");
 
         return Mono.fromCallable(() -> systemUserService.findUserByUsername(username))
-                .subscribeOn(scheduler)
-                .flatMap(Mono::justOrEmpty);
+            .subscribeOn(scheduler)
+            .flatMap(Mono::justOrEmpty);
     }
 
     @Nonnull
@@ -75,8 +75,8 @@ public class DbUserDetailsService implements ReactiveUserDetailsService {
         Objects.requireNonNull(username, "username must not be null");
 
         return Mono.fromCallable(() -> systemUserService.findRolesByUsername(username))
-                .subscribeOn(scheduler)
-                .flatMap(Mono::justOrEmpty)
-                .flatMapMany(Flux::fromIterable);
+            .subscribeOn(scheduler)
+            .flatMap(Mono::justOrEmpty)
+            .flatMapMany(Flux::fromIterable);
     }
 }

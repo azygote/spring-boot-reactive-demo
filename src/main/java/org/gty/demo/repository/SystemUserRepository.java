@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public interface SystemUserRepository
-        extends JpaRepository<SystemUser, String>, JpaSpecificationExecutor<SystemUser> {
+    extends JpaRepository<SystemUser, String>, JpaSpecificationExecutor<SystemUser> {
 
     @Nonnull
     Optional<SystemUser> findByUsernameAndDeleteMark(@Nonnull String username,

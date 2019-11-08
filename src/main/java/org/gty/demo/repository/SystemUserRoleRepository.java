@@ -9,8 +9,8 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 
 public interface SystemUserRoleRepository
-        extends JpaRepository<SystemUserRole, SystemUserRole.SystemUserRoleId>,
-        JpaSpecificationExecutor<SystemUserRole> {
+    extends JpaRepository<SystemUserRole, SystemUserRole.SystemUserRoleId>,
+    JpaSpecificationExecutor<SystemUserRole> {
 
     @Nonnull
     Collection<SystemUserRole> findByIdUsernameAndDeleteMark(@Nonnull String username,
