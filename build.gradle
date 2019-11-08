@@ -13,8 +13,8 @@ group = 'org.gty'
 version = '1.0.7.RELEASE'
 description = 'Spring Boot Reactive Demo'
 
-java.sourceCompatibility = JavaVersion.VERSION_12
-java.targetCompatibility = JavaVersion.VERSION_12
+java.sourceCompatibility = JavaVersion.VERSION_13
+java.targetCompatibility = JavaVersion.VERSION_13
 [compileJava, compileTestJava]*.options*.encoding = "${StandardCharsets.UTF_8}"
 javadoc.options.encoding = "${StandardCharsets.UTF_8}"
 
