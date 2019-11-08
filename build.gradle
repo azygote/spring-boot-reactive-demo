@@ -117,6 +117,11 @@ clean.doLast {
     project.delete "$projectDir${FileSystems.default.separator}out${FileSystems.default.separator}"
 }
 
+// for Java 12 and 13 features
+tasks.withType(JavaCompile).each {
+    it.options.compilerArgs.add('--enable-preview')
+}
+
 task buildApp(type: GradleBuild) {
     tasks = ['clean', 'bootJar']
 }
