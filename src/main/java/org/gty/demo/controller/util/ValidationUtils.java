@@ -29,5 +29,6 @@ public final class ValidationUtils {
         }
     }
 
-    private ValidationUtils() {}
+    private ValidationUtils() {
+    }
 }

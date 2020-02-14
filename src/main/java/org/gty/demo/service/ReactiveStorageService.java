@@ -29,6 +29,6 @@ public class ReactiveStorageService {
         Objects.requireNonNull(filename, "filename must not be null");
 
         return Mono.fromCallable(() -> storageService.loadAsResource(filename))
-                .subscribeOn(scheduler);
+            .subscribeOn(scheduler);
     }
 }

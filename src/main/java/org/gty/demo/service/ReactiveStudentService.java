@@ -31,9 +31,9 @@ public class ReactiveStudentService {
     @Nonnull
     public Mono<StudentVo> findById(long id) {
         return Mono.fromCallable(() -> studentService.findById(id))
-                .flatMap(Mono::justOrEmpty)
-                .switchIfEmpty(Mono.error(new IllegalArgumentException(String.format("Student with id: [%s] could not be found.", id))))
-                .subscribeOn(scheduler);
+            .flatMap(Mono::justOrEmpty)
+            .switchIfEmpty(Mono.error(new IllegalArgumentException(String.format("Student with id: [%s] could not be found.", id))))
+            .subscribeOn(scheduler);
     }
 
     @Nonnull
@@ -41,8 +41,8 @@ public class ReactiveStudentService {
         Objects.requireNonNull(student, "id must not be null");
 
         return Mono.fromRunnable(() -> studentService.save(student))
-                .cast(Void.class)
-                .subscribeOn(scheduler);
+            .cast(Void.class)
+            .subscribeOn(scheduler);
     }
 
     @Nonnull
@@ -50,20 +50,20 @@ public class ReactiveStudentService {
         Objects.requireNonNull(pageable, "orderBy must not be null");
 
         return Mono.fromCallable(() -> studentService.findByPage(pageable))
-                .subscribeOn(scheduler);
+            .subscribeOn(scheduler);
     }
 
     @Nonnull
     public Mono<Void> delete(long id) {
         return Mono.fromRunnable(() -> studentService.delete(id))
-                .cast(Void.class)
-                .onErrorMap(throwable -> {
-                    if (throwable instanceof NoSuchElementException) {
-                        return new IllegalArgumentException(String.format("Student with id: [%s] could not be found.", id));
-                    } else {
-                        return throwable;
-                    }
-                })
-                .subscribeOn(scheduler);
+            .cast(Void.class)
+            .onErrorMap(throwable -> {
+                if (throwable instanceof NoSuchElementException) {
+                    return new IllegalArgumentException(String.format("Student with id: [%s] could not be found.", id));
+                } else {
+                    return throwable;
+                }
+            })
+            .subscribeOn(scheduler);
     }
 }

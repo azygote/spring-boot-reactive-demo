@@ -18,10 +18,10 @@ public class RedisConfig {
 
     @Bean
     public ReactiveRedisTemplate<Object, Object> reactiveRedisTemplate(
-            @Nonnull ReactiveRedisConnectionFactory reactiveRedisConnectionFactory,
-            @Nonnull ResourceLoader resourceLoader) {
+        @Nonnull ReactiveRedisConnectionFactory reactiveRedisConnectionFactory,
+        @Nonnull ResourceLoader resourceLoader) {
         Objects.requireNonNull(reactiveRedisConnectionFactory,
-                "reactiveRedisConnectionFactory must not be null");
+            "reactiveRedisConnectionFactory must not be null");
 
         Objects.requireNonNull(resourceLoader, "resourceLoader must not be null");
 
@@ -29,21 +29,21 @@ public class RedisConfig {
         var jdkSerializer = new JdkSerializationRedisSerializer(Objects.requireNonNull(resourceLoader.getClassLoader()));
 
         var serializationContext = RedisSerializationContext
-                .newSerializationContext()
-                .key(genericToStringSerializer)
-                .value(jdkSerializer)
-                .hashKey(genericToStringSerializer)
-                .hashValue(jdkSerializer)
-                .build();
+            .newSerializationContext()
+            .key(genericToStringSerializer)
+            .value(jdkSerializer)
+            .hashKey(genericToStringSerializer)
+            .hashValue(jdkSerializer)
+            .build();
 
         return new ReactiveRedisTemplate<>(reactiveRedisConnectionFactory, serializationContext);
     }
 
     @Bean
     public ReactiveStringRedisTemplate reactiveStringRedisTemplate(
-            @Nonnull ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
+        @Nonnull ReactiveRedisConnectionFactory reactiveRedisConnectionFactory) {
         Objects.requireNonNull(reactiveRedisConnectionFactory,
-                "reactiveRedisConnectionFactory must not be null");
+            "reactiveRedisConnectionFactory must not be null");
 
         return new ReactiveStringRedisTemplate(reactiveRedisConnectionFactory);
     }

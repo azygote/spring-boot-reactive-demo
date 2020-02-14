@@ -31,12 +31,12 @@ public class ReactiveDemoService {
                                @Nonnull final ReactiveStringRedisTemplate reactiveStringRedisTemplate,
                                @Nonnull final Scheduler scheduler) {
         this.asyncAmqpTemplate = Objects.requireNonNull(asyncAmqpTemplate,
-                "asyncAmqpTemplate must not be null");
+            "asyncAmqpTemplate must not be null");
 
         this.kafkaTemplate = Objects.requireNonNull(kafkaTemplate, "kafkaTemplate must not be null");
 
         this.reactiveStringRedisTemplate = Objects.requireNonNull(reactiveStringRedisTemplate,
-                "reactiveStringRedisTemplate must not be null");
+            "reactiveStringRedisTemplate must not be null");
 
         this.scheduler = Objects.requireNonNull(scheduler, "scheduler must not be null");
     }
@@ -49,26 +49,26 @@ public class ReactiveDemoService {
         var opsForValue = reactiveStringRedisTemplate.opsForValue();
 
         return Mono.just(0)
-                .map(String::valueOf)
-                .flatMap(val -> opsForValue.setIfAbsent(GLOBAL_COUNTER, val))
-                .filter(Boolean::valueOf)
-                .map(val -> 0L)
-                .switchIfEmpty(opsForValue.increment(GLOBAL_COUNTER))
-                .doOnNext(val -> log.debug("[Redis] global counter = {}", val));
+            .map(String::valueOf)
+            .flatMap(val -> opsForValue.setIfAbsent(GLOBAL_COUNTER, val))
+            .filter(Boolean::valueOf)
+            .map(val -> 0L)
+            .switchIfEmpty(opsForValue.increment(GLOBAL_COUNTER))
+            .doOnNext(val -> log.debug("[Redis] global counter = {}", val));
     }
 
     private Mono<Void> sendMessageToRabbit() {
         return Mono
-                .<Void>fromRunnable(() -> asyncAmqpTemplate.convertSendAndReceive("demo-queue", MESSAGE))
-                .doOnNext(ignored -> log.debug("[AMQP] --- MESSAGE sent to rabbit"))
-                .subscribeOn(scheduler);
+            .<Void>fromRunnable(() -> asyncAmqpTemplate.convertSendAndReceive("demo-queue", MESSAGE))
+            .doOnNext(ignored -> log.debug("[AMQP] --- MESSAGE sent to rabbit"))
+            .subscribeOn(scheduler);
     }
 
     private Mono<Void> sendMessageToKafka() {
         return Mono
-                .<Void>fromRunnable(() -> kafkaTemplate.send("demo-topic",
-                        SerializationUtils.serialize(MESSAGE)).addCallback(result -> log.debug("[Kafka] --- MESSAGE sent to kafka"),
-                        failure -> log.warn("sending MESSAGE to kafka failed")))
-                .subscribeOn(scheduler);
+            .<Void>fromRunnable(() -> kafkaTemplate.send("demo-topic",
+                SerializationUtils.serialize(MESSAGE)).addCallback(result -> log.debug("[Kafka] --- MESSAGE sent to kafka"),
+                failure -> log.warn("sending MESSAGE to kafka failed")))
+            .subscribeOn(scheduler);
     }
 }

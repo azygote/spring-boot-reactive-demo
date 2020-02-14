@@ -17,10 +17,10 @@ public class DemoJobConfig {
     @Nonnull
     public JobDetail demoJobDetail() {
         return JobBuilder.newJob(DemoJob.class)
-                .withIdentity("demoJob")
-                .usingJobData("info", "job demonstration.")
-                .storeDurably()
-                .build();
+            .withIdentity("demoJob")
+            .usingJobData("info", "job demonstration.")
+            .storeDurably()
+            .build();
     }
 
     @Bean
@@ -29,19 +29,19 @@ public class DemoJobConfig {
         Objects.requireNonNull(demoJobDetail, "demoJobDetail must not be null");
 
         final var scheduleBuilder
-                = SimpleScheduleBuilder.simpleSchedule()
-                .withIntervalInSeconds(15)
-                .repeatForever();
+            = SimpleScheduleBuilder.simpleSchedule()
+            .withIntervalInSeconds(15)
+            .repeatForever();
 
         final var cronScheduleBuilder = CronScheduleBuilder
-                .dailyAtHourAndMinute(1, 0)
-                .inTimeZone(TimeZone.getTimeZone(SystemConstants.defaultTimeZone))
-                .build();
+            .dailyAtHourAndMinute(1, 0)
+            .inTimeZone(TimeZone.getTimeZone(SystemConstants.defaultTimeZone))
+            .build();
 
         return TriggerBuilder.newTrigger()
-                .forJob(demoJobDetail)
-                .withIdentity("demoJobTrigger")
-                .withSchedule(scheduleBuilder)
-                .build();
+            .forJob(demoJobDetail)
+            .withIdentity("demoJobTrigger")
+            .withSchedule(scheduleBuilder)
+            .build();
     }
 }

@@ -13,7 +13,7 @@ public class DemoKafkaListener {
     private static final Logger log = LoggerFactory.getLogger(DemoKafkaListener.class);
 
     @KafkaListener(id = "${spring.kafka.consumer.group-id}",
-            topics = "${spring.kafka.template.default-topic}")
+        topics = "${spring.kafka.template.default-topic}")
     public void onReceive(ConsumerRecord<String, byte[]> record) {
         log.debug("[Kafka] --- message received: {}", SerializationUtils.<Object>deserialize(record.value()));
     }

@@ -34,7 +34,7 @@ public class StudentForm implements Serializable {
 
     @NotBlank
     @Pattern(regexp = "^\\s*(?=.*[0-9])\\d*(?:\\.\\d{1,2})?\\s*$",
-            message = "大于等于零的两位小数")
+        message = "大于等于零的两位小数")
     private String balance;
 
     public String getName() {

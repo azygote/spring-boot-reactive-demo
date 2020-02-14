@@ -23,12 +23,12 @@ public class SystemUserServiceImpl implements SystemUserService {
     private final SystemUserRoleRepository systemUserRoleRepository;
 
     public SystemUserServiceImpl(@Nonnull SystemUserRepository systemUserRepository,
-                                  @Nonnull SystemUserRoleRepository systemUserRoleRepository) {
+                                 @Nonnull SystemUserRoleRepository systemUserRoleRepository) {
         this.systemUserRepository = Objects.requireNonNull(systemUserRepository,
-                "systemUserRepository must not be null");
+            "systemUserRepository must not be null");
 
         this.systemUserRoleRepository = Objects.requireNonNull(systemUserRoleRepository,
-                "systemUserRoleRepository must not be null");
+            "systemUserRoleRepository must not be null");
     }
 
     @Cacheable(cacheNames = "systemUsers", keyGenerator = "keyGenerator")
