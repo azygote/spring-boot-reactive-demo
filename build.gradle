@@ -124,6 +124,9 @@ tasks.withType(JavaCompile).each {
 
 bootRun.jvmArgs(['--enable-preview'])
 
-task buildApp(type: GradleBuild) {
-    tasks = ['clean', 'bootJar']
+task buildApp {
+    dependsOn clean
+    dependsOn bootJar
+
+    tasks.getByName('bootJar').mustRunAfter clean
 }
