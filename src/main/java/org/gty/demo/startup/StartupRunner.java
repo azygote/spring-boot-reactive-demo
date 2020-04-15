@@ -38,13 +38,6 @@ public class StartupRunner {
     }
 
     private void newFeature() {
-        var logInfo = """
-        This is log information.
-        Breaks in multiple lines.
-        """;
-
-        log.info(logInfo);
-
         var dateTime = ZonedDateTime.now(SystemConstants.defaultTimeZone);
         var monthInfo = "This is " + switch (dateTime.getMonth()) {
             case JANUARY -> "JAN";
