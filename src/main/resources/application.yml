@@ -8,10 +8,10 @@ management:
     shutdown:
       enabled: true
 
+server:
+  shutdown: graceful
+
 spring:
-  http:
-    encoding:
-      force: true
   datasource:
     url: jdbc:postgresql://${postgresql-host}:5432/db_sbrd
     driver-class-name: org.postgresql.Driver
@@ -49,6 +49,14 @@ spring:
     store-type: redis
   gson:
     serialize-nulls: true
+  webflux:
+    base-path: /sbrd
+    format:
+      date: iso
+      date-time: iso
+      time: iso
+  lifecycle:
+    timeout-per-shutdown-phase: 1s
 
 sbrd:
   storage-content: "These violent delights have violent ends."

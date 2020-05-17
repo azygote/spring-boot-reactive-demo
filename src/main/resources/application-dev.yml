@@ -12,7 +12,7 @@ logging:
     org.gty.demo: debug
 
 spring:
-  http:
+  codec:
     log-request-details: true
   jpa:
     show-sql: false
