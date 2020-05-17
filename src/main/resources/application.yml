@@ -13,7 +13,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://${postgresql-host}:5432/db_sbrd
+    url: jdbc:postgresql://${sbrd.postgresql-host}:5432/db_sbrd
     driver-class-name: org.postgresql.Driver
     username: gty
     password: 123456
@@ -26,7 +26,7 @@ spring:
       time-to-live: 2d
 #     key-prefix: 'spring-boot-reactive-demo:cache:'
   redis:
-    host: ${redis-host}
+    host: ${sbrd.redis-host}
     password: 123456
     timeout: 100ms
   data:
@@ -34,9 +34,9 @@ spring:
       repositories:
         enabled: false
   rabbitmq:
-    host: ${rabbitmq-host}
+    host: ${sbrd.rabbitmq-host}
   kafka:
-    bootstrap-servers: ${kafka-host}:9092
+    bootstrap-servers: ${sbrd.kafka-host}:9092
     consumer:
       group-id: demo-group
       auto-offset-reset: earliest
