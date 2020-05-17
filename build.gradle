@@ -34,6 +34,32 @@ bootRun {
     systemProperties[activeProfile] = project.gradle.startParameter.systemPropertiesArgs[activeProfile]
 }
 
+bootJar {
+    layered {
+        includeLayerTools = true
+
+        /*
+        application {
+            intoLayer("spring-boot-loader") {
+                include "org/springframework/boot/loader/**"
+            }
+            intoLayer("application")
+        }
+        dependencies {
+            intoLayer("snapshot-dependencies") {
+                include "*:*:*SNAPSHOT"
+            }
+            intoLayer("dependencies")
+        }
+        layerOrder = ["dependencies", "spring-boot-loader", "snapshot-dependencies", "application"]
+         */
+    }
+}
+
+bootBuildImage {
+    environment = ["BP_JVM_VERSION" : "14"]
+}
+
 dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
