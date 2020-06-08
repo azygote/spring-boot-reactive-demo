@@ -1,9 +1,9 @@
-service-host: localhost
+sbrd.service-host: localhost
 
-postgresql-host: ${service-host}
-redis-host: ${service-host}
-rabbitmq-host: ${service-host}
-kafka-host: ${service-host}
+sbrd.postgresql-host: ${sbrd.service-host}
+sbrd.redis-host: ${sbrd.service-host}
+sbrd.rabbitmq-host: ${sbrd.service-host}
+sbrd.kafka-host: ${sbrd.service-host}
 
 logging:
   level:
@@ -12,7 +12,7 @@ logging:
     org.gty.demo: debug
 
 spring:
-  http:
+  codec:
     log-request-details: true
   jpa:
     show-sql: false

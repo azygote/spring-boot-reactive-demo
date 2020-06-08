@@ -1,0 +1,16 @@
+sbrd.postgresql-host: postgres
+sbrd.redis-host: redis
+sbrd.rabbitmq-host: rabbitmq
+sbrd.kafka-host: kafka
+
+logging:
+  level:
+    web: debug
+    sql: debug
+    org.gty.demo: debug
+
+spring:
+  codec:
+    log-request-details: true
+  jpa:
+    show-sql: false
