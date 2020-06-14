@@ -16,14 +16,13 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.Objects;
 
 public interface ReactiveGithubService {
 
     @RequestLine("GET /repos/{owner}/{repo}/contributors")
-    Mono<List<Contributor>> contributors(@Param("owner") @Nonnull final String owner,
-                                         @Param("repo") @Nonnull final String repo);
+    Mono<Iterable<Contributor>> contributors(@Param("owner") @Nonnull final String owner,
+                                             @Param("repo") @Nonnull final String repo);
 
     @Configuration
     class ReactiveGithubServiceConfig {
