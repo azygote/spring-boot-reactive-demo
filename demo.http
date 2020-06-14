@@ -31,6 +31,12 @@ Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 ###
 
+GET http://localhost:8080/sbrd/api/github
+Accept: application/json; utf-8
+Authorization: Basic Z3R5OjEyMzQ1Ng==
+
+###
+
 DELETE http://localhost:8080/sbrd/api/student/1
 Accept: application/json; utf-8
 Authorization: Basic Z3R5OjEyMzQ1Ng==

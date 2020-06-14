@@ -119,6 +119,15 @@ dependencies {
     implementation 'org.apache.commons:commons-compress:1.20'
     implementation 'org.apache.commons:commons-pool2:2.8.0'
 
+    implementation 'io.github.openfeign:feign-core:11.0'
+    implementation 'io.github.openfeign:feign-slf4j:11.0'
+    implementation 'io.github.openfeign:feign-jackson:11.0'
+    implementation 'io.github.openfeign:feign-gson:11.0'
+    implementation 'io.github.openfeign:feign-reactive-wrappers:11.0'
+    implementation 'io.github.openfeign:feign-java11:10.11'
+    implementation 'io.github.openfeign:feign-okhttp:11.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+
 //  implementation 'org.thymeleaf:thymeleaf:3.0.11.RELEASE'
 //  implementation 'org.thymeleaf:thymeleaf-spring5:3.0.11.RELEASE'
 //  implementation 'org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.2.RELEASE'
@@ -136,6 +145,7 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.powermock:powermock-module-junit4:2.0.7'
     testImplementation 'org.powermock:powermock-api-mockito2:2.0.7'
+    testImplementation 'io.github.openfeign:feign-mock:11.0'
 //  testRuntimeOnly 'com.h2database:h2:1.4.196'
 }
 

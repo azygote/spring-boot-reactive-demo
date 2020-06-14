@@ -60,3 +60,7 @@ spring:
 
 sbrd:
   storage-content: "These violent delights have violent ends."
+
+feign:
+  logging:
+    level: basic

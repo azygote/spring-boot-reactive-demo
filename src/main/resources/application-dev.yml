@@ -16,3 +16,7 @@ spring:
     log-request-details: true
   jpa:
     show-sql: false
+
+feign:
+  logging:
+    level: full
