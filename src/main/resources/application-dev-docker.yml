@@ -16,5 +16,4 @@ spring:
     show-sql: false
 
 feign:
-  logging:
-    level: full
+  log-level: full

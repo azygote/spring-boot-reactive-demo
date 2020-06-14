@@ -62,5 +62,7 @@ sbrd:
   storage-content: "These violent delights have violent ends."
 
 feign:
-  logging:
-    level: basic
+  log-level: basic
+  encoder: jackson
+  decoder: jackson
+  client: okhttp
