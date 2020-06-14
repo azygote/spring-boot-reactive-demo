@@ -3,7 +3,6 @@ package org.gty.demo.github.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Param;
 import feign.RequestLine;
-import feign.http2client.Http2Client;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import feign.okhttp.OkHttpClient;
