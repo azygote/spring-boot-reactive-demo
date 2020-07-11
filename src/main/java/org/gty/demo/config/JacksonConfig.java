@@ -16,7 +16,7 @@ public class JacksonConfig {
     }
 
     @Bean
-    public Module jdk8Model() {
+    public Module jdk8Module() {
         return new Jdk8Module();
     }
 
