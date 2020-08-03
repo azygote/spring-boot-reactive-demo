@@ -27,8 +27,17 @@ public class GithubController {
     private static final String VUE_JS = "vuejs";
     private static final String VUE = "vue";
 
-    private static final OwnerAndRepo springBoot = new OwnerAndRepo(SPRING_PROJECTS, SPRING_BOOT);
-    private static final OwnerAndRepo vue = new OwnerAndRepo(VUE_JS, VUE);
+    private static final OwnerAndRepo springBoot = new OwnerAndRepo
+        .Builder()
+        .withOwner(SPRING_PROJECTS)
+        .withRepo(SPRING_BOOT)
+        .build();
+
+    private static final OwnerAndRepo vue = new OwnerAndRepo
+        .Builder()
+        .withOwner(VUE_JS)
+        .withRepo(VUE)
+        .build();
 
     private static final List<OwnerAndRepo> ownerAndRepoList = List.of(springBoot, vue);
 

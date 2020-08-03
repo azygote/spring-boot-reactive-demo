@@ -9,13 +9,10 @@ public class OwnerAndRepo implements Serializable {
 
     private static final long serialVersionUID = -2913891333781890297L;
 
-    private String owner;
-    private String repo;
+    private final String owner;
+    private final String repo;
 
-    public OwnerAndRepo() {
-    }
-
-    public OwnerAndRepo(String owner, String repo) {
+    public OwnerAndRepo(final String owner, final String repo) {
         this.owner = owner;
         this.repo = repo;
     }
@@ -24,23 +21,15 @@ public class OwnerAndRepo implements Serializable {
         return owner;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
     public String getRepo() {
         return repo;
     }
 
-    public void setRepo(String repo) {
-        this.repo = repo;
-    }
-
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof OwnerAndRepo)) return false;
-        OwnerAndRepo that = (OwnerAndRepo) o;
+        final var that = (OwnerAndRepo) o;
         return Objects.equals(owner, that.owner) &&
             Objects.equals(repo, that.repo);
     }
@@ -56,5 +45,32 @@ public class OwnerAndRepo implements Serializable {
             .add("owner", owner)
             .add("repo", repo)
             .toString();
+    }
+
+    public static class Builder {
+        private String owner;
+        private String repo;
+
+        public Builder() {
+        }
+
+        public Builder(final OwnerAndRepo ownerAndRepo) {
+            this.owner = ownerAndRepo.getOwner();
+            this.repo = ownerAndRepo.getRepo();
+        }
+
+        public Builder withOwner(final String owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        public Builder withRepo(final String repo) {
+            this.repo = repo;
+            return this;
+        }
+
+        public OwnerAndRepo build() {
+            return new OwnerAndRepo(owner, repo);
+        }
     }
 }

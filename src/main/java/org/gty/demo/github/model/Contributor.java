@@ -9,30 +9,27 @@ public class Contributor implements Serializable {
 
     private static final long serialVersionUID = -5671000243188757881L;
 
-    private String login;
-    private Integer contributions;
+    private final String login;
+    private final Integer contributions;
+
+    public Contributor(final String login, final Integer contributions) {
+        this.login = login;
+        this.contributions = contributions;
+    }
 
     public String getLogin() {
         return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public Integer getContributions() {
         return contributions;
     }
 
-    public void setContributions(Integer contributions) {
-        this.contributions = contributions;
-    }
-
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof Contributor)) return false;
-        Contributor that = (Contributor) o;
+        final var that = (Contributor) o;
         return Objects.equals(login, that.login) &&
             Objects.equals(contributions, that.contributions);
     }
@@ -48,5 +45,32 @@ public class Contributor implements Serializable {
             .add("login", login)
             .add("contributions", contributions)
             .toString();
+    }
+
+    public static class Builder {
+        private String login;
+        private Integer contributions;
+
+        public Builder() {
+        }
+
+        public Builder(final Contributor contributor) {
+            this.login = contributor.getLogin();
+            this.contributions = contributor.getContributions();
+        }
+
+        public Builder withLogin(final String login) {
+            this.login = login;
+            return this;
+        }
+
+        public Builder withContributions(final Integer contributions) {
+            this.contributions = contributions;
+            return this;
+        }
+
+        public Contributor build() {
+            return new Contributor(login, contributions);
+        }
     }
 }
