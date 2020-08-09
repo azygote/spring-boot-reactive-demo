@@ -5,7 +5,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'project-report'
-    id 'org.springframework.boot' version '2.3.1.RELEASE'
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 }
 
@@ -92,10 +92,10 @@ dependencies {
 
 //  implementation 'org.springframework.retry:spring-retry:1.2.5.RELEASE'
     implementation 'org.springframework.session:spring-session-data-redis:2.3.0.RELEASE'
-    implementation 'org.springframework.kafka:spring-kafka:2.5.3.RELEASE'
+    implementation 'org.springframework.kafka:spring-kafka:2.5.4.RELEASE'
 //  implementation 'org.springframework.security:spring-security-ldap:5.1.6.RELEASE'
 
-    implementation 'org.flywaydb:flyway-core:6.5.0'
+    implementation 'org.flywaydb:flyway-core:6.5.3'
     implementation 'org.postgresql:postgresql:42.2.14'
     implementation 'com.lmax:disruptor:3.4.2'
 //  implementation 'io.jsonwebtoken:jjwt:0.9.0'
