@@ -5,7 +5,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'project-report'
-    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 }
 
@@ -92,10 +92,10 @@ dependencies {
 
 //  implementation 'org.springframework.retry:spring-retry:1.2.5.RELEASE'
     implementation 'org.springframework.session:spring-session-data-redis:2.3.0.RELEASE'
-    implementation 'org.springframework.kafka:spring-kafka:2.5.4.RELEASE'
+    implementation 'org.springframework.kafka:spring-kafka:2.5.5.RELEASE'
 //  implementation 'org.springframework.security:spring-security-ldap:5.1.6.RELEASE'
 
-    implementation 'org.flywaydb:flyway-core:6.5.3'
+    implementation 'org.flywaydb:flyway-core:6.5.4'
     implementation 'org.postgresql:postgresql:42.2.14'
     implementation 'com.lmax:disruptor:3.4.2'
 //  implementation 'io.jsonwebtoken:jjwt:0.9.0'
@@ -112,7 +112,7 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.14'
     implementation 'commons-fileupload:commons-fileupload:1.4'
     implementation 'commons-io:commons-io:2.7'
-    implementation 'org.apache.commons:commons-lang3:3.10'
+    implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'org.apache.commons:commons-text:1.8'
     implementation 'org.apache.commons:commons-math3:3.6.1'
     implementation 'org.apache.commons:commons-collections4:4.4'
@@ -126,7 +126,7 @@ dependencies {
     implementation 'io.github.openfeign:feign-reactive-wrappers:11.0'
     implementation 'io.github.openfeign:feign-java11:10.11'
     implementation 'io.github.openfeign:feign-okhttp:11.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+    implementation 'com.squareup.okhttp3:okhttp:4.8.1'
 
 //  implementation 'org.thymeleaf:thymeleaf:3.0.11.RELEASE'
 //  implementation 'org.thymeleaf:thymeleaf-spring5:3.0.11.RELEASE'
