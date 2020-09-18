@@ -13,8 +13,8 @@ group = 'org.gty'
 version = '1.1.0.RELEASE'
 description = 'Spring Boot Reactive Demo'
 
-java.sourceCompatibility = JavaVersion.VERSION_14
-java.targetCompatibility = JavaVersion.VERSION_14
+java.sourceCompatibility = JavaVersion.VERSION_15
+java.targetCompatibility = JavaVersion.VERSION_15
 [compileJava, compileTestJava]*.options*.encoding = "${StandardCharsets.UTF_8}"
 javadoc.options.encoding = "${StandardCharsets.UTF_8}"
 
@@ -29,9 +29,12 @@ configurations {
     compileOnly { extendsFrom annotationProcessor }
 }
 
+// bootRun --args='--spring.profiles.active=dev'
 bootRun {
-    def activeProfile = 'spring.profiles.active'
-    systemProperties[activeProfile] = project.gradle.startParameter.systemPropertiesArgs[activeProfile]
+    jvmArgs = [
+//          "-XX:+UseZGC",
+            "-XX:+UseShenandoahGC"
+    ]
 }
 
 bootJar {
@@ -56,8 +59,11 @@ bootJar {
     }
 }
 
+// docker run -e "JDK_JAVA_OPTIONS=" -e "LOG_TEMP=" -e "SPRING_PROFILES_ACTIVE=" -p 8080:8080
 bootBuildImage {
-    environment = ["BP_JVM_VERSION" : "14"]
+    environment = [
+            "BP_JVM_VERSION" : "15"
+    ]
 }
 
 dependencies {
@@ -155,13 +161,6 @@ dependencies {
 clean.doLast {
     project.delete "$projectDir${FileSystems.default.separator}out${FileSystems.default.separator}"
 }
-
-// for Java 12 and 13 features
-//tasks.withType(JavaCompile).each {
-//    it.options.compilerArgs.add('--enable-preview')
-//}
-//
-//bootRun.jvmArgs(['--enable-preview'])
 
 task buildApp {
     dependsOn clean

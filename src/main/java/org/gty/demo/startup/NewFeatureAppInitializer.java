@@ -18,7 +18,12 @@ public final class NewFeatureAppInitializer implements AppInitializer {
     @Override
     public void onAppInitialize() {
         final var dateTime = ZonedDateTime.now(SystemConstants.defaultTimeZone);
-        final var monthInfo = "This is " + switch (dateTime.getMonth()) {
+
+        var monthInfo = """
+                        Showing month
+                        This is:""";
+
+        monthInfo += switch (dateTime.getMonth()) {
             case JANUARY -> "JAN";
             case FEBRUARY -> "FEB";
             case MARCH -> "MAR";

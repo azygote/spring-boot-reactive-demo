@@ -7,6 +7,8 @@ services:
       args:
         LAYERED_JAR_FILE: "*.jar"
     environment:
+      JDK_JAVA_OPTIONS: -XX:+UseShenandoahGC
+#     JDK_JAVA_OPTIONS: -XX:+UseZGC
       TZ: UTC
       SPRING_PROFILES_ACTIVE: dev-docker
       LOG_TEMP: /logs
