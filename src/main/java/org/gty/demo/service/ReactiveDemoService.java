@@ -25,7 +25,7 @@ public class ReactiveDemoService {
     private final ReactiveStringRedisTemplate reactiveStringRedisTemplate;
     private final Scheduler scheduler;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public ReactiveDemoService(@Nonnull final AsyncAmqpTemplate asyncAmqpTemplate,
                                @Nonnull final KafkaTemplate kafkaTemplate,
                                @Nonnull final ReactiveStringRedisTemplate reactiveStringRedisTemplate,
