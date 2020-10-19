@@ -1,103 +1,74 @@
 package org.gty.demo.model.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.google.common.base.MoreObjects;
-import org.gty.demo.constant.SystemConstants;
-import org.gty.demo.model.entity.Student;
-import org.gty.demo.util.NioUtils;
 
-import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.io.Serializable;
-import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
-import java.sql.SQLException;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.util.Base64;
 import java.util.Objects;
 
+@JsonDeserialize(builder = StudentVo.Builder.class)
 public class StudentVo implements Serializable {
 
     private static final long serialVersionUID = 6561582571605431635L;
 
-    private String name;
-    private String gender;
-    private Integer age;
-    private String balance;
-    private String otherInformation;
-    private String createdDate;
-    private String modifiedDate;
-    private String photo;
+    private final String name;
+    private final String gender;
+    private final Integer age;
+    private final String balance;
+    private final String otherInformation;
+    private final String createdDate;
+    private final String modifiedDate;
+    private final String photo;
+
+    public StudentVo(final Builder builder) {
+        name = builder.name;
+        gender = builder.gender;
+        age = builder.age;
+        balance = builder.balance;
+        otherInformation = builder.otherInformation;
+        createdDate = builder.createdDate;
+        modifiedDate = builder.modifiedDate;
+        photo = builder.photo;
+    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
     public Integer getAge() {
         return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public String getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
-        this.balance = balance;
-    }
-
     public String getOtherInformation() {
         return otherInformation;
-    }
-
-    public void setOtherInformation(String otherInformation) {
-        this.otherInformation = otherInformation;
     }
 
     public String getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public String getModifiedDate() {
         return modifiedDate;
-    }
-
-    public void setModifiedDate(String modifiedDate) {
-        this.modifiedDate = modifiedDate;
     }
 
     public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof StudentVo)) return false;
-        StudentVo studentVo = (StudentVo) o;
+        final StudentVo studentVo = (StudentVo) o;
         return Objects.equals(name, studentVo.name) &&
             Objects.equals(gender, studentVo.gender) &&
             Objects.equals(age, studentVo.age) &&
@@ -127,44 +98,78 @@ public class StudentVo implements Serializable {
             .toString();
     }
 
-    @Nonnull
-    public static StudentVo build(@Nonnull Student student) {
-        Objects.requireNonNull(student, "student must not be null");
+    public static Builder builder() {
+        return new Builder();
+    }
 
-        var studentVo = new StudentVo();
-        studentVo.setName(student.getName());
-        studentVo.setGender(student.getGender());
-        studentVo.setAge(student.getAge());
-        studentVo.setOtherInformation(student.getOtherInformation());
+    @JsonPOJOBuilder
+    public static class Builder {
 
-        try (var in = student.getPhoto().getBinaryStream()) {
-            var bytes = NioUtils.toByteArray(in);
-            var base64String = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
-            var photo = "data:image/png;base64," + base64String;
+        private String name;
+        private String gender;
+        private Integer age;
+        private String balance;
+        private String otherInformation;
+        private String createdDate;
+        private String modifiedDate;
+        private String photo;
 
-            studentVo.setPhoto(photo);
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+        public Builder() {
         }
 
-        if (student.getBalance() != null) {
-            studentVo.setBalance(student.getBalance().toString());
+        public Builder(final StudentVo studentVo) {
+            name = studentVo.name;
+            gender = studentVo.gender;
+            age = studentVo.age;
+            balance = studentVo.balance;
+            otherInformation = studentVo.otherInformation;
+            createdDate = studentVo.createdDate;
+            modifiedDate = studentVo.modifiedDate;
+            photo = studentVo.photo;
         }
 
-        if (student.getCreatedDate() != null) {
-            var instant = Instant.ofEpochMilli(student.getCreatedDate());
-            var date = ZonedDateTime.ofInstant(instant, SystemConstants.defaultTimeZone);
-            studentVo.setCreatedDate(date.format(SystemConstants.defaultDateTimeFormatter));
+        public Builder withName(final String name) {
+            this.name = name;
+            return this;
         }
 
-        if (student.getModifiedDate() != null) {
-            var instant = Instant.ofEpochMilli(student.getModifiedDate());
-            var date = ZonedDateTime.ofInstant(instant, SystemConstants.defaultTimeZone);
-            studentVo.setModifiedDate(date.format(SystemConstants.defaultDateTimeFormatter));
+        public Builder withGender(final String gender) {
+            this.gender = gender;
+            return this;
         }
 
-        return studentVo;
+        public Builder withAge(final Integer age) {
+            this.age = age;
+            return this;
+        }
+
+        public Builder withBalance(final String balance) {
+            this.balance = balance;
+            return this;
+        }
+
+        public Builder withOtherInformation(final String otherInformation) {
+            this.otherInformation = otherInformation;
+            return this;
+        }
+
+        public Builder withCreatedDate(final String createdDate) {
+            this.createdDate = createdDate;
+            return this;
+        }
+
+        public Builder withModifiedDate(final String modifiedDate) {
+            this.modifiedDate = modifiedDate;
+            return this;
+        }
+
+        public Builder withPhoto(final String photo) {
+            this.photo = photo;
+            return this;
+        }
+
+        public StudentVo build() {
+            return new StudentVo(this);
+        }
     }
 }

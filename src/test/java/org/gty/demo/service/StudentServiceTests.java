@@ -2,6 +2,7 @@ package org.gty.demo.service;
 
 import org.assertj.core.api.Assertions;
 import org.gty.demo.constant.DeleteMark;
+import org.gty.demo.mapper.StudentStudentVoMapper;
 import org.gty.demo.model.entity.Student;
 import org.gty.demo.model.vo.StudentVo;
 import org.gty.demo.repository.StudentRepository;
@@ -11,34 +12,33 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
-@PowerMockIgnore("javax.management.*")
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({StudentVo.class, Long.class})
+@RunWith(MockitoJUnitRunner.class)
 public class StudentServiceTests {
+
+    private static final long TEST_STUDENT_ID = 99L;
 
     @Mock
     private StudentRepository mockStudentRepository;
 
+    @Mock
+    private StudentStudentVoMapper mockStudentStudentVoMapper;
+
     private StudentService testStudentService;
+
 
     @Before
     public void setUp() {
-        testStudentService = new StudentServiceImpl(mockStudentRepository);
+        testStudentService = new StudentServiceImpl(mockStudentRepository, mockStudentStudentVoMapper);
     }
 
     @Test
     public void shouldReturnStudentVo_WhenIdCanBeFound() {
-        final var id = PowerMockito.mock(Long.class);
         final var student = BDDMockito.mock(Student.class);
         final var studentVo = BDDMockito.mock(StudentVo.class);
-        PowerMockito.mockStatic(StudentVo.class);
 
         final var optionalStudent = Optional.of(student);
         final var optionalStudentVo = Optional.of(studentVo);
@@ -49,18 +49,21 @@ public class StudentServiceTests {
             .findByIdAndDeleteMark(BDDMockito.anyLong(), BDDMockito.any(DeleteMark.class));
 
         BDDMockito
-            .given(StudentVo.build(BDDMockito.any(Student.class)))
-            .willReturn(studentVo);
+            .willReturn(studentVo)
+            .given(mockStudentStudentVoMapper)
+            .studentToStudentVo(student);
 
-        final var actualOptionalStudentVo = testStudentService.findById(id);
+        final var actualOptionalStudentVo = testStudentService.findById(TEST_STUDENT_ID);
 
         BDDMockito
             .then(mockStudentRepository)
             .should()
-            .findByIdAndDeleteMark(BDDMockito.anyLong(), BDDMockito.any(DeleteMark.class));
+            .findByIdAndDeleteMark(BDDMockito.eq(TEST_STUDENT_ID), BDDMockito.eq(DeleteMark.NOT_DELETED));
 
-        PowerMockito.verifyStatic(StudentVo.class);
-        StudentVo.build(BDDMockito.any(Student.class));
+        BDDMockito
+            .then(mockStudentStudentVoMapper)
+            .should()
+            .studentToStudentVo(BDDMockito.eq(student));
 
         Assertions
             .assertThat(actualOptionalStudentVo)
