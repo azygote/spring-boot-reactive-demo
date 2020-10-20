@@ -19,7 +19,7 @@ import reactor.core.scheduler.Scheduler;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class FeignConfig {
 
     @Bean

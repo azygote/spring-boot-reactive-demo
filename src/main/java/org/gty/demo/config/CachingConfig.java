@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableCaching
 public class CachingConfig {
 

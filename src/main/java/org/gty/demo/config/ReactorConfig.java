@@ -8,7 +8,7 @@ import reactor.core.scheduler.Schedulers;
 
 import javax.annotation.Nonnull;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class ReactorConfig {
 
     @Bean

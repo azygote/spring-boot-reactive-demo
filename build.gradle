@@ -110,7 +110,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-guava:2.11.2'
     implementation'com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2'
     implementation 'com.zaxxer:HikariCP:3.4.5'
-    implementation 'com.google.guava:guava:29.0-jre'
+    implementation 'com.google.guava:guava:30.0-jre'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
     implementation 'com.ibm.icu:icu4j:67.1'

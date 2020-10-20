@@ -18,7 +18,7 @@ public interface ReactiveGithubService {
     Mono<Iterable<Contributor>> contributors(@Param("owner") @Nonnull final String owner,
                                              @Param("repo") @Nonnull final String repo);
 
-    @Configuration
+    @Configuration(proxyBeanMethods = false)
     class ReactiveGithubServiceConfig {
 
         private static final String GITHUB_BASE_URL = "https://api.github.com";

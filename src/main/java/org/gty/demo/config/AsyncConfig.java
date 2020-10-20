@@ -9,7 +9,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableAsync
 public class AsyncConfig {
 
