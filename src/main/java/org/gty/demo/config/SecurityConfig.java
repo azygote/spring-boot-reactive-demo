@@ -35,6 +35,7 @@ public class SecurityConfig {
             .pathMatchers(generateRestfulAntPathMatchers("/api/student")).hasRole("USER")
             .pathMatchers(generateRestfulAntPathMatchers("/api/actuator")).hasRole("ACTUATOR")
             .pathMatchers(generateRestfulAntPathMatchers("/api/files")).hasRole("USER")
+            .pathMatchers(generateRestfulAntPathMatchers("/api/github")).hasRole("USER")
             .anyExchange().authenticated().and()
             .httpBasic().and()
             .exceptionHandling().authenticationEntryPoint((var exchange, var e) -> {

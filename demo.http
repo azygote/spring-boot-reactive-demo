@@ -18,7 +18,7 @@ Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 {
   "name": "Taylor Swift 😒😒😒😒",
-  "age": 28,
+  "age": 30,
   "gender": "Female",
   "balance": "123.23"
 }
@@ -26,6 +26,12 @@ Authorization: Basic Z3R5OjEyMzQ1Ng==
 ###
 
 GET http://localhost:8080/sbrd/api/student/100
+Accept: application/json; utf-8
+Authorization: Basic Z3R5OjEyMzQ1Ng==
+
+###
+
+GET http://localhost:8080/sbrd/api/github
 Accept: application/json; utf-8
 Authorization: Basic Z3R5OjEyMzQ1Ng==
 

@@ -13,7 +13,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class RedisConfig {
 
     @Bean

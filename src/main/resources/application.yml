@@ -60,3 +60,9 @@ spring:
 
 sbrd:
   storage-content: "These violent delights have violent ends."
+
+feign:
+  log-level: basic
+  encoder: jackson
+  decoder: jackson
+  client: okhttp

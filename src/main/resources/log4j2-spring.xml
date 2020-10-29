@@ -7,7 +7,7 @@
         <Property name="LOG_DATEFORMAT_PATTERN">yyyy-MM-dd HH:mm:ss.SSS</Property>
         <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${LOG_DATEFORMAT_PATTERN}}{UTC}-UTC}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%t]}{faint} %clr{%c{36}.%M.%L}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
         <Property name="FILE_LOG_PATTERN">%d{${LOG_DATEFORMAT_PATTERN}}{UTC}-UTC ${LOG_LEVEL_PATTERN} ${sys:PID} --- [%t] %c{36}.%M.%L : %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
-        <Property name="LOG_PATH">${sys:LOG_TEMP:-${sys:java.io.tmpdir:-/tmp}}/spring-boot-reactive-demo</Property>
+        <Property name="LOG_PATH">$${env:LOG_TEMP:-${sys:java.io.tmpdir:-/tmp}}/spring-boot-reactive-demo</Property>
         <Property name="LOG_FILE">${sys:LOG_PATH}/$${date:yyyy-MM}/spring-boot-reactive-demo.log</Property>
     </Properties>
     <Appenders>

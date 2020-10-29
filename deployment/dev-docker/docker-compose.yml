@@ -7,13 +7,16 @@ services:
       args:
         LAYERED_JAR_FILE: "*.jar"
     environment:
+      JDK_JAVA_OPTIONS: -XX:+UseShenandoahGC
+#     JDK_JAVA_OPTIONS: -XX:+UseZGC
       TZ: UTC
       SPRING_PROFILES_ACTIVE: dev-docker
-      LOG_TEMP: /logs
     networks:
       - appnetwork
     ports:
       - "8080:8080"
+    volumes:
+      - ./app-logs:/var/log/app-logs
     depends_on:
       - "postgres"
       - "redis"
