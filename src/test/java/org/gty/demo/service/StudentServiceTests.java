@@ -1,22 +1,28 @@
 package org.gty.demo.service;
 
-import org.assertj.core.api.Assertions;
+import org.assertj.core.api.BDDAssertions;
 import org.gty.demo.constant.DeleteMark;
 import org.gty.demo.mapper.StudentStudentVoMapper;
 import org.gty.demo.model.entity.Student;
 import org.gty.demo.model.vo.StudentVo;
 import org.gty.demo.repository.StudentRepository;
 import org.gty.demo.service.impl.StudentServiceImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-@RunWith(MockitoJUnitRunner.class)
+import static org.mockito.BDDMockito.eq;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.anyLong;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.willReturn;
+
+@ExtendWith(MockitoExtension.class)
 public class StudentServiceTests {
 
     private static final long TEST_STUDENT_ID = 99L;
@@ -29,8 +35,7 @@ public class StudentServiceTests {
 
     private StudentService testStudentService;
 
-
-    @Before
+    @BeforeEach
     public void setUp() {
         testStudentService = new StudentServiceImpl(mockStudentRepository, mockStudentStudentVoMapper);
     }
@@ -43,30 +48,24 @@ public class StudentServiceTests {
         final var optionalStudent = Optional.of(student);
         final var optionalStudentVo = Optional.of(studentVo);
 
-        BDDMockito
-            .willReturn(optionalStudent)
+        willReturn(optionalStudent)
             .given(mockStudentRepository)
-            .findByIdAndDeleteMark(BDDMockito.anyLong(), BDDMockito.any(DeleteMark.class));
+            .findByIdAndDeleteMark(anyLong(), any(DeleteMark.class));
 
-        BDDMockito
-            .willReturn(studentVo)
+        willReturn(studentVo)
             .given(mockStudentStudentVoMapper)
             .studentToStudentVo(student);
 
         final var actualOptionalStudentVo = testStudentService.findById(TEST_STUDENT_ID);
 
-        BDDMockito
-            .then(mockStudentRepository)
+        then(mockStudentRepository)
             .should()
-            .findByIdAndDeleteMark(BDDMockito.eq(TEST_STUDENT_ID), BDDMockito.eq(DeleteMark.NOT_DELETED));
+            .findByIdAndDeleteMark(eq(TEST_STUDENT_ID), eq(DeleteMark.NOT_DELETED));
 
-        BDDMockito
-            .then(mockStudentStudentVoMapper)
+        then(mockStudentStudentVoMapper)
             .should()
-            .studentToStudentVo(BDDMockito.eq(student));
+            .studentToStudentVo(eq(student));
 
-        Assertions
-            .assertThat(actualOptionalStudentVo)
-            .isEqualTo(optionalStudentVo);
+        BDDAssertions.then(actualOptionalStudentVo).isEqualTo(optionalStudentVo);
     }
 }
