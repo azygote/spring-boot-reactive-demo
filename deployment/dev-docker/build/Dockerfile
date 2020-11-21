@@ -1,11 +1,11 @@
-FROM adoptopenjdk/openjdk15:x86_64-alpine-jdk-15_36 AS Builder
+FROM azul/zulu-openjdk-alpine:15 AS Builder
 LABEL maintainer="Tianyu Ge <wierzard@hotmail.com>"
 WORKDIR application
 ARG LAYERED_JAR_FILE="target/*.jar"
 COPY $LAYERED_JAR_FILE spring-boot-reactive-demo.jar
 RUN java -Djarmode=layertools -jar spring-boot-reactive-demo.jar extract
 
-FROM adoptopenjdk/openjdk15:x86_64-alpine-jdk-15_36
+FROM azul/zulu-openjdk-alpine:15
 LABEL maintainer="Tianyu Ge <wierzard@hotmail.com>"
 WORKDIR application
 COPY --from=Builder application/dependencies/ ./
