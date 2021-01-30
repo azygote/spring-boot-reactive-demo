@@ -4,11 +4,13 @@ import com.google.common.base.MoreObjects;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class ResponseVo<T> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -5608381641827943451L;
 
     private ResponseStatus status;

@@ -4,6 +4,7 @@ import com.google.common.base.MoreObjects;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Blob;
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Table(name = "t_student", schema = "public")
 public class Student extends Base implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 2707444643224940512L;
 
     @Id

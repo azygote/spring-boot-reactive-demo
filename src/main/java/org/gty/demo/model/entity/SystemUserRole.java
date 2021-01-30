@@ -3,6 +3,7 @@ package org.gty.demo.model.entity;
 import com.google.common.base.MoreObjects;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ import java.util.Objects;
 @Table(name = "t_sys_user_role", schema = "public")
 public class SystemUserRole extends Base implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 7471280241224013302L;
 
     @EmbeddedId

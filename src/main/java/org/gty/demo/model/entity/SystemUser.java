@@ -5,6 +5,7 @@ import com.google.common.base.MoreObjects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Table(name = "t_sys_user", schema = "public")
 public class SystemUser extends Base implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -884040706963724292L;
 
     @Id

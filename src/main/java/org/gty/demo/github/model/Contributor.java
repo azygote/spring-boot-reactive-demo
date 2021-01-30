@@ -2,11 +2,13 @@ package org.gty.demo.github.model;
 
 import com.google.common.base.MoreObjects;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Contributor implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -5671000243188757881L;
 
     private final String login;

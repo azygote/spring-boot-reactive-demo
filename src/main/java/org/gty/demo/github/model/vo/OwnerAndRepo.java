@@ -2,11 +2,13 @@ package org.gty.demo.github.model.vo;
 
 import com.google.common.base.MoreObjects;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class OwnerAndRepo implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -2913891333781890297L;
 
     private final String owner;

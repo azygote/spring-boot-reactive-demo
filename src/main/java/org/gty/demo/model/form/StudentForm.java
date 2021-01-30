@@ -11,8 +11,9 @@ import org.springframework.core.io.Resource;
 
 import javax.annotation.Nonnull;
 import javax.sql.rowset.serial.SerialBlob;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.io.UncheckedIOException;
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ import java.util.Objects;
 @JsonDeserialize(builder = StudentForm.Builder.class)
 public class StudentForm implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 7658581343746290006L;
 
     @NotBlank

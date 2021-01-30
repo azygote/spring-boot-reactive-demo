@@ -3,13 +3,15 @@ package org.gty.demo.model.form;
 import com.google.common.base.MoreObjects;
 import org.springframework.http.codec.multipart.FilePart;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public final class UploadFormData implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = -795063966946903971L;
 
     @NotNull

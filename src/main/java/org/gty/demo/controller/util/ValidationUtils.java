@@ -1,8 +1,8 @@
 package org.gty.demo.controller.util;
 
 import javax.annotation.Nonnull;
-import javax.validation.Validation;
-import javax.validation.Validator;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.util.Objects;
 
 public final class ValidationUtils {

@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.google.common.base.MoreObjects;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 @JsonDeserialize(builder = StudentVo.Builder.class)
 public class StudentVo implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 6561582571605431635L;
 
     private final String name;

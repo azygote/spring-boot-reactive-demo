@@ -10,6 +10,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,6 +18,7 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 public class Base implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 7125532751153830997L;
 
     @Enumerated
