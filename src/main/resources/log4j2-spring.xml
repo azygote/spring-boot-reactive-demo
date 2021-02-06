@@ -12,11 +12,11 @@
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">
-            <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}"/>
+            <PatternLayout charset="UTF-8" pattern="${sys:CONSOLE_LOG_PATTERN}"/>
         </Console>
         <RollingFile name="File" fileName="${sys:LOG_FILE}"
                      filePattern="${sys:LOG_PATH}/$${date:yyyy-MM}/spring-boot-reactive-demo-%d{yyyy-MM-dd-HH}-%i.log.gz">
-            <PatternLayout>
+            <PatternLayout charset="UTF-8">
                 <Pattern>${sys:FILE_LOG_PATTERN}</Pattern>
             </PatternLayout>
             <Policies>
