@@ -5,16 +5,27 @@
 # * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
+POST http://localhost:8080/sbrd/api/token
+Accept: application/json; utf-8
+Content-Type: application/json; utf-8
+
+{
+  "username": "gty",
+  "password": "123456"
+}
+
+###
+
 GET http://localhost:8080/sbrd/api/student?sort=createdDate,desc&page=0&size=5
 Accept: application/json; utf-8
-Authorization: Basic Z3R5OjEyMzQ1Ng==
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IjEyMzQ1NiIsImlzcyI6InNwcmluZy1ib290LXJlYWN0aXZlLWRlbW8iLCJ1c2VybmFtZSI6Imd0eSJ9.i13DyrCgn2stoyxVuR3n7bslx798s-i6SjKxjabCQsr51jIvNi6JzZWG1PCi2dcxaum5ASzzcPOkiwf48w0H1g
 
 ###
 
 POST http://localhost:8080/sbrd/api/student
 Accept: application/json; utf-8
 Content-Type: application/json; utf-8
-Authorization: Basic Z3R5OjEyMzQ1Ng==
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IjEyMzQ1NiIsImlzcyI6InNwcmluZy1ib290LXJlYWN0aXZlLWRlbW8iLCJ1c2VybmFtZSI6Imd0eSJ9.i13DyrCgn2stoyxVuR3n7bslx798s-i6SjKxjabCQsr51jIvNi6JzZWG1PCi2dcxaum5ASzzcPOkiwf48w0H1g
 
 {
   "name": "Taylor Swift 😒😒😒😒",
@@ -27,32 +38,32 @@ Authorization: Basic Z3R5OjEyMzQ1Ng==
 
 GET http://localhost:8080/sbrd/api/student/100
 Accept: application/json; utf-8
-Authorization: Basic Z3R5OjEyMzQ1Ng==
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IjEyMzQ1NiIsImlzcyI6InNwcmluZy1ib290LXJlYWN0aXZlLWRlbW8iLCJ1c2VybmFtZSI6Imd0eSJ9.i13DyrCgn2stoyxVuR3n7bslx798s-i6SjKxjabCQsr51jIvNi6JzZWG1PCi2dcxaum5ASzzcPOkiwf48w0H1g
 
 ###
 
 GET http://localhost:8080/sbrd/api/github
 Accept: application/json; utf-8
-Authorization: Basic Z3R5OjEyMzQ1Ng==
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IjEyMzQ1NiIsImlzcyI6InNwcmluZy1ib290LXJlYWN0aXZlLWRlbW8iLCJ1c2VybmFtZSI6Imd0eSJ9.i13DyrCgn2stoyxVuR3n7bslx798s-i6SjKxjabCQsr51jIvNi6JzZWG1PCi2dcxaum5ASzzcPOkiwf48w0H1g
 
 ###
 
 DELETE http://localhost:8080/sbrd/api/student/1
 Accept: application/json; utf-8
-Authorization: Basic Z3R5OjEyMzQ1Ng==
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IjEyMzQ1NiIsImlzcyI6InNwcmluZy1ib290LXJlYWN0aXZlLWRlbW8iLCJ1c2VybmFtZSI6Imd0eSJ9.i13DyrCgn2stoyxVuR3n7bslx798s-i6SjKxjabCQsr51jIvNi6JzZWG1PCi2dcxaum5ASzzcPOkiwf48w0H1g
 
 ###
 
 GET http://localhost:8080/sbrd/api/files/test.txt
 Accept: application/octet-stream
-Authorization: Basic Z3R5OjEyMzQ1Ng==
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IjEyMzQ1NiIsImlzcyI6InNwcmluZy1ib290LXJlYWN0aXZlLWRlbW8iLCJ1c2VybmFtZSI6Imd0eSJ9.i13DyrCgn2stoyxVuR3n7bslx798s-i6SjKxjabCQsr51jIvNi6JzZWG1PCi2dcxaum5ASzzcPOkiwf48w0H1g
 
 ###
 
 POST http://localhost:8080/sbrd/api/files/upload?fileAdditionalInfo=WTF
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 Accept: application/json; utf-8
-Authorization: Basic Z3R5OjEyMzQ1Ng==
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJwYXNzd29yZCI6IjEyMzQ1NiIsImlzcyI6InNwcmluZy1ib290LXJlYWN0aXZlLWRlbW8iLCJ1c2VybmFtZSI6Imd0eSJ9.i13DyrCgn2stoyxVuR3n7bslx798s-i6SjKxjabCQsr51jIvNi6JzZWG1PCi2dcxaum5ASzzcPOkiwf48w0H1g
 
 --WebAppBoundary
 Content-Disposition: form-data; name="uploadFile"; filename="test.txt"

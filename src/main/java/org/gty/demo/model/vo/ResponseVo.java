@@ -42,10 +42,10 @@ public class ResponseVo<T> implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof ResponseVo)) return false;
-        ResponseVo<?> that = (ResponseVo<?>) o;
+        final var that = (ResponseVo<?>) o;
         return status == that.status &&
             code == that.code &&
             Objects.equals(data, that.data);
@@ -66,7 +66,7 @@ public class ResponseVo<T> implements Serializable {
     }
 
     @Nonnull
-    public static <T> ResponseVo<T> success(@Nullable T data) {
+    public static <T> ResponseVo<T> success(@Nullable final T data) {
         return response(ResponseStatus.SUCCESS, null, data);
     }
 
@@ -76,25 +76,30 @@ public class ResponseVo<T> implements Serializable {
     }
 
     @Nonnull
-    public static <T> ResponseVo<T> internalError(@Nullable T data) {
+    public static <T> ResponseVo<T> internalError(@Nullable final T data) {
         return response(ResponseStatus.FAILURE, ResponseCode.INTERNAL_ERROR, data);
     }
 
     @Nonnull
-    public static <T> ResponseVo<T> illegalParameters(@Nullable T data) {
+    public static <T> ResponseVo<T> jwtAuthorizationError(@Nullable final T data) {
+        return response(ResponseStatus.FAILURE, ResponseCode.JWT_AUTHORIZATION_ERROR, data);
+    }
+
+    @Nonnull
+    public static <T> ResponseVo<T> illegalParameters(@Nullable final T data) {
         return response(ResponseStatus.FAILURE, ResponseCode.ILLEGAL_PARAMETERS, data);
     }
 
     @Nonnull
-    public static <T> ResponseVo<T> unauthorized(@Nullable T data) {
+    public static <T> ResponseVo<T> unauthorized(@Nullable final T data) {
         return response(ResponseStatus.FAILURE, ResponseCode.UNAUTHORIZED, data);
     }
 
     @Nonnull
-    private static <T> ResponseVo<T> response(@Nonnull ResponseStatus status,
-                                              @Nullable ResponseCode code,
-                                              @Nullable T data) {
-        Objects.requireNonNull(status, "status shall not be null");
+    private static <T> ResponseVo<T> response(@Nonnull final ResponseStatus status,
+                                              @Nullable final ResponseCode code,
+                                              @Nullable final T data) {
+        Objects.requireNonNull(status, "[status] must not be null");
 
         var response = new ResponseVo<T>();
         response.setStatus(status);
@@ -111,6 +116,7 @@ public class ResponseVo<T> implements Serializable {
     private enum ResponseCode {
         INTERNAL_ERROR,
         ILLEGAL_PARAMETERS,
-        UNAUTHORIZED
+        UNAUTHORIZED,
+        JWT_AUTHORIZATION_ERROR
     }
 }

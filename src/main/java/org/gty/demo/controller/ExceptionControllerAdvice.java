@@ -1,5 +1,6 @@
 package org.gty.demo.controller;
 
+import org.gty.demo.exception.JwtAuthorizationException;
 import org.gty.demo.model.vo.ResponseVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,29 +23,42 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(NullPointerException.class)
     @Nonnull
-    public ResponseEntity<ResponseVo<String>> handleNullPointerException(@Nonnull final NullPointerException ex) {
-        return illegalParameters(Objects.requireNonNull(ex, "ex must not be null"));
+    public ResponseEntity<ResponseVo<String>> handleNullPointerException(
+        @Nonnull final NullPointerException ex
+    ) {
+        return illegalParameters(Objects.requireNonNull(ex, "[ex] must not be null"));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(IllegalArgumentException.class)
     @Nonnull
-    public ResponseEntity<ResponseVo<String>> handleIllegalArgumentException(@Nonnull final IllegalArgumentException ex) {
-        return illegalParameters(Objects.requireNonNull(ex, "ex must not be null"));
+    public ResponseEntity<ResponseVo<String>> handleIllegalArgumentException(
+        @Nonnull final IllegalArgumentException ex
+    ) {
+        return illegalParameters(Objects.requireNonNull(ex, "[ex] must not be null"));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @ExceptionHandler(JwtAuthorizationException.class)
+    @Nonnull
+    public ResponseEntity<ResponseVo<String>> handleJwtAuthorizationException(
+        @Nonnull final JwtAuthorizationException ex
+    ) {
+        return jwtAuthorizationError(Objects.requireNonNull(ex, "[ex] must not be null"));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(Exception.class)
     @Nonnull
     public ResponseEntity<ResponseVo<String>> handleException(@Nonnull final Exception ex) {
-        return internalError(Objects.requireNonNull(ex, "ex must not be null"));
+        return internalError(Objects.requireNonNull(ex, "[ex] must not be null"));
     }
 
     @Nonnull
     private <T> ResponseEntity<ResponseVo<T>> error(@Nonnull final Exception ex,
                                                     @Nonnull final ResponseVo<T> response) {
-        Objects.requireNonNull(ex, "ex must not be null");
-        Objects.requireNonNull(response, "response must not be null");
+        Objects.requireNonNull(ex, "[ex] must not be null");
+        Objects.requireNonNull(response, "[response] must not be null");
 
         log.warn("", ex);
 
@@ -55,12 +69,26 @@ public class ExceptionControllerAdvice {
     }
 
     @Nonnull
+    private ResponseEntity<ResponseVo<String>> jwtAuthorizationError(@Nonnull final Exception ex) {
+        return error(
+            Objects.requireNonNull(ex, "[ex] must not be null"),
+            ResponseVo.jwtAuthorizationError(ex.getMessage())
+        );
+    }
+
+    @Nonnull
     private ResponseEntity<ResponseVo<String>> internalError(@Nonnull final Exception ex) {
-        return error(Objects.requireNonNull(ex, "ex must not be null"), ResponseVo.internalError(ex.getMessage()));
+        return error(
+            Objects.requireNonNull(ex, "[ex] must not be null"),
+            ResponseVo.internalError(ex.getMessage())
+        );
     }
 
     @Nonnull
     private ResponseEntity<ResponseVo<String>> illegalParameters(@Nonnull final Exception ex) {
-        return error(Objects.requireNonNull(ex, "ex must not be null"), ResponseVo.illegalParameters(ex.getMessage()));
+        return error(
+            Objects.requireNonNull(ex, "[ex] must not be null"),
+            ResponseVo.illegalParameters(ex.getMessage())
+        );
     }
 }

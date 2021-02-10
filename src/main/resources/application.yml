@@ -66,3 +66,9 @@ feign:
   encoder: jackson
   decoder: jackson
   client: okhttp
+
+jwt:
+  authorization-header: "Bearer "
+  secret: 123456
+  issuer: spring-boot-reactive-demo
+  expiration: 10d

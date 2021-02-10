@@ -1,20 +1,19 @@
 package org.gty.demo.config;
 
-import com.google.gson.Gson;
-import org.gty.demo.model.vo.ResponseVo;
+import org.gty.demo.security.JwtAuthenticationFilter;
+import org.gty.demo.security.JwtServerAuthenticationEntryPoint;
 import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import reactor.core.publisher.Mono;
+import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
+import org.springframework.security.web.server.savedrequest.NoOpServerRequestCache;
 
 import javax.annotation.Nonnull;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 @EnableWebFluxSecurity
@@ -23,32 +22,30 @@ public class SecurityConfig {
 
     @Bean
     @Nonnull
-    public SecurityWebFilterChain springSecurityFilterChain(@Nonnull final ServerHttpSecurity http,
-                                                            @Nonnull final Gson gson) {
+    public SecurityWebFilterChain springSecurityFilterChain(
+        @Nonnull final ServerHttpSecurity http,
+        @Nonnull final JwtAuthenticationFilter jwtAuthenticationFilter,
+        @Nonnull final JwtServerAuthenticationEntryPoint jwtServerAuthenticationEntryPoint
+    ) {
         Objects.requireNonNull(http, "http must not be null");
-        Objects.requireNonNull(gson, "gson must not be null");
+        Objects.requireNonNull(jwtAuthenticationFilter, "[jwtAuthenticationFilter] must not be null");
+        Objects.requireNonNull(jwtServerAuthenticationEntryPoint, "[jwtServerAuthenticationEntryPoint] must not be null");
 
         return http
             .csrf().disable()
+            .logout().disable()
+            .requestCache().requestCache(NoOpServerRequestCache.getInstance()).and()
+            .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
             .authorizeExchange()
-            .matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-            .pathMatchers(generateRestfulAntPathMatchers("/api/student")).hasRole("USER")
-            .pathMatchers(generateRestfulAntPathMatchers("/api/actuator")).hasRole("ACTUATOR")
-            .pathMatchers(generateRestfulAntPathMatchers("/api/files")).hasRole("USER")
-            .pathMatchers(generateRestfulAntPathMatchers("/api/github")).hasRole("USER")
+                .matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .pathMatchers(generateRestfulAntPathMatchers("/api/token")).permitAll()
+                .pathMatchers(generateRestfulAntPathMatchers("/api/student")).hasRole("USER")
+                .pathMatchers(generateRestfulAntPathMatchers("/api/actuator")).hasRole("ACTUATOR")
+                .pathMatchers(generateRestfulAntPathMatchers("/api/files")).hasRole("USER")
+                .pathMatchers(generateRestfulAntPathMatchers("/api/github")).hasRole("USER")
             .anyExchange().authenticated().and()
-            .httpBasic().and()
-            .exceptionHandling().authenticationEntryPoint((var exchange, var e) -> {
-                var response = exchange.getResponse();
-                response.setStatusCode(HttpStatus.OK);
-                response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-
-                var responseVo = ResponseVo.unauthorized(e.toString());
-                var responseVoJson = gson.toJson(responseVo);
-                var bytes = responseVoJson.getBytes(StandardCharsets.UTF_8);
-                var buffer = response.bufferFactory().wrap(bytes);
-                return response.writeWith(Mono.just(buffer));
-            }).and()
+            .addFilterBefore(jwtAuthenticationFilter, SecurityWebFiltersOrder.HTTP_BASIC)
+            .exceptionHandling().authenticationEntryPoint(jwtServerAuthenticationEntryPoint).and()
             .build();
     }
 
