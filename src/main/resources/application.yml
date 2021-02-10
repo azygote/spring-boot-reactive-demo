@@ -68,7 +68,7 @@ feign:
   client: okhttp
 
 jwt:
-  authorization-header: "Bearer "
+  authorization-prefix: "Bearer "
   secret: 123456
   issuer: spring-boot-reactive-demo
   expiration: 10d

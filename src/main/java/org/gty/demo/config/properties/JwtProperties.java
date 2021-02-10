@@ -18,18 +18,18 @@ public class JwtProperties implements Serializable {
 
     private final String secret;
     private final String issuer;
-    private final String authorizationHeader;
+    private final String authorizationPrefix;
     private final Duration expiration;
 
     public JwtProperties(
         final String secret,
         final String issuer,
-        final String authorizationHeader,
+        final String authorizationPrefix,
         final Duration expiration
     ) {
         this.secret = secret;
         this.issuer = issuer;
-        this.authorizationHeader = authorizationHeader;
+        this.authorizationPrefix = authorizationPrefix;
         this.expiration = expiration;
     }
 
@@ -41,8 +41,8 @@ public class JwtProperties implements Serializable {
         return issuer;
     }
 
-    public String getAuthorizationHeader() {
-        return authorizationHeader;
+    public String getAuthorizationPrefix() {
+        return authorizationPrefix;
     }
 
     public Duration getExpiration() {
@@ -56,13 +56,13 @@ public class JwtProperties implements Serializable {
         final var that = (JwtProperties) o;
         return Objects.equals(secret, that.secret) &&
             Objects.equals(issuer, that.issuer) &&
-            Objects.equals(authorizationHeader, that.authorizationHeader) &&
+            Objects.equals(authorizationPrefix, that.authorizationPrefix) &&
             Objects.equals(expiration, that.expiration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(secret, issuer, authorizationHeader, expiration);
+        return Objects.hash(secret, issuer, authorizationPrefix, expiration);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class JwtProperties implements Serializable {
         return MoreObjects.toStringHelper(this)
             .add("secret", secret)
             .add("issuer", issuer)
-            .add("authorizationHeader", authorizationHeader)
+            .add("authorizationHeader", authorizationPrefix)
             .add("expiration", expiration)
             .toString();
     }

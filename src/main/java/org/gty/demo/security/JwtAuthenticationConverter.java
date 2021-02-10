@@ -40,15 +40,15 @@ public class JwtAuthenticationConverter implements ServerAuthenticationConverter
 
         final var request = exchange.getRequest();
         final var authorization = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-        final var authorizationHeader = jwtProperties.getAuthorizationHeader();
+        final var authorizationPrefix = jwtProperties.getAuthorizationPrefix();
 
         if (StringUtils.isBlank(authorization) ||
-            !StringUtils.startsWithIgnoreCase(authorization, authorizationHeader)) {
+            !StringUtils.startsWithIgnoreCase(authorization, authorizationPrefix)) {
             return Mono.empty();
         }
 
-        final var token = (authorization.length() <= authorizationHeader.length()) ? StringUtils.EMPTY
-            : authorization.substring(authorizationHeader.length());
+        final var token = (authorization.length() <= authorizationPrefix.length()) ? StringUtils.EMPTY
+            : authorization.substring(authorizationPrefix.length());
 
         try {
             final var jwt = jwtVerifier.verify(token);
