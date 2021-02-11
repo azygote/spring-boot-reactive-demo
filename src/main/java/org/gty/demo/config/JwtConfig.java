@@ -42,7 +42,6 @@ public class JwtConfig {
             .withIssuer(jwtProperties.getIssuer())
             .withClaimPresence(PublicClaims.EXPIRES_AT)
             .withClaimPresence(JwtConstants.USERNAME)
-            .withClaimPresence(JwtConstants.PASSWORD)
             .build();
     }
 }

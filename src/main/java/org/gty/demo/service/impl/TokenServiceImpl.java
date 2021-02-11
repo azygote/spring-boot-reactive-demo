@@ -3,13 +3,13 @@ package org.gty.demo.service.impl;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
 import org.gty.demo.config.properties.JwtProperties;
-import org.gty.demo.constant.SystemConstants;
+import org.gty.demo.constant.JwtConstants;
 import org.gty.demo.exception.JwtAuthorizationException;
 import org.gty.demo.model.form.TokenForm;
 import org.gty.demo.model.vo.TokenVo;
-import org.gty.demo.security.JwtAuthenticationManager;
 import org.gty.demo.service.TokenService;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,6 @@ import reactor.core.scheduler.Scheduler;
 
 import javax.annotation.Nonnull;
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -33,13 +32,13 @@ public class TokenServiceImpl implements TokenService {
 
     public TokenServiceImpl(
         @Nonnull final Scheduler scheduler,
-        @Nonnull final JwtAuthenticationManager jwtAuthenticationManager,
+        @Nonnull final UserDetailsRepositoryReactiveAuthenticationManager userDetailsRepositoryReactiveAuthenticationManager,
         @Nonnull final Algorithm algorithm,
         @Nonnull final JWTCreator.Builder jwt,
         @Nonnull final JwtProperties jwtProperties
     ) {
         this.scheduler = Objects.requireNonNull(scheduler, "[scheduler] must not be null");
-        authenticationManager = Objects.requireNonNull(jwtAuthenticationManager, "[scheduler] must not be null");
+        authenticationManager = Objects.requireNonNull(userDetailsRepositoryReactiveAuthenticationManager, "[userDetailsRepositoryReactiveAuthenticationManager] must not be null");
         this.algorithm = Objects.requireNonNull(algorithm, "[algorithm] must not be null");
         this.jwt = Objects.requireNonNull(jwt, "[jwt] must not be null");
         this.jwtProperties = Objects.requireNonNull(jwtProperties, "[jwtProperties] must not be null");
@@ -68,8 +67,7 @@ public class TokenServiceImpl implements TokenService {
 
         return jwt
             .withExpiresAt(Date.from(Instant.now().plus(jwtProperties.getExpiration())))
-            .withClaim("username", authentication.getName())
-            .withClaim("password", (String) authentication.getCredentials())
+            .withClaim(JwtConstants.USERNAME, authentication.getName())
             .sign(algorithm);
     }
 }

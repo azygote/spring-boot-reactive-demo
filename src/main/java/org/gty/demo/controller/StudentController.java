@@ -1,16 +1,17 @@
 package org.gty.demo.controller;
 
 import org.gty.demo.controller.util.PageRequestUtils;
+import org.gty.demo.controller.util.ValidationUtils;
 import org.gty.demo.model.form.StudentForm;
 import org.gty.demo.model.vo.ResponseVo;
 import org.gty.demo.model.vo.StudentVo;
 import org.gty.demo.service.ReactiveDemoService;
 import org.gty.demo.service.ReactiveStudentService;
-import org.gty.demo.controller.util.ValidationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -49,7 +50,8 @@ public class StudentController {
     @GetMapping(value = "/api/student", produces = MediaType.APPLICATION_JSON_VALUE)
     public Mono<ResponseVo<Page<StudentVo>>> getByParameters(@RequestParam(value = "page", required = false, defaultValue = "0") final int page,
                                                              @RequestParam(value = "size", required = false, defaultValue = "10") final int size,
-                                                             @Nonnull @RequestParam(value = "sort", required = false, defaultValue = "") final String sort) {
+                                                             @Nonnull @RequestParam(value = "sort", required = false, defaultValue = "") final String sort,
+                                                             @Nonnull Mono<Authentication> authenticationMono) {
 
         final var responseVoMono = Mono
             .just(PageRequestUtils.constructPageRequest(page, size, Objects.requireNonNull(sort, "sort must not be null")))
@@ -57,7 +59,12 @@ public class StudentController {
             .map(ResponseVo::success)
             .subscribeOn(scheduler);
 
-        return demoService.demo().then(responseVoMono);
+        var logAuthenticationMono = authenticationMono
+            .doOnSuccess(authentication -> log.debug("Current user = {}", authentication.getName()));
+
+        var demoMono = demoService.demo();
+
+        return logAuthenticationMono.then(demoMono).then(responseVoMono);
     }
 
     @Nonnull

@@ -1,9 +1,11 @@
 package org.gty.demo.config;
 
+import org.gty.demo.security.DbUserDetailsService;
 import org.gty.demo.security.JwtAuthenticationFilter;
 import org.gty.demo.security.JwtServerAuthenticationEntryPoint;
 import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
@@ -27,7 +29,7 @@ public class SecurityConfig {
         @Nonnull final JwtAuthenticationFilter jwtAuthenticationFilter,
         @Nonnull final JwtServerAuthenticationEntryPoint jwtServerAuthenticationEntryPoint
     ) {
-        Objects.requireNonNull(http, "http must not be null");
+        Objects.requireNonNull(http, "[http] must not be null");
         Objects.requireNonNull(jwtAuthenticationFilter, "[jwtAuthenticationFilter] must not be null");
         Objects.requireNonNull(jwtServerAuthenticationEntryPoint, "[jwtServerAuthenticationEntryPoint] must not be null");
 
@@ -60,5 +62,20 @@ public class SecurityConfig {
     @Nonnull
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @Nonnull
+    public UserDetailsRepositoryReactiveAuthenticationManager authenticationManager(
+        @Nonnull final DbUserDetailsService userDetailsService,
+        @Nonnull final BCryptPasswordEncoder passwordEncoder
+    ) {
+        Objects.requireNonNull(userDetailsService, "[userDetailsService] must not be null");
+        Objects.requireNonNull(passwordEncoder, "[passwordEncoder] must not be null");
+
+        var userDetailsRepositoryReactiveAuthenticationManager =
+            new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
+        userDetailsRepositoryReactiveAuthenticationManager.setPasswordEncoder(passwordEncoder);
+        return userDetailsRepositoryReactiveAuthenticationManager;
     }
 }

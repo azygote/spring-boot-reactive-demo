@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.gty.demo.config.properties.JwtProperties;
 import org.gty.demo.constant.JwtConstants;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.authentication.ServerAuthenticationConverter;
 import org.springframework.stereotype.Service;
@@ -27,8 +26,8 @@ public class JwtAuthenticationConverter implements ServerAuthenticationConverter
         @Nonnull final JwtProperties jwtProperties,
         @Nonnull final JWTVerifier jwtVerifier
     ) {
-        this.jwtProperties = Objects.requireNonNull(jwtProperties, "jwtProperties must not be null");
-        this.jwtVerifier = Objects.requireNonNull(jwtVerifier, "jwtVerifier must not be null");
+        this.jwtProperties = Objects.requireNonNull(jwtProperties, "[jwtProperties] must not be null");
+        this.jwtVerifier = Objects.requireNonNull(jwtVerifier, "[jwtVerifier] must not be null");
     }
 
     @Override
@@ -53,10 +52,7 @@ public class JwtAuthenticationConverter implements ServerAuthenticationConverter
         try {
             final var jwt = jwtVerifier.verify(token);
             final var username = jwt.getClaim(JwtConstants.USERNAME).asString();
-            final var password = jwt.getClaim(JwtConstants.PASSWORD).asString();
-            return Mono.just(
-                new UsernamePasswordAuthenticationToken(username, password)
-            );
+            return Mono.just(new JwtUsernameAuthenticationToken(username));
         } catch (final JWTVerificationException exception){
             return Mono.empty();
         }

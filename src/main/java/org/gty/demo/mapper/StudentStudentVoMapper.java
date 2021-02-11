@@ -37,7 +37,6 @@ public interface StudentStudentVoMapper {
             final var bytes = NioUtils.toByteArray(in);
             final var base64String = new String(Base64.getEncoder().encode(bytes), StandardCharsets.UTF_8);
             final var photo = "data:image/png;base64," + base64String;
-            System.out.println("Hello");
 
             studentVoBuilder = studentVoBuilder.withPhoto(photo);
         } catch (final IOException ex) {

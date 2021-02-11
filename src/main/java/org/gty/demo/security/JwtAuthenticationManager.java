@@ -1,27 +1,28 @@
 package org.gty.demo.security;
 
-import org.springframework.security.authentication.AbstractUserDetailsReactiveAuthenticationManager;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
 @Service
-public class JwtAuthenticationManager extends AbstractUserDetailsReactiveAuthenticationManager {
+public class JwtAuthenticationManager extends AbstractJwtAuthenticationManager {
 
     private final ReactiveUserDetailsService userDetailsService;
 
-    public JwtAuthenticationManager(@Nonnull final DbUserDetailsService dbUserDetailsService,
-                                    @Nonnull final PasswordEncoder passwordEncoder) {
+    public JwtAuthenticationManager(
+        @Nonnull final DbUserDetailsService dbUserDetailsService,
+        @Nonnull final Scheduler scheduler
+    ) {
         this.userDetailsService = Objects.requireNonNull(
             dbUserDetailsService,
             "[dbUserDetailsService] must not be null"
         );
-        setPasswordEncoder(Objects.requireNonNull(passwordEncoder, "[passwordEncoder] must not be null"));
+        setScheduler(Objects.requireNonNull(scheduler, "[scheduler] must not be null"));
     }
 
     @Override
