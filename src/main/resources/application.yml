@@ -69,6 +69,7 @@ feign:
 
 jwt:
   authorization-prefix: "Bearer "
-  secret: 123456
+  public—key-location: "jwt/public.pem"
+  private-key-location: "jwt/private.pem"
   issuer: spring-boot-reactive-demo
   expiration: 10d

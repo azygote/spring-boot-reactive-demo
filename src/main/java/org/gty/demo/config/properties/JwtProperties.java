@@ -16,25 +16,32 @@ public class JwtProperties implements Serializable {
     @Serial
     private static final long serialVersionUID = 2913237737054759921L;
 
-    private final String secret;
+    private final String publicKeyLocation;
+    private final String privateKeyLocation;
     private final String issuer;
     private final String authorizationPrefix;
     private final Duration expiration;
 
     public JwtProperties(
-        final String secret,
+        final String publicKeyLocation,
+        final String privateKeyLocation,
         final String issuer,
         final String authorizationPrefix,
         final Duration expiration
     ) {
-        this.secret = secret;
+        this.publicKeyLocation = publicKeyLocation;
+        this.privateKeyLocation = privateKeyLocation;
         this.issuer = issuer;
         this.authorizationPrefix = authorizationPrefix;
         this.expiration = expiration;
     }
 
-    public String getSecret() {
-        return secret;
+    public String getPublicKeyLocation() {
+        return publicKeyLocation;
+    }
+
+    public String getPrivateKeyLocation() {
+        return privateKeyLocation;
     }
 
     public String getIssuer() {
@@ -54,7 +61,8 @@ public class JwtProperties implements Serializable {
         if (this == o) return true;
         if (!(o instanceof JwtProperties)) return false;
         final var that = (JwtProperties) o;
-        return Objects.equals(secret, that.secret) &&
+        return Objects.equals(publicKeyLocation, that.publicKeyLocation) &&
+            Objects.equals(privateKeyLocation, that.privateKeyLocation) &&
             Objects.equals(issuer, that.issuer) &&
             Objects.equals(authorizationPrefix, that.authorizationPrefix) &&
             Objects.equals(expiration, that.expiration);
@@ -62,15 +70,16 @@ public class JwtProperties implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(secret, issuer, authorizationPrefix, expiration);
+        return Objects.hash(publicKeyLocation, privateKeyLocation, issuer, authorizationPrefix, expiration);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-            .add("secret", secret)
+            .add("publicKeyLocation", publicKeyLocation)
+            .add("privateKeyLocation", privateKeyLocation)
             .add("issuer", issuer)
-            .add("authorizationHeader", authorizationPrefix)
+            .add("authorizationPrefix", authorizationPrefix)
             .add("expiration", expiration)
             .toString();
     }

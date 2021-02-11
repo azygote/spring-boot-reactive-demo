@@ -102,6 +102,7 @@ dependencies {
 //  implementation 'org.springframework.security:spring-security-ldap:5.1.6.RELEASE'
 
     implementation 'com.auth0:java-jwt:3.12.1'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
     implementation 'org.flywaydb:flyway-core:7.5.2'
     implementation 'org.postgresql:postgresql:42.2.18'
     implementation 'com.lmax:disruptor:3.4.2'
